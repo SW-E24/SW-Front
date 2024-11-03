@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>레시피 검색</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>레시피 검색</h1>
+
+    <!-- 검색 폼 -->
+    <form th:action="@{/search}" method="get">
+        <label for="keyword">검색어:</label>
+        <input type="text" id="keyword" name="keyword" required />
+
+        <div>
+            <label><input type="radio" name="searchType" value="title" checked /> 제목으로 검색</label>
+            <label><input type="radio" name="searchType" value="ingredients" /> 재료로 검색</label>
+        </div>
+
+        <button type="submit">검색</button>
+    </form>
+
+</div> <!----/container---->
+
+</body>
+</html>

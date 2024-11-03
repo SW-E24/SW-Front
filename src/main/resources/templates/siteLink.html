@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>사이트 연결</title>
+    <script>
+        // 버튼 클릭 시 새 창으로 링크를 여는 함수
+        function goToPurchase(ingredient) {
+            var url = 'https://search.shopping.naver.com/search/all?query=' + ingredient.trim();
+            window.open(url, '_blank');
+        }
+    </script>
+</head>
+<body>
+<h1>사이트 연결</h1>
+<h3 th:text="${recipe.title}">Recipe Title</h3>
+<p th:text="'카테고리: ' + ${recipe.category}">Recipe Category</p>
+
+<p>재료:</p>
+<ul>
+    <li th:each="ingredient : ${recipe.ingredients.split(',')}">
+        <!-- 재료명 표시 -->
+        <span th:text="${ingredient}"></span>
+        <!-- "구매하러 가기" 버튼, data-ingredient 속성에 재료명을 저장 -->
+        <button type="button" th:attr="data-ingredient=${ingredient.trim()}" onclick="goToPurchase(this.getAttribute('data-ingredient'))">
+            구매하러 가기
+        </button>
+    </li>
+</ul>
+
+</body>
+</html>
