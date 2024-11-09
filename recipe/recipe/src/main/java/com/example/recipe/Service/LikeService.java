@@ -10,6 +10,8 @@ import com.example.recipe.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class LikeService {
     @Autowired
@@ -41,5 +43,12 @@ public class LikeService {
 
     public boolean checkLikeExists(String userId, Long recipeId) { //좋아요를 눌렀는지 확이하는 메소드
         return likeRepository.existsByUserUserIdAndRecipeRecipeId(userId, recipeId);
+    }
+
+    public List<Like> getLikesByUserId(String userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+        // 좋아요 엔티티에 사용자 필드가 있으므로 해당 사용자가 좋아요한 모든 레시피 가져오기
+        return likeRepository.findAllByUserUserId(userId);
     }
 }
