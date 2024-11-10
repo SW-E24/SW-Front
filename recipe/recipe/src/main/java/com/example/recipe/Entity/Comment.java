@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 
 @Entity
 public class Comment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id //기본키로 지정
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //고유번호 지정. 1씩 증가
     private Long id;
 
     private String userId; // 작성자
