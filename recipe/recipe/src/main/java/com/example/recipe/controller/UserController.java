@@ -1,7 +1,7 @@
-package com.example.recipe.Controller;
+package com.example.recipe.controller;
 
-import com.example.recipe.Entity.User;
-import com.example.recipe.Service.UserService;
+import com.example.recipe.entity.User;
+import com.example.recipe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

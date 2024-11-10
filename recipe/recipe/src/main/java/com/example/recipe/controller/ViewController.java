@@ -1,6 +1,6 @@
-package com.example.recipe.Controller;
+package com.example.recipe.controller;
 
-import com.example.recipe.Service.ViewService;
+import com.example.recipe.service.ViewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

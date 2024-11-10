@@ -1,7 +1,7 @@
-package com.example.recipe.Controller;
+package com.example.recipe.controller;
 
-import com.example.recipe.Entity.Bookmark;
-import com.example.recipe.Service.BookmarkService;
+import com.example.recipe.entity.Bookmark;
+import com.example.recipe.service.BookmarkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

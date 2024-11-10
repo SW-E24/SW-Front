@@ -1,7 +1,7 @@
-package com.example.recipe.Service;
+package com.example.recipe.service;
 
-import com.example.recipe.Entity.Comment;
-import com.example.recipe.Repository.CommentRepository;
+import com.example.recipe.entity.Comment;
+import com.example.recipe.repository.CommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,7 @@
-package com.example.recipe.Controller;
+package com.example.recipe.controller;
 
-import com.example.recipe.Entity.Comment;
-import com.example.recipe.Service.CommentService;
+import com.example.recipe.entity.Comment;
+import com.example.recipe.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

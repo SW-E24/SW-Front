@@ -1,6 +1,6 @@
-package com.example.recipe.Repository;
+package com.example.recipe.repository;
 
-import com.example.recipe.Entity.Bookmark;
+import com.example.recipe.entity.Bookmark;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

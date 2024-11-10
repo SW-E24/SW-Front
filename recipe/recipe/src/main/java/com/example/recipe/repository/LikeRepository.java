@@ -1,8 +1,6 @@
-package com.example.recipe.Repository;
+package com.example.recipe.repository;
 
-import com.example.recipe.Entity.Like;
-import com.example.recipe.Entity.Recipe;
-import com.example.recipe.Entity.User;
+import com.example.recipe.entity.Like;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

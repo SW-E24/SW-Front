@@ -1,11 +1,11 @@
-package com.example.recipe.Service;
+package com.example.recipe.service;
 
-import com.example.recipe.Entity.Like;
-import com.example.recipe.Entity.User;
-import com.example.recipe.Entity.Recipe;
-import com.example.recipe.Repository.LikeRepository;
-import com.example.recipe.Repository.RecipeRepository;
-import com.example.recipe.Repository.UserRepository;
+import com.example.recipe.entity.Like;
+import com.example.recipe.entity.User;
+import com.example.recipe.entity.Recipe;
+import com.example.recipe.repository.LikeRepository;
+import com.example.recipe.repository.RecipeRepository;
+import com.example.recipe.repository.UserRepository;
 import com.example.recipe.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,9 +1,7 @@
-package com.example.recipe.Service;
+package com.example.recipe.service;
 
-import com.example.recipe.Entity.Bookmark;
-import com.example.recipe.Entity.Recipe;
-import com.example.recipe.Entity.User;
-import com.example.recipe.Repository.BookmarkRepository;
+import com.example.recipe.entity.Bookmark;
+import com.example.recipe.repository.BookmarkRepository;
 import com.example.recipe.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

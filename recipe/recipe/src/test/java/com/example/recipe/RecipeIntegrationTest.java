@@ -1,7 +1,7 @@
 package com.example.recipe;
 
-import com.example.recipe.Entity.*;
-import com.example.recipe.Repository.*;
+import com.example.recipe.entity.*;
+import com.example.recipe.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;

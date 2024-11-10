@@ -1,9 +1,9 @@
-package com.example.recipe.Service;
+package com.example.recipe.service;
 
-import com.example.recipe.Entity.Recipe;
-import com.example.recipe.Entity.View;
-import com.example.recipe.Repository.RecipeRepository;
-import com.example.recipe.Repository.ViewRepository;
+import com.example.recipe.entity.Recipe;
+import com.example.recipe.entity.View;
+import com.example.recipe.repository.RecipeRepository;
+import com.example.recipe.repository.ViewRepository;
 import com.example.recipe.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

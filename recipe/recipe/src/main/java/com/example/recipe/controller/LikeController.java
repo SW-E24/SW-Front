@@ -1,7 +1,7 @@
-package com.example.recipe.Controller;
+package com.example.recipe.controller;
 
-import com.example.recipe.Entity.Like;
-import com.example.recipe.Service.LikeService;
+import com.example.recipe.entity.Like;
+import com.example.recipe.service.LikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
