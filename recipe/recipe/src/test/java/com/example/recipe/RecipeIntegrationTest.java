@@ -71,7 +71,7 @@ public class RecipeIntegrationTest {
         testRecipe.setTitle("Test Recipe");
         testRecipe.setUser(testUser);
         testRecipe.setDescription("Test Description");
-        testRecipe.setIngredients("Test Ingredients");
+//        testRecipe.setIngredients("Test Ingredients");
         testRecipe.setDate(LocalDateTime.now());
 
         // Initialize test like
