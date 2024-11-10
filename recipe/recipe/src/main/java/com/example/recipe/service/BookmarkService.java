@@ -1,8 +1,12 @@
 package com.example.recipe.service;
 
 import com.example.recipe.entity.Bookmark;
+import com.example.recipe.entity.Recipe;
+import com.example.recipe.entity.User;
 import com.example.recipe.repository.BookmarkRepository;
 import com.example.recipe.ResourceNotFoundException;
+import com.example.recipe.repository.RecipeRepository;
+import com.example.recipe.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +18,32 @@ public class BookmarkService {
     @Autowired
     private BookmarkRepository bookmarkRepository;
 
-    public Bookmark addBookmark(Bookmark bookmark) { //북마크 추가 메소드
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private RecipeRepository recipeRepository;
+
+    public Bookmark addBookmark(Bookmark bookmark) {
+        // 사용자와 레시피를 데이터베이스에서 조회
+        User user = userRepository.findById(bookmark.getUser().getUserId())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + bookmark.getUser().getUserId()));
+
+        Recipe recipe = recipeRepository.findById(bookmark.getRecipe().getRecipeId())
+                .orElseThrow(() -> new ResourceNotFoundException("Recipe not found with id: " + bookmark.getRecipe().getRecipeId()));
+
+        // 조회된 엔티티로 설정
+        bookmark.setUser(user);
+        bookmark.setRecipe(recipe);
         bookmark.setDate(LocalDateTime.now());
+
         return bookmarkRepository.save(bookmark);
     }
+
+//    public Bookmark addBookmark(Bookmark bookmark) { //북마크 추가 메소드
+//        bookmark.setDate(LocalDateTime.now());
+//        return bookmarkRepository.save(bookmark);
+//    }
 
     public List<Bookmark> getBookmarksByUserId(String userId) { //모든 북마크를 가져오는 메소드
         return bookmarkRepository.findAllByUserUserId(userId);
