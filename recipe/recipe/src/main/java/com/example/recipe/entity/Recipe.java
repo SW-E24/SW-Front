@@ -14,7 +14,7 @@ public class Recipe {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user; // 작성한 사용자 (FK)
+    private Member user; // 작성한 사용자 (FK)
 
     @ElementCollection
     private List<Ingredient> ingredients;
@@ -85,11 +85,11 @@ public class Recipe {
         this.recipeId = recipeId;
     }
 
-    public User getUser() {
+    public Member getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(Member user) {
         this.user = user;
     }
 

@@ -1,6 +1,6 @@
 package com.example.recipe.controller;
 
-import com.example.recipe.entity.User;
+import com.example.recipe.entity.Member;
 import com.example.recipe.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,20 +13,20 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getUser(@PathVariable String userId) {
-        User user = userService.getUserById(userId);
+    public ResponseEntity<Member> getUser(@PathVariable String userId) {
+        Member user = userService.getUserById(userId);
         return ResponseEntity.ok(user);
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<User> updateUser(@PathVariable String userId, @RequestBody User updatedUser) {
-        User user = userService.updateUser(userId, updatedUser);
+    public ResponseEntity<Member> updateUser(@PathVariable String userId, @RequestBody Member updatedUser) {
+        Member user = userService.updateUser(userId, updatedUser);
         return ResponseEntity.ok(user);
     }
 
     @GetMapping("/{userId}/mypage")
-    public ResponseEntity<User> getMyPageInfo(@PathVariable String userId) {
-        User user = userService.getMyPageInfo(userId);  // 마이페이지 보기 - 내 정보 보기 메소드 추가
+    public ResponseEntity<Member> getMyPageInfo(@PathVariable String userId) {
+        Member user = userService.getMyPageInfo(userId);  // 마이페이지 보기 - 내 정보 보기 메소드 추가
         return ResponseEntity.ok(user);
     }
 

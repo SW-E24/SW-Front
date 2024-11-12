@@ -12,7 +12,7 @@ public class Bookmark {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user; // 북마크 한 사용자 (FK)
+    private Member user; // 북마크 한 사용자 (FK)
 
     @ManyToOne
     @JoinColumn(name = "recipe_id")
@@ -29,11 +29,11 @@ public class Bookmark {
         this.bookmarkId = bookmarkId;
     }
 
-    public User getUser() {
+    public Member getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(Member user) {
         this.user = user;
     }
 

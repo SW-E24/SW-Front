@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "user_table") // 테이블 이름을 user_table로 변경
-public class User {
+public class Member {
     @Id
     private String userId; // 로그인 사용시 아이디 (PK)
 
@@ -15,11 +15,11 @@ public class User {
     private String grade; // 사용자 등급
 
     // Getters and Setters
-    public User() {
+    public Member() {
         // 기본 생성자
     }
 
-    public User(String userId) {
+    public Member(String userId) {
         this.userId = userId;
     }
 

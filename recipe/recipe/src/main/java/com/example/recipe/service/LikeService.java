@@ -1,7 +1,7 @@
 package com.example.recipe.service;
 
 import com.example.recipe.entity.Like;
-import com.example.recipe.entity.User;
+import com.example.recipe.entity.Member;
 import com.example.recipe.entity.Recipe;
 import com.example.recipe.repository.LikeRepository;
 import com.example.recipe.repository.RecipeRepository;
@@ -24,7 +24,7 @@ public class LikeService {
     private RecipeRepository recipeRepository;
 
     public void addLike(String userId, Long recipeId) {
-        User user = userRepository.findById(userId)
+        Member user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         Recipe recipe = recipeRepository.findById(recipeId)
                 .orElseThrow(() -> new RuntimeException("Recipe not found"));
@@ -46,7 +46,7 @@ public class LikeService {
     }
 
     public List<Like> getLikesByUserId(String userId) {
-        User user = userRepository.findById(userId)
+        Member user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
         // 좋아요 엔티티에 사용자 필드가 있으므로 해당 사용자가 좋아요한 모든 레시피 가져오기
         return likeRepository.findAllByUserUserId(userId);

@@ -1,8 +1,8 @@
 package com.example.recipe.service;
 
 import com.example.recipe.entity.Bookmark;
+import com.example.recipe.entity.Member;
 import com.example.recipe.entity.Recipe;
-import com.example.recipe.entity.User;
 import com.example.recipe.repository.BookmarkRepository;
 import com.example.recipe.ResourceNotFoundException;
 import com.example.recipe.repository.RecipeRepository;
@@ -26,7 +26,7 @@ public class BookmarkService {
 
     public Bookmark addBookmark(Bookmark bookmark) {
         // 사용자와 레시피를 데이터베이스에서 조회
-        User user = userRepository.findById(bookmark.getUser().getUserId())
+        Member user = userRepository.findById(bookmark.getUser().getUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + bookmark.getUser().getUserId()));
 
         Recipe recipe = recipeRepository.findById(bookmark.getRecipe().getRecipeId())
