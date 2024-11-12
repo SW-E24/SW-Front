@@ -1,5 +1,6 @@
 package com.example.recipe.controller;
 
+import com.example.recipe.dto.CommentRequest;
 import com.example.recipe.entity.Comment;
 import com.example.recipe.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,15 +18,26 @@ public class CommentController {
 
     // 댓글 작성
     @PostMapping
-    public Comment addComment(@RequestParam Long recipeId, @RequestParam Long userId, @RequestParam String content) {
-        return commentService.addComment(recipeId, userId, content);
+    public Comment addComment(@RequestBody CommentRequest commentRequest) {
+        return commentService.addComment(
+                commentRequest.getRecipeId(),
+                commentRequest.getUserId(),
+                commentRequest.getContent()
+        );
     }
 
     // 댓글 수정
     @PutMapping("/{commentId}")
-    public ResponseEntity<Comment> editComment(@PathVariable Long commentId, @RequestParam Long userId, @RequestParam String content) {
+    public ResponseEntity<Comment> editComment(
+            @PathVariable(name = "commentId") Long commentId,
+            @RequestBody CommentRequest commentRequest
+    ) {
         try {
-            Comment comment = commentService.editComment(commentId, userId, content);
+            Comment comment = commentService.editComment(
+                    commentId,
+                    commentRequest.getUserId(),
+                    commentRequest.getContent()
+            );
             return ResponseEntity.ok(comment);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(null);
@@ -34,7 +46,10 @@ public class CommentController {
 
     // 댓글 삭제
     @DeleteMapping("/{commentId}")
-    public ResponseEntity<String> deleteComment(@PathVariable Long commentId, @RequestParam Long userId) {
+    public ResponseEntity<String> deleteComment(
+            @PathVariable(name = "commentId") Long commentId,
+            @RequestParam("userId")  Long userId
+    ) {
         try {
             commentService.deleteComment(commentId, userId);
             return ResponseEntity.ok("댓글이 삭제되었습니다.");

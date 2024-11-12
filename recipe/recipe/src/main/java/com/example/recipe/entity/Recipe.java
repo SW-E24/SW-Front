@@ -2,42 +2,48 @@ package com.example.recipe.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-//Recipe 클래스가 데이터베이스 테이블에 매핑
 public class Recipe {
 
-    @Id //id 기본키로 설정
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long recipeId; // 변경된 필드 이름
 
     private String title;
     private String category;
-    private LocalDate date;
+    private LocalDateTime date;
 
     @ElementCollection
+    @CollectionTable(name = "recipe_ingredients", joinColumns = @JoinColumn(name = "recipe_id"))
     private List<Ingredient> ingredients;
 
     @ElementCollection
+    @CollectionTable(name = "recipe_steps", joinColumns = @JoinColumn(name = "recipe_id"))
     private List<String> steps;
 
     private String description;
 
-    public Recipe() {} //기본 생성자
+    public Recipe() {}
 
     public Recipe(String title, String category, LocalDate date, List<Ingredient> ingredients, List<String> steps, String description) {
         this.title = title;
         this.category = category;
-        this.date = date;
+        this.date = date.atStartOfDay();
         this.ingredients = ingredients;
         this.steps = steps;
         this.description = description;
     }
 
     // Getter 및 Setter
-    public Long getId() {
-        return id;
+    public Long getRecipeId() {
+        return recipeId;
+    }
+
+    public void setRecipeId(Long recipeId) {
+        this.recipeId = recipeId;
     }
 
     public String getTitle() {
@@ -56,12 +62,12 @@ public class Recipe {
         this.category = category;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
     public void setDate(LocalDate date) {
-        this.date = date;
+        this.date = date.atStartOfDay();
     }
 
     public List<Ingredient> getIngredients() {
@@ -89,7 +95,6 @@ public class Recipe {
     }
 
     @Embeddable
-    //별도의 테이블이 아닌 Recipe 테이블 내의 컬렉션으로 저장
     public static class Ingredient {
         private String name;
         private String quantity;

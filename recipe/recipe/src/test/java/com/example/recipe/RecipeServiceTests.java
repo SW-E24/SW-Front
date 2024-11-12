@@ -1,5 +1,6 @@
 package com.example.recipe;
 
+import com.example.recipe.dto.RecipeRequest;
 import com.example.recipe.entity.Recipe;
 import com.example.recipe.repository.RecipeRepository;
 import com.example.recipe.service.RecipeService;
@@ -88,7 +89,8 @@ class RecipeServiceTests {
         Recipe updatedRecipe = new Recipe("Updated Recipe", "중식", LocalDate.now(), new ArrayList<>(), new ArrayList<>(), "맛있는 중식 레시피");
 
         // Act
-        Recipe result = recipeService.updateRecipe(recipeId, updatedRecipe);
+        RecipeRequest recipeRequest = null;
+        Recipe result = recipeService.updateRecipe(recipeId, recipeRequest);
 
         // Assert
         assertNotNull(result);
