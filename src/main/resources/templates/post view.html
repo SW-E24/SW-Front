@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>레시피 게시물 보기</title>
+  <style>
+    /* 기존 스타일 유지 */
+  </style>
+</head>
+<body>
+<div class="container">
+  <div th:text="${recipe.title}">레시피 제목</div>
+  <div>작성자 닉네임</div>
+
+  <div class="content-section">
+    <h3>재료</h3>
+    <div id="ingredients" th:each="ingredient : ${recipe.ingredients}">
+      <p th:text="${ingredient}">재료</p>
+    </div>
+  </div>
+
+  <div class="content-section">
+    <h3>조리 방법</h3>
+    <div id="instructions" th:each="step : ${recipe.description}">
+      <p th:text="${step}">조리 방법</p>
+    </div>
+  </div>
+
+  <div class="interaction-buttons">
+    <div id="bookmarkButton" onclick="toggleBookmark()">📌 북마크</div>
+    <div id="likeButton" onclick="toggleLike()">❤️ 좋아요</div>
+    <div>💬 댓글 <span id="commentCount">0</span></div>
+    <div>👁️ 조회수 <span id="viewCount">0</span></div>
+  </div>
+
+  <div class="comment-section">
+    <h4>댓글</h4>
+    <div class="comment-box">
+      <input type="text" id="commentInput" placeholder="댓글을 입력하세요">
+      <button onclick="addComment()">등록</button>
+    </div>
+    <div class="comments-list" id="commentsList">
+      <!-- 댓글이 추가되면 여기에 표시 -->
+    </div>
+  </div>
+</div>
+
+<script>
+  window.onload = function() {
+    const viewCountElement = document.getElementById("viewCount");
+    let viewCount = parseInt(localStorage.getItem("viewCount_")) || 0;
+    viewCount++;
+    localStorage.setItem("viewCount_", viewCount);
+    viewCountElement.textContent = viewCount;
+  };
+
+  function toggleBookmark() {
+    const bookmarkButton = document.getElementById("bookmarkButton");
+    bookmarkButton.classList.toggle("active");
+  }
+
+  function toggleLike() {
+    const likeButton = document.getElementById("likeButton");
+    likeButton.classList.toggle("active");
+  }
+
+  function addComment() {
+    const commentInput = document.getElementById("commentInput");
+    const commentsList = document.getElementById("commentsList");
+    const commentCountElement = document.getElementById("commentCount");
+
+    if (commentInput.value.trim() !== "") {
+      const commentItem = document.createElement("div");
+      commentItem.className = "comment-item";
+
+      const nickname = document.createElement("div");
+      nickname.className = "comment-nickname";
+      nickname.textContent = "작성자 닉네임";
+
+      const commentText = document.createElement("div");
+      commentText.className = "comment-text";
+      commentText.textContent = commentInput.value;
+
+      commentItem.appendChild(nickname);
+      commentItem.appendChild(commentText);
+      commentsList.appendChild(commentItem);
+
+      let commentCount = parseInt(commentCountElement.textContent);
+      commentCountElement.textContent = commentCount + 1;
+
+      commentInput.value = "";
+    }
+  }
+</script>
+</body>
+</html>

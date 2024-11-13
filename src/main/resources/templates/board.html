@@ -1,18 +1,197 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>재료백과</title>
+    <meta name="keywords" content="재료백과, 블로그, 인기 게시글">
+    <meta name="description" content="재료백과 게시판 페이지">
+
+    <!-- 스타일시트 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="icon" href="images/fevicon.png" type="image/gif" />
+
+    <style>
+        .banner {
+           background-color: #a0d8a0;
+           text-align: center;
+           padding: 100px 0;
+           font-size: 36px;
+           font-weight: bold;
+           color: white;
+        }
+        /* 메뉴바 스타일 */
+        .menu-bar {
+              background-color: #a0d8a0; /* 배너와 동일한 배경색 */
+              padding: 10px 0;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+          }
+
+          .menu-bar ul {
+              list-style: none;
+              margin: 0;
+              padding: 0;
+              display: flex;
+          }
+
+          /* 메뉴 버튼 스타일 */
+          .menu-bar ul li {
+              padding: 0 15px;
+          }
+
+          .menu-bar ul li a {
+              background-color: #a0d8a0; /* 배너와 동일한 배경색 */
+              color: black; /* 메뉴 텍스트는 검정색 */
+              text-decoration: none;
+              font-size: 18px;
+          }
+
+          .menu-bar ul li a:hover {
+              text-decoration: underline;
+          }
+
+        .board-section {
+           margin-top: 20px;
+        }
+
+        .board-section ul {
+           list-style: none;
+           margin: 0;
+           padding: 0;
+        }
+
+        .board-section ul li {
+           padding: 10px 0;
+           border-bottom: 1px solid #ccc;
+        }
+
+        .board-section ul li a {
+           color: #191919;
+           text-decoration: none;
+        }
+
+        .board-section ul li a:hover {
+           text-decoration: underline;
+        }
+
+        /* 게시물 리스트 스타일 */
+        .list-group-item {
+           border: none; /* 테두리 제거 */
+           padding: 10px 0;
+           font-size: 18px;
+           list-style-type: none;
+        }
+
+        /* 게시물 하이퍼링크 스타일 */
+        .list-group-item a {
+            color: black; /* 하이퍼링크 색상을 검은색으로 설정 */
+            text-decoration: none;
+        }
+
+        .list-group-item a:hover {
+            text-decoration: underline;
+        }
+
+        /* 페이지네이션 스타일 */
+        .pagination {
+           display: flex;
+           justify-content: center;
+           padding-top: 20px;
+        }
+
+        .pagination li a {
+           color: #007bff;
+           text-decoration: none;
+           padding: 5px 10px;
+           border: 1px solid #dee2e6;
+           margin: 0 5px;
+           border-radius: 3px;
+        }
+
+        .pagination li a:hover {
+           background-color: #007bff;
+           color: white;
+        }
+
+        .pagination .active a {
+           background-color: #007bff;
+           color: white;
+           border-color: #007bff;
+        }
+    </style>
+</head>
+
 <body>
-<div class="container">
-    <div>
-        <h1>
-            게시판
-        </h1>
-        <p>
-            <a href="/board/search">검색</a>
-            <a href="/board/menu">메뉴 추천</a>
-            <a href="/board/siteLink">최저가 사이트 연결</a>
-            <a href="/board/category">카테고리</a>
-        </p>
-    </div>
-</div> <!----/container---->
+<!-- 배너 영역 -->
+<div class="banner">
+    재료백과
+</div>
+
+<!-- 메뉴바 영역 -->
+<div class="menu-bar">
+    <!-- 왼쪽 메뉴 (홈, 게시판) -->
+    <ul>
+        <li><a href="index.html">홈</a></li>
+        <li><a href="board.html">게시판</a></li>
+    </ul>
+
+    <!-- 오른쪽 메뉴 (로그인, 회원가입) -->
+    <ul>
+        <li><a href="login.html">로그인</a></li>
+        <li><a href="register.html">회원가입</a></li>
+    </ul>
+</div>
+
+<div class="container mt-5">
+    <!-- 모든 게시물 섹션 -->
+    <h2 class="mt-5">모든 게시물</h2>
+    <ul class="list-group">
+        <li class="list-group-item"><a href="#">게시물 1</a></li>
+        <li class="list-group-item"><a href="#">게시물 2</a></li>
+        <li class="list-group-item"><a href="#">게시물 3</a></li>
+        <li class="list-group-item"><a href="#">게시물 4</a></li>
+        <li class="list-group-item"><a href="#">게시물 5</a></li>
+        <li class="list-group-item"><a href="#">게시물 6</a></li>
+    </ul>
+
+    <!-- 페이지네이션 -->
+    <nav aria-label="Page navigation example" class="mt-4">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    << <span aria-hidden="true"></span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">
+                    < </a> </li> <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">4</a></li>
+            <li class="page-item"><a class="page-link" href="#">5</a></li>
+            <li class="page-item"><a class="page-link" href="#">6</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    > <span aria-hidden="true"></span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    >> <span aria-hidden="true"></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<!-- Javascript files-->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
+
 </html>
