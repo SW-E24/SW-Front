@@ -17,25 +17,42 @@
         /* 배너 스타일 */
         .banner {
             background-color: #a0d8a0;
-            text-align: center;
+            color: white;
             padding: 50px 0;
+            text-align: center;
             font-size: 36px;
             font-weight: bold;
-            color: white;
         }
 
-        /* 인기 게시물 블록 스타일 */
-        .popular-post {
-            text-align: center;
-            margin-bottom: 20px;
-            padding: 10px;
+        /* 메뉴바 스타일 */
+        .menu-bar {
+            background-color: #a0d8a0; /* 배너와 동일한 배경색 */
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .popular-post img {
-            width: 80%;
-            height: auto;
-            border-radius: 10px;
-            margin-bottom: 10px;
+        .menu-bar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        /* 메뉴 버튼 스타일 */
+        .menu-bar ul li {
+            padding: 0 15px;
+        }
+
+        .menu-bar ul li a {
+            color: black;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .menu-bar ul li a:hover {
+            text-decoration: underline;
         }
 
         /* 모든 게시물 리스트 스타일 */
@@ -63,101 +80,105 @@
         }
 
         /* 페이지네이션 버튼 스타일 */
-        .pagination-custom {
+        .pagination {
             display: flex;
             justify-content: center;
             padding-top: 20px;
         }
 
-        .pagination-custom .page-item {
-            margin: 0 5px;
+        .pagination .page-item {
+            margin: 0 3px; /* 페이지 버튼 간격을 좁게 설정 */
         }
 
-        .pagination-custom .page-link {
-            color: #66bb6a;
-            border: 1px solid #66bb6a;
-            padding: 8px 12px;
-            border-radius: 5px;
+        .pagination .page-link {
+            color: #007bff;
             text-decoration: none;
+            padding: 5px 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 3px;
             transition: background-color 0.3s, color 0.3s;
         }
 
-        .pagination-custom .page-link:hover {
-            background-color: #66bb6a;
-            color: #ffffff;
+        .pagination .page-link:hover {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .pagination .active .page-link {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
         }
     </style>
 </head>
 
 <body>
-    <!-- 배너 영역 -->
-    <div class="banner">
-        재료백과
-    </div>
+<!-- 배너 영역 -->
+<div class="banner">
+    재료백과
+</div>
 
-    <div class="container mt-5">
-        <!-- 인기 게시글 섹션 -->
-        <h2>인기 게시물</h2>
-        <div class="row text-center">
-            <div class="col-md-4">
-                <div class="popular-post">
-                    <img src="https://via.placeholder.com/150x100" alt="Post 1">
-                    <h3><a href="#">인기 게시글 1</a></h3>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="popular-post">
-                    <img src="https://via.placeholder.com/150x100" alt="Post 2">
-                    <h3><a href="#">인기 게시글 2</a></h3>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="popular-post">
-                    <img src="https://via.placeholder.com/150x100" alt="Post 3">
-                    <h3><a href="#">인기 게시글 3</a></h3>
-                </div>
-            </div>
-        </div>
+<!-- 메뉴바 영역 -->
+<div class="menu-bar">
+    <!-- 왼쪽 메뉴 (홈, 게시판) -->
+    <ul>
+        <li><a href="index.html">홈</a></li>
+        <li><a href="board.html">게시판</a></li>
+    </ul>
 
-        <!-- 모든 게시물 섹션 -->
-        <h2 class="mt-5">모든 게시물</h2>
-        <ul class="list-group">
-            <li class="list-group-item"><a href="#">게시물 1</a></li>
-            <li class="list-group-item"><a href="#">게시물 2</a></li>
-            <li class="list-group-item"><a href="#">게시물 3</a></li>
-            <li class="list-group-item"><a href="#">게시물 4</a></li>
-            <li class="list-group-item"><a href="#">게시물 5</a></li>
-            <li class="list-group-item"><a href="#">게시물 6</a></li>
+    <!-- 오른쪽 메뉴 (로그인, 회원가입) -->
+    <ul>
+        <li><a href="login.html">로그인</a></li>
+        <li><a href="register.html">회원가입</a></li>
+    </ul>
+</div>
+
+<div class="container mt-5">
+    <!-- 모든 게시물 섹션 -->
+    <h2 class="mt-5">모든 게시물</h2>
+    <ul class="list-group">
+        <li class="list-group-item"><a href="#">게시물 1</a></li>
+        <li class="list-group-item"><a href="#">게시물 2</a></li>
+        <li class="list-group-item"><a href="#">게시물 3</a></li>
+        <li class="list-group-item"><a href="#">게시물 4</a></li>
+        <li class="list-group-item"><a href="#">게시물 5</a></li>
+        <li class="list-group-item"><a href="#">게시물 6</a></li>
+    </ul>
+
+    <!-- 페이지네이션 -->
+    <nav aria-label="Page navigation example" class="mt-4">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                    << <span aria-hidden="true"></span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">
+                    < </a> </li> <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">4</a></li>
+            <li class="page-item"><a class="page-link" href="#">5</a></li>
+            <li class="page-item"><a class="page-link" href="#">6</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    > <span aria-hidden="true"></span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                    >> <span aria-hidden="true"></span>
+                </a>
+            </li>
         </ul>
+    </nav>
+</div>
 
-        <!-- 페이지네이션 -->
-        <nav aria-label="Page navigation" class="mt-4">
-            <ul class="pagination-custom">
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous">&laquo;</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous">&lt;</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">4</a></li>
-                <li class="page-item"><a class="page-link" href="#">5</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">&gt;</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">&raquo;</a>
-                </li>
-            </ul>
-        </nav>
-    </div>
-
-    <!-- Javascript files-->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<!-- Javascript files-->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
 
 </html>
