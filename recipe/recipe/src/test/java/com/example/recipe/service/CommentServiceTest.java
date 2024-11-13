@@ -77,7 +77,7 @@ class CommentServiceTest {
         String content = "삭제할 댓글";
         Comment savedComment = commentService.addComment(recipeId, userId, content);
 
-        commentService.deleteComment(savedComment.getId(), Long.valueOf(userId));
+        commentService.deleteComment(savedComment.getId(), userId);
 
         Optional<Comment> optionalComment = commentRepository.findById(savedComment.getId());
         assertThat(optionalComment).isNotPresent();
@@ -91,7 +91,7 @@ class CommentServiceTest {
         String content = "삭제할 댓글";
         Comment savedComment = commentService.addComment(recipeId, userId, content);
 
-        Long otherUserId = 2L;
+        String otherUserId = "2L";
 
         assertThrows(IllegalArgumentException.class, () ->
                 commentService.deleteComment(savedComment.getId(), otherUserId)

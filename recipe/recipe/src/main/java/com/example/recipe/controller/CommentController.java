@@ -47,7 +47,7 @@ public class CommentController {
     @DeleteMapping("/{commentId}")
     public ResponseEntity<String> deleteComment(
             @PathVariable(name = "commentId") Long commentId,
-            @RequestParam("userId")  Long userId
+            @RequestParam("userId")  String userId
     ) {
         try {
             commentService.deleteComment(commentId, userId);

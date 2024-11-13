@@ -37,7 +37,7 @@ public class CommentService {
         }
     }
 
-    public void deleteComment(Long commentId, Long userId) {
+    public void deleteComment(Long commentId, String userId) {
         Optional<Comment> optionalComment = commentRepository.findById(commentId);
 
         if (optionalComment.isPresent()) {
