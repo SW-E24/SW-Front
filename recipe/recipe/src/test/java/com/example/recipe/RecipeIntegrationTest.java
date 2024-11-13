@@ -18,6 +18,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Optional;
@@ -70,7 +71,7 @@ public class RecipeIntegrationTest {
         testRecipe.setTitle("Test Recipe");
         testRecipe.setUser(testUser);
         testRecipe.setDescription("Test Description");
-        testRecipe.setDate(LocalDateTime.now());
+        testRecipe.setDate(LocalDate.from(LocalDateTime.now()));
 
         testLike = new Like();
         testLike.setUser(testUser);
@@ -85,7 +86,6 @@ public class RecipeIntegrationTest {
         testComment.setUserId(testUser.getUserId());
         testComment.setRecipeId(testRecipe.getRecipeId());
         testComment.setContent("Test Comment");
-        testComment.setDate(LocalDateTime.now());
 
         testView = new View();
         testView.setRecipe(testRecipe);

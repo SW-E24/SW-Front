@@ -26,7 +26,7 @@ public class RecipeService {
         return recipeRepository.save(recipe);
     }
     public Recipe updateRecipe(Long recipeId, RecipeRequest updatedRecipe) {
-        Optional<Recipe> existingRecipeOpt = recipeRepository.findById(recipeId);
+        Optional<Recipe> existingRecipeOpt = recipeRepository.findById(Long.valueOf(String.valueOf(recipeId)));
         if (existingRecipeOpt.isPresent()) {
             Recipe existingRecipe = existingRecipeOpt.get();
             existingRecipe.setTitle(updatedRecipe.getTitle());
@@ -41,7 +41,7 @@ public class RecipeService {
     }
 
     public Optional<Recipe> getRecipeById(Long recipeId) {
-        return recipeRepository.findById(recipeId);
+        return recipeRepository.findById(Long.valueOf(String.valueOf(recipeId)));
     }
 
     public List<Recipe> getAllRecipes() {
@@ -49,6 +49,6 @@ public class RecipeService {
     }
 
     public void deleteRecipe(Long recipeId) {
-        recipeRepository.deleteById(recipeId);
+        recipeRepository.deleteById(Long.valueOf(String.valueOf(recipeId)));
     }
 }

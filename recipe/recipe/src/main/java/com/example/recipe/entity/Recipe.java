@@ -11,6 +11,9 @@ public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long recipeId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Member user;
     private String title;
     private String category;
     private LocalDateTime date;
@@ -37,8 +40,14 @@ public class Recipe {
     }
     // Getters and setters...
     public Long getRecipeId() { return recipeId; }
-    public void setRecipeId(Long recipeId) { this.recipeId = recipeId; }
+    public void setRecipeId(Long recipeId) { this.recipeId = Long.valueOf(String.valueOf(recipeId)); }
 
+    public Member getUser() {
+        return user;
+    }
+    public void setUser(Member user) {
+        this.user = user;
+    }
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
 

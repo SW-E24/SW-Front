@@ -15,7 +15,7 @@ public class Comment {
     //레시피 id 저장, 반드시 이 필드에 값이 있어야함
 
     @Column(nullable = false)
-    private Long userId;
+    private String userId;
     //사용자 id 저장, 반드시 값이 있어야함
 
     @Column(nullable = false)
@@ -33,8 +33,8 @@ public class Comment {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public Comment(Long recipeId, Long userId, String content) {
-        this.recipeId = recipeId;
+    public Comment(Long recipeId, String userId, String content) {
+        this.recipeId = Long.valueOf(recipeId);
         this.userId = userId;
         this.content = content;
         this.createdAt = LocalDateTime.now();
@@ -45,9 +45,21 @@ public class Comment {
 
     public Long getId() { return id; }
 
+    public void setId(Long id) {
+        this.id = Long.valueOf(String.valueOf(id));
+    }
+
     public Long getRecipeId() { return recipeId; }
 
-    public Long getUserId() { return userId; }
+    public void setRecipeId(Long recipeId) {
+        this.recipeId = Long.valueOf(String.valueOf(recipeId));
+    }
+
+    public String getUserId() { return userId; }
+
+    public void setUserId(String userId) {
+        this.userId = String.valueOf(userId);
+    }
 
     public String getContent() { return content; }
 
@@ -60,4 +72,5 @@ public class Comment {
     public LocalDateTime getCreatedAt() { return createdAt; }
 
     public LocalDateTime getUpdatedAt() { return updatedAt; }
+
 }
