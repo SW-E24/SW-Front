@@ -14,13 +14,13 @@ public class CommentService {
     @Autowired
     private CommentRepository commentRepository;
 
-    public Comment addComment(Long recipeId, Long userId, String content) {
+    public Comment addComment(Long recipeId, String userId, String content) {
         Comment comment = new Comment(recipeId, userId, content);
         return commentRepository.save(comment);
     }
 
-    public Comment editComment(Long commentId, Long userId, String content) {
-        Optional<Comment> optionalComment = commentRepository.findById(commentId);
+    public Comment editComment(Long id, String userId, String content) {
+        Optional<Comment> optionalComment = commentRepository.findById(Long.valueOf(id));
 
         if (optionalComment.isPresent()) {
             Comment comment = optionalComment.get();

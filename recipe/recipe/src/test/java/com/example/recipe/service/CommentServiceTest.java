@@ -28,11 +28,11 @@ class CommentServiceTest {
     @Test
     @DisplayName("댓글 추가 테스트")
     void testAddComment() {
-        Long recipeId = 1L;
-        Long userId = 1L;
+        Long recipeId = Long.valueOf(String.valueOf(1L));
+        String userId = String.valueOf(1L);
         String content = "테스트 댓글입니다.";
 
-        Comment savedComment = commentService.addComment(recipeId, userId, content);
+        Comment savedComment = commentService.addComment(recipeId, String.valueOf(userId), content);
 
         Optional<Comment> optionalComment = commentRepository.findById(savedComment.getId());
         assertThat(optionalComment).isPresent();
@@ -42,10 +42,10 @@ class CommentServiceTest {
     @Test
     @DisplayName("댓글 수정 테스트")
     void testEditComment() {
-        Long recipeId = 1L;
-        Long userId = 1L;
+        Long recipeId = Long.valueOf(String.valueOf(1L));
+        String userId = String.valueOf(1L);
         String originalContent = "원래 댓글";
-        Comment savedComment = commentService.addComment(recipeId, userId, originalContent);
+        Comment savedComment = commentService.addComment(Long.valueOf(String.valueOf(recipeId)), String.valueOf(userId), originalContent);
 
         String updatedContent = "수정된 댓글";
         Comment updatedComment = commentService.editComment(savedComment.getId(), userId, updatedContent);
@@ -57,11 +57,11 @@ class CommentServiceTest {
     @DisplayName("댓글 수정 권한 오류 테스트")
     void testEditCommentUnauthorized() {
         Long recipeId = 1L;
-        Long userId = 1L;
+        String userId = String.valueOf(1L);
         String originalContent = "원래 댓글";
         Comment savedComment = commentService.addComment(recipeId, userId, originalContent);
 
-        Long otherUserId = 2L;
+        String otherUserId = String.valueOf(2L);
         String updatedContent = "수정된 댓글";
 
         assertThrows(IllegalArgumentException.class, () ->
@@ -73,11 +73,11 @@ class CommentServiceTest {
     @DisplayName("댓글 삭제 테스트")
     void testDeleteComment() {
         Long recipeId = 1L;
-        Long userId = 1L;
+        String userId = String.valueOf(1L);
         String content = "삭제할 댓글";
         Comment savedComment = commentService.addComment(recipeId, userId, content);
 
-        commentService.deleteComment(savedComment.getId(), userId);
+        commentService.deleteComment(savedComment.getId(), Long.valueOf(userId));
 
         Optional<Comment> optionalComment = commentRepository.findById(savedComment.getId());
         assertThat(optionalComment).isNotPresent();
@@ -87,7 +87,7 @@ class CommentServiceTest {
     @DisplayName("댓글 삭제 권한 오류 테스트")
     void testDeleteCommentUnauthorized() {
         Long recipeId = 1L;
-        Long userId = 1L;
+        String userId = String.valueOf(1L);
         String content = "삭제할 댓글";
         Comment savedComment = commentService.addComment(recipeId, userId, content);
 
@@ -108,7 +108,7 @@ class CommentServiceTest {
     @DisplayName("레시피 ID로 댓글 조회 테스트")
     void testGetCommentsByRecipeId() {
         Long recipeId = 1L;
-        Long userId = 1L;
+        String userId = String.valueOf(1L);
         commentService.addComment(recipeId, userId, "댓글 1");
         commentService.addComment(recipeId, userId, "댓글 2");
 
