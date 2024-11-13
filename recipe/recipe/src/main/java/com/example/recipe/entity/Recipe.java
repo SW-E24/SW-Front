@@ -1,21 +1,31 @@
 package com.example.recipe.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
+import lombok.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.time.LocalDate;
 
+@Getter
+@Setter
 @Entity
 public class Recipe {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long recipeId;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Member user;
+
+    @Column(length = 300, nullable = false)
     private String title;
+
+    @Column(nullable = false)
     private String category;
+
+    @Column(nullable = false)
     private LocalDateTime date;
 
     @ElementCollection
@@ -24,12 +34,26 @@ public class Recipe {
 
     @ElementCollection
     @CollectionTable(name = "recipe_steps", joinColumns = @JoinColumn(name = "recipe_id"))
-    private List<Step> steps; // Updated to use Step class
+    private List<Step> steps;
 
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     public Recipe() {}
-
+    
+    @Builder
+    public Recipe(Long recipeId, Member user, String title, String category, LocalDateTime date,
+                  List<Ingredient> ingredients, List<Step> steps, String description) {
+          this.recipeId = recipeId;
+          this.user = user;
+          this.title = title;
+          this.category = category;
+          this.date = date;
+          this.ingredients = ingredients;
+          this.steps = steps;
+          this.description = description;
+    }
+    
     public Recipe(String title, String category, LocalDateTime date, List<Ingredient> ingredients, List<Step> steps, String description) {
         this.title = title;
         this.category = category;
@@ -38,6 +62,7 @@ public class Recipe {
         this.steps = steps;
         this.description = description;
     }
+  
     // Getters and setters...
     public Long getRecipeId() { return recipeId; }
     public void setRecipeId(Long recipeId) { this.recipeId = Long.valueOf(String.valueOf(recipeId)); }
@@ -65,7 +90,9 @@ public class Recipe {
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
-
+    
+    @Getter
+    @Setter
     @Embeddable
     public static class Ingredient {
         private String name;
@@ -87,6 +114,8 @@ public class Recipe {
     }
 
     @Embeddable
+    @Getter
+    @Setter
     public static class Step {
         private String description;
 
