@@ -1,62 +1,63 @@
 package com.example.recipe.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 public class Comment {
-    @Id //기본키로 지정
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //고유번호 지정. 1씩 증가
-    private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //기본키로 설정되고 자동 id값 생성
+    private Long id; //고유 id
 
-    private String userId; // 작성자
-    private Long recipeId; // 댓글이 달린 레시피
+    @Column(nullable = false)
+    private Long recipeId;
+    //레시피 id 저장, 반드시 이 필드에 값이 있어야함
 
+    @Column(nullable = false)
+    private Long userId;
+    //사용자 id 저장, 반드시 값이 있어야함
+
+    @Column(nullable = false)
     private String content;
-    private LocalDateTime date;
+    //댓글 내용, 반드시 값이 있어야함
 
-    // getters and setters
-    public Long getId() {
-        return id;
+    private LocalDateTime createdAt;
+    //댓글이 작성된 시간, 현재시간으로 초기화
+    private LocalDateTime updatedAt;
+    //댓글이 마지막으로 수정된 시간, 기본생성자에서 현재 시간으로 초기화
+    //content가 수정될때마다 업데이트됨
+
+    public Comment() { //둘다 현재시간으로 초기화
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public Long getRecipeId() {
-        return recipeId;
-    }
-
-    public void setRecipeId(Long recipeId) {
+    public Comment(Long recipeId, Long userId, String content) {
         this.recipeId = recipeId;
+        this.userId = userId;
+        this.content = content;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
-    public String getContent() {
-        return content;
-    }
+    // Getters and setters
+
+    public Long getId() { return id; }
+
+    public Long getRecipeId() { return recipeId; }
+
+    public Long getUserId() { return userId; }
+
+    public String getContent() { return content; }
 
     public void setContent(String content) {
         this.content = content;
+        this.updatedAt = LocalDateTime.now();
+        //content 필드 값 업데이트, updateAt을 현시간으로 갱신함
     }
 
-    public LocalDateTime getDate() {
-        return date;
-    }
+    public LocalDateTime getCreatedAt() { return createdAt; }
 
-    public void setDate(LocalDateTime date) {
-        this.date = date;
-    }
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
 }

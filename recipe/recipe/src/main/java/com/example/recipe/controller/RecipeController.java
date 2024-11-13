@@ -1,42 +1,66 @@
 package com.example.recipe.controller;
 
+import com.example.recipe.dto.RecipeRequest;
 import com.example.recipe.entity.Recipe;
 import com.example.recipe.service.RecipeService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/recipes")
 public class RecipeController {
-    @Autowired
-    private RecipeService recipeService;
+
+    private final RecipeService recipeService;
+
+    public RecipeController(RecipeService recipeService) {
+        this.recipeService = recipeService;
+    }
 
     @PostMapping("/create")
-    public Recipe createRecipe(@RequestParam String title,
-                               @RequestParam String category,
-                               @RequestBody List<Recipe.Ingredient> ingredients,
-                               @RequestBody List<String> steps,
-                               @RequestParam String description) {
-        if (!category.matches("양식|한식|중식|일식")) {
-            throw new IllegalArgumentException("카테고리는 양식, 한식, 중식, 일식 중 하나여야 합니다.");
-        } //카테고리 값이 양식,한식,중식,일식 중 하나가 아닌 경우 IllegalArgumentException을 발생
-        return recipeService.createRecipe(title, category, ingredients, steps, description);
-        //레시피 생성
+    public Recipe createRecipe(@RequestBody RecipeRequest recipeRequest) {
+        if (!recipeRequest.getCategory().matches("양식|한식|중식|일식|디저트")) {
+            throw new IllegalArgumentException("카테고리는 양식, 한식, 중식, 일식, 디저트 중 하나여야 합니다.");
+        }
+        return recipeService.createRecipe(
+                recipeRequest.getTitle(),
+                recipeRequest.getCategory(),
+                recipeRequest.getIngredients(),
+                recipeRequest.getSteps(),
+                recipeRequest.getDescription()
+        );
     }
 
     @GetMapping
-    public ResponseEntity<List<Recipe>> getAllRecipes() {
-        List<Recipe> recipes = recipeService.getAllRecipes();
-        return ResponseEntity.ok(recipes);
+    public List<Recipe> getAllRecipes() {
+        return recipeService.getAllRecipes();
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Recipe>> getRecipesByUserId(@PathVariable String userId) { // 특정 사용자의 레시피 조회
-        List<Recipe> recipes = recipeService.getRecipesByUserId(userId);
-        return ResponseEntity.ok(recipes);
+    @GetMapping("/{recipeId}")
+    public ResponseEntity<Recipe> getRecipeById(@PathVariable Long recipeId) {
+        Optional<Recipe> recipeOpt = recipeService.getRecipeById(recipeId);
+        return recipeOpt.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{recipeId}")
+    public ResponseEntity<Recipe> updateRecipe(@PathVariable Long recipeId, @RequestBody RecipeRequest recipeRequest) {
+        try {
+            Recipe recipe = recipeService.updateRecipe(recipeId, recipeRequest);
+            return ResponseEntity.ok(recipe);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/{recipeId}")
+    public ResponseEntity<String> deleteRecipe(@PathVariable Long recipeId) {
+        Optional<Recipe> recipeOpt = recipeService.getRecipeById(recipeId);
+        if (recipeOpt.isPresent()) {
+            recipeService.deleteRecipe(recipeId);
+            return ResponseEntity.ok("삭제 되었습니다");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

@@ -1,70 +1,33 @@
 package com.example.recipe.entity;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 public class Recipe {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long recipeId; // 각 레시피 글 고유 ID (PK)
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private Member user; // 작성한 사용자 (FK)
+    private Long recipeId;
+    private String title;
+    private String category;
+    private LocalDateTime date;
 
     @ElementCollection
+    @CollectionTable(name = "recipe_ingredients", joinColumns = @JoinColumn(name = "recipe_id"))
     private List<Ingredient> ingredients;
 
     @ElementCollection
-    private List<String> steps;
+    @CollectionTable(name = "recipe_steps", joinColumns = @JoinColumn(name = "recipe_id"))
+    private List<Step> steps; // Updated to use Step class
 
-    private String title; // 레시피 제목
-    private String description; // 레시피 설명
-    //private String ingredients; // 사용된 재료 목록
-    private String category; // 레시피 카테고리
-    private LocalDateTime date; // 레시피 작성일
+    private String description;
 
-    @Embeddable
-    //별도의 테이블이 아닌 Recipe 테이블 내의 컬렉션으로 저장
-    public static class Ingredient {
-        private String name;
-        private String quantity;
+    public Recipe() {}
 
-        public Ingredient() {}
-
-        public Ingredient(String name, String quantity) {
-            this.name = name;
-            this.quantity = quantity;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getQuantity() {
-            return quantity;
-        }
-
-        public void setQuantity(String quantity) {
-            this.quantity = quantity;
-        }
-    }
-
-    // Getters and Setters
-
-    public Recipe() {
-        // 기본 생성자
-    }
-
-    public Recipe(String title, String category, LocalDateTime date, List<Ingredient> ingredients, List<String> steps, String description) {
+    public Recipe(String title, String category, LocalDateTime date, List<Ingredient> ingredients, List<Step> steps, String description) {
         this.title = title;
         this.category = category;
         this.date = date;
@@ -72,65 +35,67 @@ public class Recipe {
         this.steps = steps;
         this.description = description;
     }
+    // Getters and setters...
+    public Long getRecipeId() { return recipeId; }
+    public void setRecipeId(Long recipeId) { this.recipeId = recipeId; }
 
-    public Recipe(Long recipeId) {
-        this.recipeId = recipeId;
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+
+    public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
+
+    public LocalDateTime getDate() { return date; }
+    public void setDate(LocalDate date) { this.date = date.atStartOfDay(); }
+
+    public List<Ingredient> getIngredients() { return ingredients; }
+    public void setIngredients(List<Ingredient> ingredients) { this.ingredients = ingredients; }
+
+    public List<Step> getSteps() { return steps; } // Updated getter
+    public void setSteps(List<Step> steps) { this.steps = steps; } // Updated setter
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+
+    @Embeddable
+    public static class Ingredient {
+        private String name;
+        private String quantity;
+
+        // Constructor, getters, and setters...
+        public Ingredient() {}
+
+        public Ingredient(String name, String quantity) {
+            this.name = name;
+            this.quantity = quantity;
+        }
+
+        public String getName() { return name; }
+        public void setName(String name) { this.name = name; }
+
+        public String getQuantity() { return quantity; }
+        public void setQuantity(String quantity) { this.quantity = quantity; }
     }
 
-    public Long getRecipeId() {
-        return recipeId;
-    }
+    @Embeddable
+    public static class Step {
+        private String description;
 
-    public void setRecipeId(Long recipeId) {
-        this.recipeId = recipeId;
-    }
+        @Lob
+        @Column(columnDefinition = "BLOB")
+        private byte[] photo; // LOB 방식으로 이미지 저장
 
-    public Member getUser() {
-        return user;
-    }
+        public Step() {}
 
-    public void setUser(Member user) {
-        this.user = user;
-    }
+        public Step(String description, byte[] photo) {
+            this.description = description;
+            this.photo = photo;
+        }
 
-    public String getTitle() {
-        return title;
-    }
+        public String getDescription() { return description; }
+        public void setDescription(String description) { this.description = description; }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public List<Ingredient> getIngredients() {
-        return ingredients;
-    }
-
-    public void setIngredients(List<Ingredient> ingredients) {
-        this.ingredients = ingredients;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
+        public byte[] getPhoto() { return photo; }
+        public void setPhoto(byte[] photo) { this.photo = photo; }
     }
 }
-
