@@ -10,8 +10,7 @@ public class Recipe {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long recipeId; // 변경된 필드 이름
-
+    private Long recipeId;
     private String title;
     private String category;
     private LocalDateTime date;
@@ -22,83 +21,49 @@ public class Recipe {
 
     @ElementCollection
     @CollectionTable(name = "recipe_steps", joinColumns = @JoinColumn(name = "recipe_id"))
-    private List<String> steps;
+    private List<Step> steps; // Updated to use Step class
 
     private String description;
 
     public Recipe() {}
 
-    public Recipe(String title, String category, LocalDate date, List<Ingredient> ingredients, List<String> steps, String description) {
+    public Recipe(String title, String category, LocalDateTime date, List<Ingredient> ingredients, List<Step> steps, String description) {
         this.title = title;
         this.category = category;
-        this.date = date.atStartOfDay();
+        this.date = date;
         this.ingredients = ingredients;
         this.steps = steps;
         this.description = description;
     }
 
-    // Getter 및 Setter
-    public Long getRecipeId() {
-        return recipeId;
-    }
+    // Getters and setters...
+    public Long getRecipeId() { return recipeId; }
+    public void setRecipeId(Long recipeId) { this.recipeId = recipeId; }
 
-    public void setRecipeId(Long recipeId) {
-        this.recipeId = recipeId;
-    }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
 
-    public String getTitle() {
-        return title;
-    }
+    public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    public LocalDateTime getDate() { return date; }
+    public void setDate(LocalDate date) { this.date = date.atStartOfDay(); }
 
-    public String getCategory() {
-        return category;
-    }
+    public List<Ingredient> getIngredients() { return ingredients; }
+    public void setIngredients(List<Ingredient> ingredients) { this.ingredients = ingredients; }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
+    public List<Step> getSteps() { return steps; } // Updated getter
+    public void setSteps(List<Step> steps) { this.steps = steps; } // Updated setter
 
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date.atStartOfDay();
-    }
-
-    public List<Ingredient> getIngredients() {
-        return ingredients;
-    }
-
-    public void setIngredients(List<Ingredient> ingredients) {
-        this.ingredients = ingredients;
-    }
-
-    public List<String> getSteps() {
-        return steps;
-    }
-
-    public void setSteps(List<String> steps) {
-        this.steps = steps;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
     @Embeddable
     public static class Ingredient {
         private String name;
         private String quantity;
 
+        // Constructor, getters, and setters...
         public Ingredient() {}
 
         public Ingredient(String name, String quantity) {
@@ -106,20 +71,32 @@ public class Recipe {
             this.quantity = quantity;
         }
 
-        public String getName() {
-            return name;
+        public String getName() { return name; }
+        public void setName(String name) { this.name = name; }
+
+        public String getQuantity() { return quantity; }
+        public void setQuantity(String quantity) { this.quantity = quantity; }
+    }
+
+    @Embeddable
+    public static class Step {
+        private String description;
+
+        @Lob
+        @Column(columnDefinition = "BLOB")
+        private byte[] photo; // LOB 방식으로 이미지 저장
+
+        public Step() {}
+
+        public Step(String description, byte[] photo) {
+            this.description = description;
+            this.photo = photo;
         }
 
-        public void setName(String name) {
-            this.name = name;
-        }
+        public String getDescription() { return description; }
+        public void setDescription(String description) { this.description = description; }
 
-        public String getQuantity() {
-            return quantity;
-        }
-
-        public void setQuantity(String quantity) {
-            this.quantity = quantity;
-        }
+        public byte[] getPhoto() { return photo; }
+        public void setPhoto(byte[] photo) { this.photo = photo; }
     }
 }

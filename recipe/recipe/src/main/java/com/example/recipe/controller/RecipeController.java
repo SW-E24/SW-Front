@@ -5,7 +5,6 @@ import com.example.recipe.entity.Recipe;
 import com.example.recipe.service.RecipeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -39,13 +38,13 @@ public class RecipeController {
     }
 
     @GetMapping("/{recipeId}")
-    public ResponseEntity<Recipe> getRecipeById(@PathVariable Long recipeId) { // Updated variable name
+    public ResponseEntity<Recipe> getRecipeById(@PathVariable Long recipeId) {
         Optional<Recipe> recipeOpt = recipeService.getRecipeById(recipeId);
         return recipeOpt.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{recipeId}")
-    public ResponseEntity<Recipe> updateRecipe(@PathVariable Long recipeId, @RequestBody RecipeRequest recipeRequest) { // Updated variable name
+    public ResponseEntity<Recipe> updateRecipe(@PathVariable Long recipeId, @RequestBody RecipeRequest recipeRequest) {
         try {
             Recipe recipe = recipeService.updateRecipe(recipeId, recipeRequest);
             return ResponseEntity.ok(recipe);
@@ -55,21 +54,11 @@ public class RecipeController {
     }
 
     @DeleteMapping("/{recipeId}")
-    public ResponseEntity<String> deleteRecipe(@PathVariable Long recipeId) { // Updated variable name
+    public ResponseEntity<String> deleteRecipe(@PathVariable Long recipeId) {
         Optional<Recipe> recipeOpt = recipeService.getRecipeById(recipeId);
         if (recipeOpt.isPresent()) {
             recipeService.deleteRecipe(recipeId);
             return ResponseEntity.ok("삭제 되었습니다");
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @DeleteMapping("/{recipeId}/confirm")
-    public ResponseEntity<String> confirmDeleteRecipe(@PathVariable Long recipeId) { // Updated variable name
-        Optional<Recipe> recipeOpt = recipeService.getRecipeById(recipeId);
-        if (recipeOpt.isPresent()) {
-            return ResponseEntity.ok("정말 삭제하시겠습니까?");
         } else {
             return ResponseEntity.notFound().build();
         }

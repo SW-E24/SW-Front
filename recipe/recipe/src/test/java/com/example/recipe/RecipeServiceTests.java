@@ -5,20 +5,19 @@ import com.example.recipe.entity.Recipe;
 import com.example.recipe.repository.RecipeRepository;
 import com.example.recipe.service.RecipeService;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@Transactional
-class RecipeServiceTests {
+public class RecipeServiceTests {
 
     @Autowired
     private RecipeService recipeService;
@@ -26,90 +25,145 @@ class RecipeServiceTests {
     @Autowired
     private RecipeRepository recipeRepository;
 
-    @Test
-    void testCreateRecipe() {
-        // Arrange
-        String title = "Delicious Recipe";
-        String category = "한식";
-        List<Recipe.Ingredient> ingredients = new ArrayList<>();
-        ingredients.add(new Recipe.Ingredient("소금", "1 작은술"));
-        ingredients.add(new Recipe.Ingredient("후추", "1/2 작은술"));
-        List<String> steps = new ArrayList<>();
-        steps.add("고기를 준비합니다.");
-        steps.add("소금과 후추로 간을 합니다.");
-        steps.add("오븐에서 굽습니다.");
-        String description = "맛있는 레시피";
-
-        // Act
-        Recipe createdRecipe = recipeService.createRecipe(title, category, ingredients, steps, description);
-
-        // Assert
-        assertNotNull(createdRecipe);
-        assertEquals(title, createdRecipe.getTitle());
-        assertEquals(category, createdRecipe.getCategory());
-        assertEquals(ingredients, createdRecipe.getIngredients());
-        assertEquals(steps, createdRecipe.getSteps());
-        assertEquals(description, createdRecipe.getDescription());
+    @BeforeEach
+    void setUp() {
+        recipeRepository.deleteAll();
     }
 
     @Test
-    void testSaveRecipe() {
-        // Arrange
-        Recipe recipe = new Recipe("Delicious Recipe", "한식", LocalDate.now(), new ArrayList<>(), new ArrayList<>(), "맛있는 레시피");
+    public void testCreateRecipe() {
+        // Given
+        Recipe.Ingredient ingredient = new Recipe.Ingredient("Sugar", "2 cups");
+        Recipe.Step step = new Recipe.Step("Mix ingredients", null);
 
-        // Act
-        Recipe savedRecipe = recipeService.saveRecipe(recipe);
+        RecipeRequest recipeRequest = new RecipeRequest(
+                "Test Recipe",
+                "양식",
+                Arrays.asList(ingredient),
+                Arrays.asList(step),
+                "Test Description"
+        );
 
-        // Assert
+        // When
+        Recipe savedRecipe = recipeService.createRecipe(
+                recipeRequest.getTitle(),
+                recipeRequest.getCategory(),
+                recipeRequest.getIngredients(),
+                recipeRequest.getSteps(),
+                recipeRequest.getDescription()
+        );
+
+        // Then
         assertNotNull(savedRecipe);
-        assertEquals(recipe, savedRecipe);
-    }
+        assertNotNull(savedRecipe.getRecipeId());
+        assertEquals("Test Recipe", savedRecipe.getTitle());
+        assertEquals("양식", savedRecipe.getCategory());
+        assertEquals(1, savedRecipe.getIngredients().size());
+        assertEquals(1, savedRecipe.getSteps().size());
+        assertEquals("Test Description", savedRecipe.getDescription());
 
-    @Test
-    void testGetRecipeById() {
-        // Arrange
-        Recipe recipe = new Recipe("Delicious Recipe", "한식", LocalDate.now(), new ArrayList<>(), new ArrayList<>(), "맛있는 레시피");
-        Recipe savedRecipe = recipeRepository.save(recipe);
-        Long recipeId = savedRecipe.getId();
-
-        // Act
-        Optional<Recipe> foundRecipe = recipeService.getRecipeById(recipeId);
-
-        // Assert
+        // Verify it was saved in the database
+        Optional<Recipe> foundRecipe = recipeRepository.findById(savedRecipe.getRecipeId());
         assertTrue(foundRecipe.isPresent());
-        assertEquals(recipe, foundRecipe.get());
+        assertEquals("Test Recipe", foundRecipe.get().getTitle());
     }
 
     @Test
-    void testUpdateRecipe() {
-        // Arrange
-        Recipe existingRecipe = new Recipe("Original Recipe", "한식", LocalDate.now(), new ArrayList<>(), new ArrayList<>(), "맛있는 레시피");
-        Recipe savedRecipe = recipeRepository.save(existingRecipe);
-        Long recipeId = savedRecipe.getId();
-        Recipe updatedRecipe = new Recipe("Updated Recipe", "중식", LocalDate.now(), new ArrayList<>(), new ArrayList<>(), "맛있는 중식 레시피");
+    public void testUpdateRecipe() {
+        // Given - Create initial recipe
+        Recipe.Ingredient initialIngredient = new Recipe.Ingredient("Flour", "1 cup");
+        Recipe.Step initialStep = new Recipe.Step("Initial step", null);
 
-        // Act
-        RecipeRequest recipeRequest = null;
-        Recipe result = recipeService.updateRecipe(recipeId, recipeRequest);
+        Recipe initialRecipe = new Recipe(
+                "Initial Recipe",
+                "양식",
+                LocalDateTime.now(),
+                Arrays.asList(initialIngredient),
+                Arrays.asList(initialStep),
+                "Initial Description"
+        );
 
-        // Assert
-        assertNotNull(result);
-        assertEquals(updatedRecipe.getTitle(), result.getTitle());
-        assertEquals(updatedRecipe.getCategory(), result.getCategory());
-        assertEquals(updatedRecipe.getDescription(), result.getDescription());
+        Recipe savedRecipe = recipeRepository.save(initialRecipe);
+
+        // Create update request
+        Recipe.Ingredient updatedIngredient = new Recipe.Ingredient("Sugar", "2 cups");
+        Recipe.Step updatedStep = new Recipe.Step("Updated step", null);
+
+        RecipeRequest updateRequest = new RecipeRequest(
+                "Updated Recipe",
+                "양식",
+                Arrays.asList(updatedIngredient),
+                Arrays.asList(updatedStep),
+                "Updated Description"
+        );
+
+        // When
+        Recipe updatedRecipe = recipeService.updateRecipe(savedRecipe.getRecipeId(), updateRequest);
+
+        // Then
+        assertNotNull(updatedRecipe);
+        assertEquals("Updated Recipe", updatedRecipe.getTitle());
+        assertEquals("Updated Description", updatedRecipe.getDescription());
+        assertEquals(1, updatedRecipe.getIngredients().size());
+        assertEquals("Sugar", updatedRecipe.getIngredients().get(0).getName());
+        assertEquals(1, updatedRecipe.getSteps().size());
+        assertEquals("Updated step", updatedRecipe.getSteps().get(0).getDescription());
     }
 
     @Test
-    void testDeleteRecipe() {
-        // Arrange
-        Long recipeId = 1L;
-        Recipe recipe = new Recipe("Delicious Recipe", "한식", LocalDate.now(), new ArrayList<>(), new ArrayList<>(), "맛있는 레시피");
-        recipeRepository.save(recipe);
+    public void testDeleteRecipe() {
+        Recipe recipe = new Recipe("Title", "양식", LocalDateTime.now(),
+                Arrays.asList(new Recipe.Ingredient("Salt", "1 tsp")),
+                Arrays.asList(new Recipe.Step("Add salt", null)),
+                "Description");
 
-        // Act
+        // Save the recipe and then delete it
+        Recipe savedRecipe = recipeRepository.save(recipe);
+        Long recipeId = savedRecipe.getRecipeId();
+
         recipeService.deleteRecipe(recipeId);
 
-        // Assert
-        assertTrue(recipeRepository.findById(recipeId).isEmpty());
+        Optional<Recipe> deletedRecipe = recipeRepository.findById(recipeId);
+        assertFalse(deletedRecipe.isPresent());
+    }
+
+    @Test
+    public void testGetRecipeById() {
+        Recipe recipe = new Recipe("Title", "양식", LocalDateTime.now(),
+                Arrays.asList(new Recipe.Ingredient("Sugar", "2 cups")),
+                Arrays.asList(new Recipe.Step("Step description", null)),
+                "Description");
+
+        // Save the recipe
+        Recipe savedRecipe = recipeRepository.save(recipe);
+        Long recipeId = savedRecipe.getRecipeId();
+
+        Optional<Recipe> foundRecipe = recipeService.getRecipeById(recipeId);
+
+        assertTrue(foundRecipe.isPresent());
+        assertEquals("Title", foundRecipe.get().getTitle());
+    }
+
+    @Test
+    public void testGetAllRecipes() {
+        Recipe recipe1 = new Recipe("Title 1", "한식", LocalDateTime.now(),
+                Arrays.asList(new Recipe.Ingredient("Rice", "1 bowl")),
+                Arrays.asList(new Recipe.Step("Cook rice", null)),
+                "Description 1");
+
+        Recipe recipe2 = new Recipe("Title 2", "양식", LocalDateTime.now(),
+                Arrays.asList(new Recipe.Ingredient("Pasta", "200g")),
+                Arrays.asList(new Recipe.Step("Boil pasta", null)),
+                "Description 2");
+
+        // Save both recipes
+        recipeRepository.save(recipe1);
+        recipeRepository.save(recipe2);
+
+        List<Recipe> allRecipes = recipeService.getAllRecipes();
+
+        assertEquals(2, allRecipes.size());
+        assertEquals("Title 1", allRecipes.get(0).getTitle());
+        assertEquals("Title 2", allRecipes.get(1).getTitle());
     }
 }

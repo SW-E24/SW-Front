@@ -1,34 +1,66 @@
-// com.example.recipe.dto.RecipeRequest.java
 package com.example.recipe.dto;
 
-import com.example.recipe.entity.Recipe.Ingredient;
-
+import com.example.recipe.entity.Recipe;
 import java.util.List;
 
 public class RecipeRequest {
-    private Long recipeId; // 추가된 필드
     private String title;
     private String category;
-    private List<Ingredient> ingredients;
-    private List<String> steps;
+    private List<Recipe.Ingredient> ingredients;
+    private List<Recipe.Step> steps;
     private String description;
 
-    // Getters and setters
-    public Long getRecipeId() { return recipeId; }
-    public void setRecipeId(Long recipeId) { this.recipeId = recipeId; }
+    // 기본 생성자
+    public RecipeRequest() {}
 
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
+    // 전체 필드 생성자
+    public RecipeRequest(String title, String category, List<Recipe.Ingredient> ingredients,
+                         List<Recipe.Step> steps, String description) {
+        this.title = title;
+        this.category = category;
+        this.ingredients = ingredients;
+        this.steps = steps;
+        this.description = description;
+    }
 
-    public String getCategory() { return category; }
-    public void setCategory(String category) { this.category = category; }
+    // Getter/Setter 메소드들
+    public String getTitle() {
+        return title;
+    }
 
-    public List<Ingredient> getIngredients() { return ingredients; }
-    public void setIngredients(List<Ingredient> ingredients) { this.ingredients = ingredients; }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-    public List<String> getSteps() { return steps; }
-    public void setSteps(List<String> steps) { this.steps = steps; }
+    public String getCategory() {
+        return category;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public List<Recipe.Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<Recipe.Ingredient> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public List<Recipe.Step> getSteps() {
+        return steps;
+    }
+
+    public void setSteps(List<Recipe.Step> steps) {
+        this.steps = steps;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

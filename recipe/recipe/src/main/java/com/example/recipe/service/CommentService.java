@@ -53,6 +53,7 @@ public class CommentService {
     }
 
     public List<Comment> getCommentsByRecipeId(Long recipeId) {
+        // 레시피 ID로 댓글 조회
         return commentRepository.findByRecipeId(recipeId);
     }
 }

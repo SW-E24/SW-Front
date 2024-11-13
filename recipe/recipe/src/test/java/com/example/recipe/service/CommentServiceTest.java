@@ -2,6 +2,7 @@ package com.example.recipe.service;
 
 import com.example.recipe.entity.Comment;
 import com.example.recipe.repository.CommentRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,6 +96,12 @@ class CommentServiceTest {
         assertThrows(IllegalArgumentException.class, () ->
                 commentService.deleteComment(savedComment.getId(), otherUserId)
         );
+    }
+
+    @BeforeEach
+    void setUp() {
+        // 각 테스트 전에 댓글 삭제
+        commentRepository.deleteAll();
     }
 
     @Test
