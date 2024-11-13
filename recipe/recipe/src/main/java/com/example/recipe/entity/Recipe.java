@@ -35,7 +35,6 @@ public class Recipe {
         this.steps = steps;
         this.description = description;
     }
-
     // Getters and setters...
     public Long getRecipeId() { return recipeId; }
     public void setRecipeId(Long recipeId) { this.recipeId = recipeId; }

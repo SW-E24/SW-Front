@@ -21,7 +21,7 @@ public class RecipeService {
         Recipe recipe = new Recipe(title, category, LocalDateTime.now(), ingredients, steps, description);
         return recipeRepository.save(recipe);
     }
-
+  
     public Recipe saveRecipe(Recipe recipe) {
         return recipeRepository.save(recipe);
     }

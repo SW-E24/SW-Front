@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 
 @Entity
 public class Comment {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     //기본키로 설정되고 자동 id값 생성
