@@ -21,7 +21,7 @@
          padding: 100px 0;
          font-size: 36px;
          font-weight: bold;
-         color: white;
+         color: #F1EFE9;
       }
 
       /* 메뉴바 스타일 */
@@ -45,7 +45,7 @@
       }
 
       .menu-bar ul li a {
-         color: black;
+         color: #F1EFE9;
          text-decoration: none;
          font-size: 18px;
       }
@@ -75,7 +75,7 @@
 
       .search-section button {
          padding: 10px;
-         background-color: #ffffff;
+         background-color: #F1EFE9;
          border: 2px solid #ccc;
          border-radius: 5px;
       }
@@ -113,14 +113,14 @@
 
       .board-section .board-left {
          flex: 1;
-         background-color: #f5f5f5;
+         background-color: #F1EFE9;
          padding: 20px;
          margin-right: 20px;
       }
 
       .board-section .board-right {
          flex: 3;
-         background-color: #ffffff;
+         background-color: #F1EFE9;
          padding: 20px;
          border-radius: 5px;
       }
@@ -166,7 +166,7 @@
       </ul>
 
       <!-- 오른쪽 메뉴 (로그인, 회원가입) -->
-      <ul>
+      <ul class="login_menu">
          <li><a href="login.html">로그인</a></li>
          <li><a href="register.html">회원가입</a></li>
       </ul>
@@ -174,43 +174,43 @@
 
    <!-- 검색창 및 콤보박스 -->
    <div class="container search-section">
-      <select class="custom-select">
+      <select id="category-select" class="custom-select">
          <option value="cooking">요리</option>
          <option value="ingredients">재료</option>
       </select>
-      <input type="text" class="form-control" placeholder="검색어를 입력하세요">
-      <button type="button" class="btn btn-outline-secondary">검색</button>
+      <input type="text" id="search-input" class="form-control" placeholder="검색어를 입력하세요">
+      <button type="button" class="btn btn-outline-secondary" onclick="redirectToSearch()">검색</button>
    </div>
 
    <!-- 음식 카테고리 -->
    <div class="container category-section">
       <div class="category-button">
          <a href="korean.html">
-            <img src="#" alt="한식" style="background-color: #ccc;">
+            <img src="images/korean.jpg" alt="한식">
             <h4>한식</h4>
          </a>
       </div>
       <div class="category-button">
          <a href="chinese.html">
-            <img src="#" alt="중식" style="background-color: #ccc;">
+            <img src="images/chinese.jpg" alt="중식">
             <h4>중식</h4>
          </a>
       </div>
       <div class="category-button">
          <a href="japanese.html">
-            <img src="#" alt="일식" style="background-color: #ccc;">
+            <img src="images/japanese.jpg" alt="일식">
             <h4>일식</h4>
          </a>
       </div>
       <div class="category-button">
          <a href="western.html">
-            <img src="#" alt="양식" style="background-color: #ccc;">
+            <img src="images/western.png" alt="양식">
             <h4>양식</h4>
          </a>
       </div>
       <div class="category-button">
          <a href="dessert.html">
-            <img src="#" alt="디저트" style="background-color: #ccc;">
+            <img src="images/dessert.jpg" alt="디저트">
             <h4>디저트</h4>
          </a>
       </div>
@@ -243,18 +243,23 @@
       window.onload = function() {
           const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
           if (isLoggedIn) {
-              document.querySelector('.login_menu ul').innerHTML = `
+              document.querySelector('.login_menu').innerHTML = `
                   <li><a href="#" onclick="logout()">로그아웃</a></li>
                   <li><a href="mypage.html">마이페이지</a></li>`;
           }
       };
-  
+
       function logout() {
           localStorage.setItem('loggedIn', 'false');
           window.location.reload();
       }
-  </script>
 
+      function redirectToSearch() {
+          const searchInput = document.getElementById('search-input').value;
+          const category = document.getElementById('category-select').value;
+          window.location.href = `search.html?query=${encodeURIComponent(searchInput)}&category=${category}`;
+      }
+   </script>
 </body>
 
 </html>
