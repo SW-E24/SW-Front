@@ -6,7 +6,7 @@ import com.example.recipe.entity.Recipe;
 import com.example.recipe.repository.BookmarkRepository;
 import com.example.recipe.ResourceNotFoundException;
 import com.example.recipe.repository.RecipeRepository;
-import com.example.recipe.repository.UserRepository;
+import com.example.recipe.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,14 +19,14 @@ public class BookmarkService {
     private BookmarkRepository bookmarkRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private MemberRepository memberRepository;
 
     @Autowired
     private RecipeRepository recipeRepository;
 
     public Bookmark addBookmark(Bookmark bookmark) {
         // 사용자와 레시피를 데이터베이스에서 조회
-        Member user = userRepository.findById(bookmark.getUser().getUserId())
+        Member user = memberRepository.findById(bookmark.getUser().getUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + bookmark.getUser().getUserId()));
 
         Recipe recipe = recipeRepository.findById(bookmark.getRecipe().getRecipeId())

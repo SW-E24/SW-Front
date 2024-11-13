@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>재료백과</title>
+    <meta name="keywords" content="재료백과, 블로그, 인기 게시글">
+    <meta name="description" content="재료백과 게시판 페이지">
+
+    <!-- 스타일시트 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="icon" href="images/fevicon.png" type="image/gif" />
+
+    <style>
+        /* 배너 스타일 */
+        .banner {
+            background-color: #a0d8a0;
+            text-align: center;
+            padding: 50px 0;
+            font-size: 36px;
+            font-weight: bold;
+            color: white;
+        }
+
+        /* 인기 게시물 블록 스타일 */
+        .popular-post {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 10px;
+        }
+
+        .popular-post img {
+            width: 80%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        /* 모든 게시물 리스트 스타일 */
+        .list-group {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .list-group-item {
+            border: none;
+            padding: 10px 0;
+            font-size: 18px;
+            list-style-type: none;
+        }
+
+        /* 하이퍼링크 스타일 */
+        a {
+            color: black;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: black;
+            text-decoration: underline;
+        }
+
+        /* 페이지네이션 버튼 스타일 */
+        .pagination-custom {
+            display: flex;
+            justify-content: center;
+            padding-top: 20px;
+        }
+
+        .pagination-custom .page-item {
+            margin: 0 5px;
+        }
+
+        .pagination-custom .page-link {
+            color: #66bb6a;
+            border: 1px solid #66bb6a;
+            padding: 8px 12px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .pagination-custom .page-link:hover {
+            background-color: #66bb6a;
+            color: #ffffff;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 배너 영역 -->
+    <div class="banner">
+        재료백과
+    </div>
+
+    <div class="container mt-5">
+        <!-- 인기 게시글 섹션 -->
+        <h2>인기 게시물</h2>
+        <div class="row text-center">
+            <div class="col-md-4">
+                <div class="popular-post">
+                    <img src="https://via.placeholder.com/150x100" alt="Post 1">
+                    <h3><a href="#">인기 게시글 1</a></h3>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="popular-post">
+                    <img src="https://via.placeholder.com/150x100" alt="Post 2">
+                    <h3><a href="#">인기 게시글 2</a></h3>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="popular-post">
+                    <img src="https://via.placeholder.com/150x100" alt="Post 3">
+                    <h3><a href="#">인기 게시글 3</a></h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- 모든 게시물 섹션 -->
+        <h2 class="mt-5">모든 게시물</h2>
+        <ul class="list-group">
+            <li class="list-group-item"><a href="#">게시물 1</a></li>
+            <li class="list-group-item"><a href="#">게시물 2</a></li>
+            <li class="list-group-item"><a href="#">게시물 3</a></li>
+            <li class="list-group-item"><a href="#">게시물 4</a></li>
+            <li class="list-group-item"><a href="#">게시물 5</a></li>
+            <li class="list-group-item"><a href="#">게시물 6</a></li>
+        </ul>
+
+        <!-- 페이지네이션 -->
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination-custom">
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">&laquo;</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">&lt;</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">&gt;</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">&raquo;</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Javascript files-->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>

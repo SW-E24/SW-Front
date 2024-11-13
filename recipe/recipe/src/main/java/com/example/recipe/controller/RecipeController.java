@@ -15,12 +15,6 @@ public class RecipeController {
     @Autowired
     private RecipeService recipeService;
 
-//    @PostMapping
-//    public ResponseEntity<Recipe> createRecipe(@RequestBody Recipe recipe) {
-//        Recipe newRecipe = recipeService.createRecipe(recipe);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(newRecipe);
-//    }
-
     @PostMapping("/create")
     public Recipe createRecipe(@RequestParam String title,
                                @RequestParam String category,
