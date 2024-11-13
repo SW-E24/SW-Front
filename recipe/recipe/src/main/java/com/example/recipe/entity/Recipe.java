@@ -2,7 +2,6 @@ package com.example.recipe.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -16,15 +15,12 @@ public class Recipe {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long recipeId;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Member user;
+
     @Column(length = 300, nullable = false)
     private String title;
-
-    @Column(columnDefinition = "TEXT")
-    private String description;
-
-    @ElementCollection
-    @CollectionTable(name = "recipe_ingredients", joinColumns = @JoinColumn(name = "recipe_id"))
-    private List<Ingredient> ingredients;
 
     @Column(nullable = false)
     private String category;
@@ -32,28 +28,48 @@ public class Recipe {
     @Column(nullable = false)
     private LocalDateTime date;
 
+    @ElementCollection
+    @CollectionTable(name = "recipe_ingredients", joinColumns = @JoinColumn(name = "recipe_id"))
+    private List<com.example.recipe.entity.Recipe.Ingredient> ingredients;
+
+    @ElementCollection
+    @CollectionTable(name = "recipe_steps", joinColumns = @JoinColumn(name = "recipe_id"))
+    private List<com.example.recipe.entity.Recipe.Step> steps;
+
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
     @Builder
-    public Recipe(Long recipeId, String title, String description, List<Ingredient> ingredients, String category, LocalDateTime date) {
+    public Recipe(Long recipeId, Member user, String title, String category, LocalDateTime date,
+                  List<com.example.recipe.entity.Recipe.Ingredient> ingredients, List<com.example.recipe.entity.Recipe.Step> steps, String description) {
         this.recipeId = recipeId;
+        this.user = user;
         this.title = title;
-        this.description = description;
-        this.ingredients = ingredients;
         this.category = category;
         this.date = date;
+        this.ingredients = ingredients;
+        this.steps = steps;
+        this.description = description;
     }
 
     @Embeddable
     @Getter
-    public static class Ingredient{
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Ingredient {
         private String name;
         private String quantity;
+    }
 
-        public Ingredient() {}
+    @Embeddable
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Step {
+        private String description;
 
-        @Builder
-        public Ingredient(String name, String quantity) {
-            this.name = name;
-            this.quantity = quantity;
-        }
+        @Lob
+        @Column(columnDefinition = "BLOB")
+        private byte[] photo; // LOB 방식으로 이미지 저장
     }
 }
