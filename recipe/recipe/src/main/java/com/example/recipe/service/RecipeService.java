@@ -1,6 +1,7 @@
 package com.example.recipe.service;
 
 import com.example.recipe.dto.RecipeRequest;
+import com.example.recipe.entity.Member;
 import com.example.recipe.entity.Recipe;
 import com.example.recipe.repository.RecipeRepository;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,10 @@ public class RecipeService {
         this.recipeRepository = recipeRepository;
     }
 
-    public Recipe createRecipe(String title, String category, List<Recipe.Ingredient> ingredients, List<Recipe.Step> steps, String description) {
+    // 현재 로그인한 사용자 정보를 받아서 사용하기 위해 수정
+    public Recipe createRecipe(Member user, String title, String category, List<Recipe.Ingredient> ingredients, List<Recipe.Step> steps, String description) {
         Recipe recipe = new Recipe(title, category, LocalDateTime.now(), ingredients, steps, description);
+        recipe.setUser(user);   // 작성자 설정
         return recipeRepository.save(recipe);
     }
   

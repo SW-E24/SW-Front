@@ -1,9 +1,10 @@
 package com.example.recipe.service;
-
 import com.example.recipe.controller.RecipeController;
 import com.example.recipe.dto.RecipeRequest;
+import com.example.recipe.entity.Member;
 import com.example.recipe.entity.Recipe;
 import com.example.recipe.service.RecipeService;
+import jakarta.servlet.http.HttpSession;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -11,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +28,12 @@ class RecipeControllerTest {
     @Mock
     private RecipeService recipeService;
 
+    @Mock
+    private GradeService gradeService;
+
+    @Mock
+    private HttpSession session;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -33,17 +41,39 @@ class RecipeControllerTest {
 
     @Test
     void createRecipe_ValidInput_ShouldReturnRecipe() {
+        // Given
         RecipeRequest request = new RecipeRequest("title", "한식", List.of(), List.of(), "description");
-        Recipe expectedRecipe = new Recipe("title", "한식", null, List.of(), List.of(), "description");
+        Member mockUser = new Member(); // 테스트용 Member 객체 생성
+        Recipe expectedRecipe = new Recipe("title", "한식", LocalDateTime.now(), List.of(), List.of(), "description");
 
-        when(recipeService.createRecipe(request.getTitle(), request.getCategory(), request.getIngredients(), request.getSteps(), request.getDescription()))
-                .thenReturn(expectedRecipe);
+        // 세션에서 currentUser로 설정된 사용자 객체 반환
+        when(session.getAttribute("currentUser")).thenReturn(mockUser);
 
-        Recipe actualRecipe = recipeController.createRecipe(request);
+        // RecipeService의 createRecipe 호출 시 mockUser와 요청 데이터를 사용하도록 설정
+        when(recipeService.createRecipe(
+                mockUser,
+                request.getTitle(),
+                request.getCategory(),
+                request.getIngredients(),
+                request.getSteps(),
+                request.getDescription()
+        )).thenReturn(expectedRecipe);
 
+        // When
+        Recipe actualRecipe = recipeController.createRecipe(request, session);
+
+        // Then
         assertEquals(expectedRecipe.getTitle(), actualRecipe.getTitle());
         assertEquals(expectedRecipe.getCategory(), actualRecipe.getCategory());
-        verify(recipeService, times(1)).createRecipe(request.getTitle(), request.getCategory(), request.getIngredients(), request.getSteps(), request.getDescription());
+        assertEquals(expectedRecipe.getUser(), actualRecipe.getUser()); // 작성자 정보도 일치하는지 확인
+        verify(recipeService, times(1)).createRecipe(
+                mockUser,
+                request.getTitle(),
+                request.getCategory(),
+                request.getIngredients(),
+                request.getSteps(),
+                request.getDescription()
+        );
     }
 
     @Test
@@ -109,14 +139,26 @@ class RecipeControllerTest {
     }
 
     @Test
-    void deleteRecipe_ExistingId_ShouldReturnSuccessMessage() {
-        when(recipeService.getRecipeById(1L)).thenReturn(Optional.of(new Recipe()));
+    void deleteRecipe_ExistingId_ShouldReturnSuccessMessageAndDecreasePostCount() {
+        Recipe recipe = new Recipe();
+        Member mockUser = new Member();
+        recipe.setUser(mockUser); // 레시피의 작성자를 설정
+
+        when(recipeService.getRecipeById(1L)).thenReturn(Optional.of(recipe));
+
+        // 게시글 수 감소 및 등급 업데이트 메서드 검증
+        doNothing().when(gradeService).decreasePostCount(mockUser.getUserId());
+        doNothing().when(gradeService).updateMemberGreade(mockUser.getUserId());
 
         ResponseEntity<String> response = recipeController.deleteRecipe(1L);
 
         assertTrue(response.getStatusCode().is2xxSuccessful());
         assertEquals("삭제 되었습니다", response.getBody());
+
+        // 게시글 삭제와 관련된 서비스 메서드 호출 횟수 검증
         verify(recipeService, times(1)).deleteRecipe(1L);
+        verify(gradeService, times(1)).decreasePostCount(mockUser.getUserId()); // 게시글 수 감소 확인
+        verify(gradeService, times(1)).updateMemberGreade(mockUser.getUserId()); // 등급 갱신 확인
     }
 
     @Test
