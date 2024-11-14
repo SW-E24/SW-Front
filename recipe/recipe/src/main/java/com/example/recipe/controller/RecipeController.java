@@ -64,6 +64,16 @@ public class RecipeController {
         }
     }
 
+    @DeleteMapping("/{recipeId}/confirm")
+    public ResponseEntity<String> confirmDeleteRecipe(@PathVariable Long recipeId) {
+        Optional<Recipe> recipeOpt = recipeService.getRecipeById(recipeId);
+        if (recipeOpt.isPresent()) {
+            return ResponseEntity.ok("정말 삭제하시겠습니까?");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Recipe>> getRecipesByUserId(@PathVariable String userId) { // 특정 사용자의 레시피 조회
         List<Recipe> recipes = recipeService.getRecipesByUserId(userId);
