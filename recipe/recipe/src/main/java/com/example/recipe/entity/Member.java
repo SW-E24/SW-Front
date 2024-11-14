@@ -8,11 +8,15 @@ public class Member {
     @Id
 
     // 속성 정의
-    @Column(name = "user_id")
+    @Column(name = "userid")
     private String userID;
+
     private String userPW;
+
     private String userName;
+
     private String userEmail;
+
     private String userPhone;
     @Lob
     private byte[] profileImage;

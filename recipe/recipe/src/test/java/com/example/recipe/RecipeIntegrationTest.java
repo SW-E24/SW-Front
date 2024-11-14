@@ -117,7 +117,7 @@ public class RecipeIntegrationTest {
                 "test image content".getBytes()
         );
 
-        mockMvc.perform(multipart("/api/users/{userId}/profile-picture", testUser.getUserID())
+        mockMvc.perform(multipart("/api/users/{userID}/profile-picture", testUser.getUserID())
                         .file(file))
                 .andExpect(status().isOk())
                 .andExpect(content().string("프로필 사진이 성공적으로 업데이트되었습니다."));
@@ -125,7 +125,7 @@ public class RecipeIntegrationTest {
 
     @Test
     void testGetUserInfo() throws Exception {
-        mockMvc.perform(get("/api/users/{userId}", testUser.getUserID()))
+        mockMvc.perform(get("/api/users/{userID}", testUser.getUserID()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.userId").value(testUser.getUserID()))
                 .andExpect(jsonPath("$.email").value(testUser.getUserEmail()))
@@ -138,7 +138,7 @@ public class RecipeIntegrationTest {
         updatedUser.setUserName("Updated Name");
         updatedUser.setUserEmail("updated@example.com");
 
-        mockMvc.perform(put("/api/users/{userId}", testUser.getUserID())
+        mockMvc.perform(put("/api/users/{userID}", testUser.getUserID())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updatedUser)))
                 .andExpect(status().isOk())
@@ -149,7 +149,7 @@ public class RecipeIntegrationTest {
     @Test
     void testAddLike() throws Exception {
         mockMvc.perform(post("/api/likes")
-                        .param("userId", testUser.getUserID())
+                        .param("userID", testUser.getUserID())
                         .param("recipeId", testRecipe.getRecipeId().toString()))
                 .andExpect(status().isCreated());
     }
@@ -161,7 +161,7 @@ public class RecipeIntegrationTest {
                 .thenReturn(Optional.of(testLike));
 
         mockMvc.perform(delete("/api/likes")
-                        .param("userId", testUser.getUserID())
+                        .param("userID", testUser.getUserID())
                         .param("recipeId", testRecipe.getRecipeId().toString()))
                 .andExpect(status().isNoContent());
     }
@@ -180,14 +180,14 @@ public class RecipeIntegrationTest {
                         testUser.getUserID(), testRecipe.getRecipeId()))
                 .thenReturn(Optional.of(testBookmark));
 
-        mockMvc.perform(delete("/api/bookmarks/{userId}/{recipeId}",
+        mockMvc.perform(delete("/api/bookmarks/{userID}/{recipeId}",
                         testUser.getUserID(), testRecipe.getRecipeId()))
                 .andExpect(status().isNoContent());
     }
 
     @Test
     void testGetUserRecipes() throws Exception {
-        mockMvc.perform(get("/api/recipes/user/{userId}", testUser.getUserID()))
+        mockMvc.perform(get("/api/recipes/user/{userID}", testUser.getUserID()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(1))))
                 .andExpect(jsonPath("$[0].title").value(testRecipe.getTitle()));
@@ -203,7 +203,7 @@ public class RecipeIntegrationTest {
 
     @Test
     void testGetUserBookmarks() throws Exception {
-        mockMvc.perform(get("/api/bookmarks/{userId}", testUser.getUserID()))
+        mockMvc.perform(get("/api/bookmarks/{userID}", testUser.getUserID()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(1))));
     }

@@ -12,7 +12,8 @@ import java.util.List;
 @Repository
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
-    Object findAllByUserUserID(String userID);
+//    Object findAllByUserUserID(String userID);
+    List<Recipe> findAllByUserUserID(String userID);
 
     // 검색 기능을 위한 메소드
     List<Recipe> findByTitleContaining(String keyword);
