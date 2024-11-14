@@ -44,11 +44,15 @@ public class RecipeService {
         return recipeRepository.findById(Long.valueOf(String.valueOf(recipeId)));
     }
 
+    public List<Recipe> getRecipesByUserId(String userId) { // 특정 사용자의 레시피만 가져오는 메서드
+        return recipeRepository.findAllByUserUserId(userId);
+    }
+
     public List<Recipe> getAllRecipes() {
         return recipeRepository.findAll();
     }
 
     public void deleteRecipe(Long recipeId) {
-        recipeRepository.deleteById(Long.valueOf(String.valueOf(recipeId)));
+        recipeRepository.deleteById(recipeId);
     }
 }

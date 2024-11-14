@@ -36,19 +36,19 @@ public class LikeService {
     }
 
     public void removeLike(String userID, Long recipeId) {
-        Like like = likeRepository.findByUserUserIDAndRecipeRecipeId(userID, recipeId)
+        Like like = likeRepository.findByUserUserIdAndRecipeRecipeId(userID, recipeId)
                 .orElseThrow(() -> new RuntimeException("Like not found"));
         likeRepository.delete(like);
     }
 
     public boolean checkLikeExists(String userID, Long recipeId) { //좋아요를 눌렀는지 확이하는 메소드
-        return likeRepository.existsByUserUserIDAndRecipeRecipeId(userID, recipeId);
+        return likeRepository.existsByUserUserIdAndRecipeRecipeId(userID, recipeId);
     }
 
     public List<Like> getLikesByUserId(String userId) {
         Member user = memberRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
         // 좋아요 엔티티에 사용자 필드가 있으므로 해당 사용자가 좋아요한 모든 레시피 가져오기
-        return likeRepository.findAllByUserUserID(userId);
+        return likeRepository.findAllByUserUserId(userId);
     }
 }

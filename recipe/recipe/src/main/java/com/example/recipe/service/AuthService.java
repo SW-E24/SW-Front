@@ -16,14 +16,14 @@ public class AuthService {
 
     // 회원가입 로직에 쓰일 중복 체크
     public boolean isDuplicateUser(String userID) {
-        return memberRepository.existsByUserID(userID);
+        return memberRepository.existsByUserId(userID);
     }
 
     public boolean isDuplicateEmail(String userEmail) {
-        return memberRepository.existsByUserEmail(userEmail);
+        return memberRepository.existsByEmail(userEmail);
     }
 
     public boolean isDuplicatePhone(String userPhone) {
-        return memberRepository.existsByUserPhone(userPhone);
+        return memberRepository.existsByPhone(userPhone);
     }
 }

@@ -63,4 +63,10 @@ public class RecipeController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Recipe>> getRecipesByUserId(@PathVariable String userId) { // 특정 사용자의 레시피 조회
+        List<Recipe> recipes = recipeService.getRecipesByUserId(userId);
+        return ResponseEntity.ok(recipes);
+        }
 }
