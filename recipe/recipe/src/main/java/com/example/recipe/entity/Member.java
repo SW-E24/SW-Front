@@ -1,9 +1,5 @@
 package com.example.recipe.entity;
 
-/*
-* 회원 관리
-* - 필요한 속성 : 아이디, 비밀번호, 이름, 이메일, 전화번호, 등급 */
-
 import jakarta.persistence.*;
 
 @Entity
@@ -12,11 +8,14 @@ public class Member {
     @Id
 
     // 속성 정의
+    @Column(name = "user_id")
     private String userID;
     private String userPW;
     private String userName;
     private String userEmail;
     private String userPhone;
+    @Lob
+    private byte[] profileImage;
 
     // 생성자
     public Member(){}
@@ -67,5 +66,13 @@ public class Member {
 
     public void setUserPhone(String userPhone) {
         this.userPhone = userPhone;
+    }
+
+    public byte[] getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(byte[] profileImage) {
+        this.profileImage = profileImage;
     }
 }

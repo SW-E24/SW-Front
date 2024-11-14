@@ -49,4 +49,5 @@ public class Grade {
     public void setCommentCount(int commentCount) {
         this.commentCount = commentCount;
     }
+
 }
