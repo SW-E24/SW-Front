@@ -1,7 +1,6 @@
 package com.example.recipe.service;
 
 import com.example.recipe.entity.Grade;
-import com.example.recipe.entity.GradeType;
 import com.example.recipe.entity.Member;
 import com.example.recipe.repository.MemberRepository;
 import com.example.recipe.ResourceNotFoundException;
@@ -49,8 +48,8 @@ public class MemberService {
     public Member updateUser(String userId, Member updatedUser) { //유저 정보 업데이트 메소드
         Member user = getUserById(userId);
         user.setUserName(updatedUser.getUserName());
-        user.setUserEmail(updatedUser.getUserEmail());
-        user.setUserPhone(updatedUser.getUserPhone());
+        user.setEmail(updatedUser.getEmail());
+        user.setPhone(updatedUser.getPhone());
         return memberRepository.save(user);
     }
 

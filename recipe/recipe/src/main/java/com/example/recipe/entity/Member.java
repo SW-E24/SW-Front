@@ -9,43 +9,43 @@ public class Member {
 
     // 속성 정의
     @Column(name = "userid")
-    private String userID;
+    private String userId;
 
-    private String userPW;
+    private String password;
 
     private String userName;
 
-    private String userEmail;
+    private String email;
 
-    private String userPhone;
+    private String phone;
     @Lob
     private byte[] profileImage;
 
     // 생성자
     public Member(){}
     public Member(String id, String password, String name, String email, String phone) {
-        this.userID = id;
-        this.userPW = password;
+        this.userId = id;
+        this.password = password;
         this.userName = name;
-        this.userEmail = email;
-        this.userPhone = phone;
+        this.email = email;
+        this.phone = phone;
     }
 
     //Getter and Setter
-    public String getUserID() {
-        return userID;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUserID(String userID) {
-        this.userID = userID;
+    public void setUserId(String userID) {
+        this.userId = userID;
     }
 
-    public String getUserPW() {
-        return userPW;
+    public String getPassword() {
+        return password;
     }
 
-    public void setUserPW(String userPW) {
-        this.userPW = userPW;
+    public void setPassword(String userPW) {
+        this.password = userPW;
     }
 
     public String getUserName() {
@@ -56,20 +56,20 @@ public class Member {
         this.userName = userName;
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setEmail(String userEmail) {
+        this.email = userEmail;
     }
 
-    public String getUserPhone() {
-        return userPhone;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setUserPhone(String userPhone) {
-        this.userPhone = userPhone;
+    public void setPhone(String userPhone) {
+        this.phone = userPhone;
     }
 
     public byte[] getProfileImage() {

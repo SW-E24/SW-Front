@@ -61,11 +61,11 @@ public class RecipeIntegrationTest {
     @BeforeEach
     void setUp() {
         testUser = new Member();
-        testUser.setUserID("testUser123");
-        testUser.setUserEmail("test@example.com");
+        testUser.setUserId("testUser123");
+        testUser.setEmail("test@example.com");
         testUser.setUserName("Test User");
-        testUser.setUserPW("password123");
-        testUser.setUserPhone("01012341234");
+        testUser.setPassword("password123");
+        testUser.setPhone("01012341234");
         //testUser.setUserGrade(new Grade("testUser123", GradeType.ONE, 10, 5));
 
         testRecipe = new Recipe();
@@ -85,7 +85,7 @@ public class RecipeIntegrationTest {
         testBookmark.setDate(LocalDateTime.now());
 
         testComment = new Comment();
-        testComment.setUserId(testUser.getUserID());
+        testComment.setUserId(testUser.getUserId());
         testComment.setRecipeId(testRecipe.getRecipeId());
         testComment.setContent("Test Comment");
 
@@ -97,15 +97,15 @@ public class RecipeIntegrationTest {
     }
 
     private void setupMockRepositories() {
-        Mockito.when(memberRepository.findById(testUser.getUserID())).thenReturn(Optional.of(testUser));
+        Mockito.when(memberRepository.findById(testUser.getUserId())).thenReturn(Optional.of(testUser));
         Mockito.when(recipeRepository.findById(testRecipe.getRecipeId())).thenReturn(Optional.of(testRecipe));
         Mockito.when(likeRepository.save(any(Like.class))).thenReturn(testLike);
         Mockito.when(bookmarkRepository.save(any(Bookmark.class))).thenReturn(testBookmark);
         Mockito.when(viewRepository.save(any(View.class))).thenReturn(testView);
         Mockito.when(memberRepository.save(any(Member.class))).thenReturn(testUser);
-        Mockito.when(recipeRepository.findAllByUserUserID(testUser.getUserID())).thenReturn(Arrays.asList(testRecipe));
-        Mockito.when(commentRepository.findAllByUserId(testUser.getUserID())).thenReturn(Arrays.asList(testComment));
-        Mockito.when(bookmarkRepository.findAllByUserUserID(testUser.getUserID())).thenReturn(Arrays.asList(testBookmark));
+        Mockito.when(recipeRepository.findAllByUserUserId(testUser.getUserId())).thenReturn(Arrays.asList(testRecipe));
+        Mockito.when(commentRepository.findAllByUserId(testUser.getUserId())).thenReturn(Arrays.asList(testComment));
+        Mockito.when(bookmarkRepository.findAllByUserUserId(testUser.getUserId())).thenReturn(Arrays.asList(testBookmark));
     }
 
     @Test
@@ -117,7 +117,7 @@ public class RecipeIntegrationTest {
                 "test image content".getBytes()
         );
 
-        mockMvc.perform(multipart("/api/users/{userID}/profile-picture", testUser.getUserID())
+        mockMvc.perform(multipart("/api/users/{userId}/profile-picture", testUser.getUserId())
                         .file(file))
                 .andExpect(status().isOk())
                 .andExpect(content().string("프로필 사진이 성공적으로 업데이트되었습니다."));
@@ -125,10 +125,10 @@ public class RecipeIntegrationTest {
 
     @Test
     void testGetUserInfo() throws Exception {
-        mockMvc.perform(get("/api/users/{userID}", testUser.getUserID()))
+        mockMvc.perform(get("/api/users/{userId}", testUser.getUserId()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.userId").value(testUser.getUserID()))
-                .andExpect(jsonPath("$.email").value(testUser.getUserEmail()))
+                .andExpect(jsonPath("$.userId").value(testUser.getUserId()))
+                .andExpect(jsonPath("$.email").value(testUser.getEmail()))
                 .andExpect(jsonPath("$.userName").value(testUser.getUserName()));
     }
 
@@ -136,9 +136,9 @@ public class RecipeIntegrationTest {
     void testUpdateUserInfo() throws Exception {
         Member updatedUser = new Member();
         updatedUser.setUserName("Updated Name");
-        updatedUser.setUserEmail("updated@example.com");
+        updatedUser.setEmail("updated@example.com");
 
-        mockMvc.perform(put("/api/users/{userID}", testUser.getUserID())
+        mockMvc.perform(put("/api/users/{userId}", testUser.getUserId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updatedUser)))
                 .andExpect(status().isOk())
@@ -149,19 +149,19 @@ public class RecipeIntegrationTest {
     @Test
     void testAddLike() throws Exception {
         mockMvc.perform(post("/api/likes")
-                        .param("userID", testUser.getUserID())
+                        .param("userId", testUser.getUserId())
                         .param("recipeId", testRecipe.getRecipeId().toString()))
                 .andExpect(status().isCreated());
     }
 
     @Test
     void testRemoveLike() throws Exception {
-        Mockito.when(likeRepository.findByUserUserIDAndRecipeRecipeId(
-                        testUser.getUserID(), testRecipe.getRecipeId()))
+        Mockito.when(likeRepository.findByUserUserIdAndRecipeRecipeId(
+                        testUser.getUserId(), testRecipe.getRecipeId()))
                 .thenReturn(Optional.of(testLike));
 
         mockMvc.perform(delete("/api/likes")
-                        .param("userID", testUser.getUserID())
+                        .param("userId", testUser.getUserId())
                         .param("recipeId", testRecipe.getRecipeId().toString()))
                 .andExpect(status().isNoContent());
     }
@@ -176,18 +176,18 @@ public class RecipeIntegrationTest {
 
     @Test
     void testRemoveBookmark() throws Exception {
-        Mockito.when(bookmarkRepository.findByUserUserIDAndRecipeRecipeId(
-                        testUser.getUserID(), testRecipe.getRecipeId()))
+        Mockito.when(bookmarkRepository.findByUserUserIdAndRecipeRecipeId(
+                        testUser.getUserId(), testRecipe.getRecipeId()))
                 .thenReturn(Optional.of(testBookmark));
 
         mockMvc.perform(delete("/api/bookmarks/{userID}/{recipeId}",
-                        testUser.getUserID(), testRecipe.getRecipeId()))
+                        testUser.getUserId(), testRecipe.getRecipeId()))
                 .andExpect(status().isNoContent());
     }
 
     @Test
     void testGetUserRecipes() throws Exception {
-        mockMvc.perform(get("/api/recipes/user/{userID}", testUser.getUserID()))
+        mockMvc.perform(get("/api/recipes/user/{userId}", testUser.getUserId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(1))))
                 .andExpect(jsonPath("$[0].title").value(testRecipe.getTitle()));
@@ -195,7 +195,7 @@ public class RecipeIntegrationTest {
 
     @Test
     void testGetUserComments() throws Exception {
-        mockMvc.perform(get("/api/comments/user/{userID}", testUser.getUserID()))
+        mockMvc.perform(get("/api/comments/user/{userId}", testUser.getUserId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(1))))
                 .andExpect(jsonPath("$[0].content").value(testComment.getContent()));
@@ -203,7 +203,7 @@ public class RecipeIntegrationTest {
 
     @Test
     void testGetUserBookmarks() throws Exception {
-        mockMvc.perform(get("/api/bookmarks/{userID}", testUser.getUserID()))
+        mockMvc.perform(get("/api/bookmarks/{userId}", testUser.getUserId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(1))));
     }
@@ -222,7 +222,7 @@ public class RecipeIntegrationTest {
 //    void testGetUserLevel() throws Exception {
 //        mockMvc.perform(get("/api/users/{userId}/grade", testUser.getUserId()))
 //                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.userID").value(testUser.getGrade().getUserID()))
+//                .andExpect(jsonPath("$.userID").value(testUser.getGrade().getUserId()))
 //                .andExpect(jsonPath("$.grade").value(testUser.getGrade().getGrade().toString()))
 //                .andExpect(jsonPath("$.postCount").value(testUser.getGrade().getPostCount()))
 //                .andExpect(jsonPath("$.commentCount").value(testUser.getGrade().getCommentCount()));
@@ -230,10 +230,10 @@ public class RecipeIntegrationTest {
 
     @Test
     void testGetMyPageInfo() throws Exception {
-        mockMvc.perform(get("/api/users/{userID}/mypage", testUser.getUserID()))
+        mockMvc.perform(get("/api/users/{userID}/mypage", testUser.getUserId()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.userId").value(testUser.getUserID()))
+                .andExpect(jsonPath("$.userId").value(testUser.getUserId()))
                 .andExpect(jsonPath("$.userName").value(testUser.getUserName()))
-                .andExpect(jsonPath("$.email").value(testUser.getUserEmail()));
+                .andExpect(jsonPath("$.email").value(testUser.getEmail()));
     }
 }

@@ -45,7 +45,7 @@ public class RecipeService {
     }
 
     public List<Recipe> getRecipesByUserID(String userID) { // 특정 사용자의 레시피만 가져오는 메서드
-        return recipeRepository.findAllByUserUserID(userID);
+        return recipeRepository.findAllByUserUserId(userID);
     }
 
     public List<Recipe> getAllRecipes() {

@@ -66,28 +66,28 @@ public class AuthController {
     public ResponseEntity<String> register(@RequestBody Member newMember, @RequestParam String confirmuserPW,RedirectAttributes redirectAttributes) {
 
         //중복 아이디 확인
-        if (authService.isDuplicateUser(newMember.getUserID())) {
+        if (authService.isDuplicateUser(newMember.getUserId())) {
             return ResponseEntity.badRequest().body("이미 사용 중인 아이디입니다.");
         }
         // 이메일 중복 확인
-        if (authService.isDuplicateEmail(newMember.getUserEmail())) {
+        if (authService.isDuplicateEmail(newMember.getEmail())) {
             return ResponseEntity.badRequest().body("이미 사용 중인 이메일입니다.");
         }
         // 전화번호 중복 확인
-        if (authService.isDuplicatePhone(newMember.getUserPhone())) {
+        if (authService.isDuplicatePhone(newMember.getPhone())) {
             return ResponseEntity.badRequest().body("이미 사용 중인 전화번호입니다.");
         }
 
 
         // 비밀번호 확인
-        if (!newMember.getUserPW().equals(confirmuserPW)) {
+        if (!newMember.getPassword().equals(confirmuserPW)) {
             return ResponseEntity.badRequest().body("비밀번호가 일치하지 않습니다.");
         }
 
         // 폼에 입력된 정보로 멤버 객체 저장
         memberService.saveMember(newMember);
         // 등급은 BASIC 으로 시작
-        Grade newGrade = new Grade(newMember.getUserID(), GradeType.BASIC, 0, 0);
+        Grade newGrade = new Grade(newMember.getUserId(), GradeType.BASIC, 0, 0);
         gradeService.saveGrade(newGrade);
 
         return ResponseEntity.ok("회원가입 성공! 로그인 화면으로 이동합니다.");
@@ -98,10 +98,10 @@ public class AuthController {
      * 로그인 로직 처리
      * ******************/
     @PostMapping("/login")
-    public String login(@RequestParam String userID, @RequestParam String userPW, HttpSession session, RedirectAttributes redirectAttributes) {
-        Member member = memberRepository.findById(userID).orElseThrow(() -> new RuntimeException("아이디가 존재하지 않습니다."));
+    public String login(@RequestParam String userId, @RequestParam String password, HttpSession session, RedirectAttributes redirectAttributes) {
+        Member member = memberRepository.findById(userId).orElseThrow(() -> new RuntimeException("아이디가 존재하지 않습니다."));
 
-        if (member.getUserPW().equals(userPW)) {
+        if (member.getPassword().equals(password)) {
             session.setAttribute("currentUser", member); // 세션에 사용자 정보 저장
             return "redirect:/mypage"; // 로그인 성공 시 mypage 페이지로 이동
         } else {

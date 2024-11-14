@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -13,7 +12,7 @@ import java.util.List;
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
 //    Object findAllByUserUserID(String userID);
-    List<Recipe> findAllByUserUserID(String userID);
+    List<Recipe> findAllByUserUserId(String userId);
 
     // 검색 기능을 위한 메소드
     List<Recipe> findByTitleContaining(String keyword);
