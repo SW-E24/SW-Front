@@ -8,12 +8,41 @@
     <style>
         /* 배너 스타일 */
         .banner {
-            background-color: #a0d8a0;
+            background-color: #ffe69b;
             text-align: center;
             padding: 100px 0;
             font-size: 36px;
             font-weight: bold;
             color: white;
+        }
+        /* 메뉴바 스타일 */
+        .menu-bar {
+            background-color: #ffe69b;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .menu-bar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .menu-bar ul li {
+            padding: 0 15px;
+        }
+
+        .menu-bar ul li a {
+            color: #000000;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .menu-bar ul li a:hover {
+            text-decoration: underline;
         }
 
         /* 로그인 컨테이너 스타일 */
@@ -91,6 +120,12 @@
 </head>
 <body>
     <div class="banner">재료백과</div>
+
+    <div class="menu-bar">
+        <ul>
+            <li><a href="index.html">홈</a></li>
+        </ul>
+    </div>
 
     <div class="login-container">
         <h2>로그인</h2>
