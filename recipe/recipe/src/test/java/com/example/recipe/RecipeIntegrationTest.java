@@ -50,6 +50,8 @@ public class RecipeIntegrationTest {
     private BookmarkRepository bookmarkRepository;
     @MockBean
     private CommentRepository commentRepository;
+    @MockBean
+    private GradeRepository gradeRepository;
 
     private Member testUser;
     private Recipe testRecipe;
@@ -195,6 +197,9 @@ public class RecipeIntegrationTest {
 
     @Test
     void testGetUserComments() throws Exception {
+        Mockito.when(commentRepository.findAllByUserId(testUser.getUserId()))
+                .thenReturn(Arrays.asList(testComment));
+
         mockMvc.perform(get("/api/comments/user/{userId}", testUser.getUserId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(greaterThanOrEqualTo(1))))
@@ -218,15 +223,18 @@ public class RecipeIntegrationTest {
                 .andExpect(content().string("조회수가 증가했습니다."));
     }
 
-//    @Test
-//    void testGetUserLevel() throws Exception {
-//        mockMvc.perform(get("/api/users/{userId}/grade", testUser.getUserId()))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.userID").value(testUser.getGrade().getUserId()))
-//                .andExpect(jsonPath("$.grade").value(testUser.getGrade().getGrade().toString()))
-//                .andExpect(jsonPath("$.postCount").value(testUser.getGrade().getPostCount()))
-//                .andExpect(jsonPath("$.commentCount").value(testUser.getGrade().getCommentCount()));
-//    }
+    @Test
+    void testGetUserLevel() throws Exception {
+        Grade testGrade = new Grade(testUser.getUserId(), GradeType.ONE, 10, 5);
+        Mockito.when(gradeRepository.findByUserID(testUser.getUserId())).thenReturn(Optional.of(testGrade));
+
+        mockMvc.perform(get("/api/users/{userId}/grade", testUser.getUserId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.userID").value(testGrade.getUserID()))
+                .andExpect(jsonPath("$.grade").value(testGrade.getGrade().toString()))
+                .andExpect(jsonPath("$.postCount").value(testGrade.getPostCount()))
+                .andExpect(jsonPath("$.commentCount").value(testGrade.getCommentCount()));
+    }
 
     @Test
     void testGetMyPageInfo() throws Exception {

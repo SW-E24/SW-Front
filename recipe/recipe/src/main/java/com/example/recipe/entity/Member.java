@@ -79,4 +79,5 @@ public class Member {
     public void setProfileImage(byte[] profileImage) {
         this.profileImage = profileImage;
     }
+
 }
