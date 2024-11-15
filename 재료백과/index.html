@@ -2,7 +2,6 @@
 <html lang="ko">
 
 <head>
-   <!-- 기본 메타 태그 및 스타일 설정 -->
    <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <title>재료백과</title>
@@ -14,7 +13,6 @@
 
    <!-- 사용자 정의 스타일시트 -->
    <style>
-      /* 배너 스타일 */
       .banner {
          background-color: #ffe69b;
          text-align: center;
@@ -24,7 +22,6 @@
          color: #F1EFE9;
       }
 
-      /* 메뉴바 스타일 */
       .menu-bar {
          background-color: #ffe69b;
          padding: 10px 0;
@@ -54,7 +51,6 @@
          text-decoration: underline;
       }
 
-      /* 검색창 스타일 */
       .search-section {
          display: flex;
          justify-content: space-between;
@@ -80,7 +76,6 @@
          border-radius: 5px;
       }
 
-      /* 음식 카테고리 버튼 스타일 */
       .category-section {
          display: flex;
          justify-content: space-around;
@@ -105,7 +100,6 @@
          margin: 0;
       }
 
-      /* 게시판 스타일 */
       .board-section {
          display: flex;
          margin-top: 20px;
@@ -158,10 +152,8 @@
          text-decoration: underline;
       }
 
-      /* 팝업 배경 */
       .popup {
          display: none;
-         /* 기본적으로 팝업은 숨김 */
          position: fixed;
          top: 0;
          left: 0;
@@ -171,7 +163,6 @@
          z-index: 9999;
       }
 
-      /* 팝업 콘텐츠 */
       .popup-content {
          position: absolute;
          top: 50%;
@@ -186,7 +177,6 @@
          text-align: center;
       }
 
-      /* 룰렛 컨테이너 */
       .roulette-container {
          position: relative;
          display: flex;
@@ -194,45 +184,30 @@
          align-items: center;
       }
 
-      /* 화살표 스타일 */
       .arrow {
          width: 0;
          height: 0;
          border-left: 15px solid transparent;
          border-right: 15px solid transparent;
          border-top: 20px solid black;
-         /* 화살표 색상 */
          position: absolute;
          top: -10px;
-         /* 팝업 중앙에서 약간 위로 */
          left: 50%;
          transform: translateX(-50%);
          z-index: 1000;
-         /* 다른 요소보다 위에 표시 */
       }
 
-      /* 룰렛 */
       #roulette {
          width: 300px;
          height: 300px;
          border-radius: 50%;
          border: 5px solid #666;
          position: relative;
-         background: conic-gradient(#FFB3B3 0% 12.5%,
-         #FFEC99 12.5% 25%,
-         #B2FF99 25% 37.5%,
-         #99DFFF 37.5% 50%,
-         #D1B3FF 50% 62.5%,
-         #FFC0CB 62.5% 75%,
-         #ADD8E6 75% 87.5%,
-         #FFE4B5 87.5% 100%);
+         background: conic-gradient(#FFB3B3 0% 12.5%, #FFEC99 12.5% 25%, #B2FF99 25% 37.5%, #99DFFF 37.5% 50%, #D1B3FF 50% 62.5%, #FFC0CB 62.5% 75%, #ADD8E6 75% 87.5%, #FFE4B5 87.5% 100%);
          margin-bottom: 20px;
          transition: transform 3s cubic-bezier(0.25, 0.1, 0.25, 1);
       }
 
-
-
-      /* 각 칸 텍스트 스타일 */
       .roulette-text {
          position: absolute;
          width: 50%;
@@ -245,40 +220,15 @@
          text-align: center;
       }
 
-      /* 텍스트를 각 칸 안에 배치 */
-      .roulette-text:nth-child(1) {
-         transform: rotate(0deg) translate(0, -50%) rotate(22.5deg);
-      }
+      .roulette-text:nth-child(1) { transform: rotate(0deg) translate(0, -50%) rotate(22.5deg); }
+      .roulette-text:nth-child(2) { transform: rotate(45deg) translate(0, -50%) rotate(22.5deg); }
+      .roulette-text:nth-child(3) { transform: rotate(90deg) translate(0, -50%) rotate(22.5deg); }
+      .roulette-text:nth-child(4) { transform: rotate(135deg) translate(0, -50%) rotate(22.5deg); }
+      .roulette-text:nth-child(5) { transform: rotate(180deg) translate(0, -50%) rotate(22.5deg); }
+      .roulette-text:nth-child(6) { transform: rotate(225deg) translate(0, -50%) rotate(22.5deg); }
+      .roulette-text:nth-child(7) { transform: rotate(270deg) translate(0, -50%) rotate(22.5deg); }
+      .roulette-text:nth-child(8) { transform: rotate(315deg) translate(0, -50%) rotate(22.5deg); }
 
-      .roulette-text:nth-child(2) {
-         transform: rotate(45deg) translate(0, -50%) rotate(22.5deg);
-      }
-
-      .roulette-text:nth-child(3) {
-         transform: rotate(90deg) translate(0, -50%) rotate(22.5deg);
-      }
-
-      .roulette-text:nth-child(4) {
-         transform: rotate(135deg) translate(0, -50%) rotate(22.5deg);
-      }
-
-      .roulette-text:nth-child(5) {
-         transform: rotate(180deg) translate(0, -50%) rotate(22.5deg);
-      }
-
-      .roulette-text:nth-child(6) {
-         transform: rotate(225deg) translate(0, -50%) rotate(22.5deg);
-      }
-
-      .roulette-text:nth-child(7) {
-         transform: rotate(270deg) translate(0, -50%) rotate(22.5deg);
-      }
-
-      .roulette-text:nth-child(8) {
-         transform: rotate(315deg) translate(0, -50%) rotate(22.5deg);
-      }
-
-      /* 룰렛 버튼 */
       #spinButton {
          padding: 10px 20px;
          background-color: #a0d8a0;
@@ -293,7 +243,6 @@
          background-color: #88c588;
       }
 
-      /* 닫기 버튼 스타일 */
       .close {
          position: absolute;
          top: 10px;
@@ -306,12 +255,8 @@
 </head>
 
 <body>
-<!-- 배너 영역 -->
-<div class="banner">
-   재료백과
-</div>
+<div class="banner">재료백과</div>
 
-<!-- 메뉴바 영역 -->
 <div class="menu-bar">
    <ul>
       <li><a href="index.html">홈</a></li>
@@ -323,7 +268,6 @@
    </ul>
 </div>
 
-<!-- 검색창 및 콤보박스 -->
 <div class="container search-section">
    <select id="category-select" class="custom-select">
       <option value="cooking">요리</option>
@@ -333,56 +277,24 @@
    <button type="button" class="btn btn-outline-secondary" onclick="redirectToSearch()">검색</button>
 </div>
 
-<!-- 음식 카테고리 -->
 <div class="container category-section">
-   <div class="category-button">
-      <a href="korean.html">
-         <img src="images/korean.jpg" alt="한식">
-         <h4>한식</h4>
-      </a>
-   </div>
-   <div class="category-button">
-      <a href="chinese.html">
-         <img src="images/chinese.jpg" alt="중식">
-         <h4>중식</h4>
-      </a>
-   </div>
-   <div class="category-button">
-      <a href="japanese.html">
-         <img src="images/japanese.jpg" alt="일식">
-         <h4>일식</h4>
-      </a>
-   </div>
-   <div class="category-button">
-      <a href="western.html">
-         <img src="images/western.png" alt="양식">
-         <h4>양식</h4>
-      </a>
-   </div>
-   <div class="category-button">
-      <a href="dessert.html">
-         <img src="images/dessert.jpg" alt="디저트">
-         <h4>디저트</h4>
-      </a>
-   </div>
+   <div class="category-button"><a href="korean.html"><img src="images/korean.jpg" alt="한식"><h4>한식</h4></a></div>
+   <div class="category-button"><a href="chinese.html"><img src="images/chinese.jpg" alt="중식"><h4>중식</h4></a></div>
+   <div class="category-button"><a href="japanese.html"><img src="images/japanese.jpg" alt="일식"><h4>일식</h4></a></div>
+   <div class="category-button"><a href="western.html"><img src="images/western.png" alt="양식"><h4>양식</h4></a></div>
+   <div class="category-button"><a href="dessert.html"><img src="images/dessert.jpg" alt="디저트"><h4>디저트</h4></a></div>
 </div>
 
-<!-- 게시판 영역 -->
 <div class="container board-section">
-   <!-- 왼쪽 이미지 클릭 시 팝업 -->
    <div class="board-left">
       <img src="images/roulette.jpg" alt="룰렛" onclick="openPopup()" style="cursor: pointer;">
    </div>
 
-   <!-- 팝업창 -->
    <div id="popup" class="popup">
       <div class="popup-content">
          <span class="close" onclick="closePopup()">&times;</span>
          <div class="roulette-container">
-            <!-- 화살표 추가 -->
             <div class="arrow"></div>
-
-            <!-- 룰렛 -->
             <div id="roulette">
                <div class="roulette-text">메뉴1</div>
                <div class="roulette-text">메뉴2</div>
@@ -393,13 +305,11 @@
                <div class="roulette-text">메뉴7</div>
                <div class="roulette-text">메뉴8</div>
             </div>
-
             <button id="spinButton" onclick="spinRoulette()">룰렛 돌리기</button>
          </div>
       </div>
    </div>
 
-   <!-- 오른쪽 3/4 게시판 글 목록 -->
    <div class="board-right">
       <h3>게시판</h3>
       <ul>
@@ -412,7 +322,6 @@
    </div>
 </div>
 
-<!-- Javascript 파일들 -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -446,73 +355,48 @@
       document.getElementById('popup').style.display = 'none';
    }
 
-   function spinRoulette() {
-      const roulette = document.getElementById('roulette');
-      const randomDegree = Math.floor(Math.random() * 360) + 3600;
-      roulette.style.transform = `rotate(${randomDegree}deg)`;
-   }
    let isSpinning = false;
-   let currentDegree = 0; // 누적 회전 각도
+   let currentDegree = 0;
 
-   function spinRoulette() {
-      if (isSpinning) return; // 이미 회전 중이면 중복 실행 방지
-      isSpinning = true;
+function spinRoulette() {
+   if (isSpinning) return;
+   isSpinning = true;
 
-      const roulette = document.getElementById('roulette');
+   const roulette = document.getElementById('roulette');
+   const spinTime = Math.random() * 1000 + 2500;
+   const randomDegree = Math.floor(Math.random() * 360);
+   const totalRotation = 3600 + randomDegree;
+   currentDegree += totalRotation;
+   roulette.style.transition = `transform ${spinTime / 1000}s cubic-bezier(0.25, 0.1, 0.25, 1)`;
+   roulette.style.transform = `rotate(${currentDegree}deg)`;
 
-      // 회전 시간: 2.5초에서 3.5초 사이
-      const spinTime = Math.random() * 1000 + 2500; // 2500ms ~ 3500ms
+   setTimeout(() => {
+      isSpinning = false;
 
-      // 랜덤 각도 (3600도 이상 + 0~360도의 랜덤 각도)
-      const randomDegree = Math.floor(Math.random() * 360);
-      const totalRotation = 3600 + randomDegree; // 최소 10바퀴 + 랜덤 각도
+      // 현재 각도를 360도로 정규화
+      const normalizedDegree = (360 - (currentDegree % 360)) % 360;
 
-      currentDegree += totalRotation; // 누적 회전 각도 계산
+      // 룰렛 텍스트 섹션 확인
+      const sections = document.querySelectorAll('#roulette .roulette-text');
+      const anglePerSection = 360 / sections.length;
+      let sectionIndex = Math.floor(normalizedDegree / anglePerSection);
 
-      // 룰렛 회전
-      roulette.style.transition = `transform ${spinTime / 1000}s cubic-bezier(0.25, 0.1, 0.25, 1)`;
-      roulette.style.transform = `rotate(${currentDegree}deg)`;
+      // 한 칸 이전 섹션 인덱스로 조정
+      sectionIndex -= 1;
+      if (sectionIndex < 0) {
+         sectionIndex += sections.length; // 음수일 경우 마지막 섹션으로 순환
+      }
 
-      // 회전 종료 후 결과 표시
-      setTimeout(() => {
-         isSpinning = false;
+      // 걸린 섹션의 텍스트 읽기
+      const selectedSection = sections[sectionIndex];
+      const selectedText = selectedSection.textContent.trim(); // 선택된 섹션의 텍스트
 
-         // 현재 각도를 360도로 나눈 나머지 값 계산
-         const normalizedDegree = (360 - (currentDegree % 360)) % 360;
+      // 알림 표시
+      alert(`오늘의 추천 메뉴는 ${selectedText}입니다!!`);
+   }, spinTime);
+}
 
-         // 메뉴 계산 (각 칸은 45도, 8칸)
-         const menuIndex = Math.floor((normalizedDegree + 22.5) % 360 / 45); // 중앙 기준으로 계산
 
-         const menuList = [
-            "메뉴1",
-            "메뉴2",
-            "메뉴3",
-            "메뉴4",
-            "메뉴5",
-            "메뉴6",
-            "메뉴7",
-            "메뉴8"
-         ];
-
-         // 선택된 메뉴 표시
-         const selectedMenu = menuList[menuIndex];
-         showResultPopup(selectedMenu);
-      }, spinTime);
-   }
-
-   function showResultPopup(menu) {
-      alert(`오늘의 추천 메뉴는 ${menu}입니다!!`);
-   }
-
-   function openPopup() {
-      document.getElementById('popup').style.display = 'block';
-   }
-
-   function closePopup() {
-      document.getElementById('popup').style.display = 'none';
-   }
 </script>
 </body>
-
 </html>
-
