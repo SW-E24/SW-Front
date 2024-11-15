@@ -8,7 +8,7 @@
     <style>
         /* 배너 스타일 */
         .banner {
-            background-color: #a0d8a0;
+            background-color: #ffe69b;
             text-align: center;
             padding: 100px 0;
             font-size: 36px;
@@ -18,7 +18,7 @@
 
         /* 메뉴바 스타일 */
         .menu-bar {
-            background-color: #a0d8a0; /* 배너와 동일한 배경색 */
+            background-color: #ffe69b; /* 배너와 동일한 배경색 */
             padding: 10px 0;
             display: flex;
             justify-content: space-between;
@@ -38,7 +38,7 @@
         }
 
         .menu-bar ul li a {
-            background-color: #a0d8a0; /* 배너와 동일한 배경색 */
+            background-color: #ffe69b; /* 배너와 동일한 배경색 */
             color: black; /* 메뉴 텍스트는 검정색 */
             text-decoration: none;
             font-size: 18px;
@@ -84,6 +84,22 @@
             text-decoration: none;
             color: black;
         }
+
+        /* 이전 버튼 스타일 */
+        .back-btn {
+            margin-top: 20px;
+            padding: 6px 12px;
+            background-color: #f2f1ee;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .back-btn:hover {
+            background-color: #f2f1ee;
+        }
+
     </style>
 </head>
 <body>
@@ -112,6 +128,10 @@
             <li>레시피 2</li>
             <li>레시피 3</li>
         </ul>
+
+         <!-- 이전 버튼 -->
+    <button class="back-btn" onclick="window.history.back()">이전</button>
+    
     </div>
 </body>
 </html>
