@@ -1,30 +1,26 @@
-/******************************************
-* 회원가입 시 사용자가 입력한 값의 중복 확인을 위한 로직
-* 클라이언트 -> 서버 로 전송해서 확인하기 위한 과정
-* ******************************************/
 $(document).ready(function () {
 
     // 아이디 중복 체크
     $('#checkIdBtn').on('click', function () {
-        const id = $('#userID').val();
-        if (id) {   // 필드에 입력된 상태에만 중복 체크
-            $.get('/api/auth/check-duplicate-id', {userID: id}, function (response) {
+        const id = $('#id').val();
+        if (id) {
+            $.get('/api/auth/check-duplicate-id', {userId: id}, function (response) {
                 if (response) {
-                    $('#idCheckMessage').text('사용 가능한 아이디입니다.').css('color', 'green');
-                } else {
                     $('#idCheckMessage').text('이미 사용 중인 아이디입니다.').css('color', 'red');
+                } else {
+                    $('#idCheckMessage').text('사용 가능한 아이디입니다.').css('color', 'green');
                 }
             });
-        } else {    //빈 칸인 상태로 누를 경우 상단 팝업창 띄우기
+        } else {
             alert('아이디를 입력해 주세요.');
         }
     });
 
     // 이메일 중복 체크
     $('#checkEmailBtn').on('click', function () {
-        const email = $('#userEmail').val();
+        const email = $('#email').val();
         if (email) {
-            $.get('api/auth/check-duplicate-email', {userEmail: email}, function (response) {
+            $.get('/api/auth/check-duplicate-email', {userEmail: email}, function (response) {
                 if (response) {
                     $('#emailCheckMessage').text('이미 사용 중인 이메일입니다.').css('color', 'red');
                 } else {
@@ -38,8 +34,8 @@ $(document).ready(function () {
 
     // 전화번호 중복 체크
     $('#checkPhoneBtn').on('click', function () {
-        const userPhone = $('#userPhone').val();
-        if (userPhone) {  // 전화번호가 입력된 경우에만 중복 체크
+        const userPhone = $('#phone').val();
+        if (userPhone) {
             $.get('/api/auth/check-duplicate-phone', {userPhone: userPhone}, function (response) {
                 if (response) {
                     $('#phoneCheckMessage').text('이미 사용 중인 전화번호입니다.').css('color', 'red');
@@ -47,49 +43,54 @@ $(document).ready(function () {
                     $('#phoneCheckMessage').text('사용 가능한 전화번호입니다.').css('color', 'green');
                 }
             });
-        } else {  // 전화번호 입력이 없는 경우
+        } else {
             alert('전화번호를 입력해 주세요.');
         }
     });
 
-    //회원가입 폼 제출 처리
+    // 회원가입 폼 제출 처리
     $('#registerForm').on('submit', function (event) {
-        event.preventDefault();
+        event.preventDefault();  // 폼 제출을 막음
 
-        const userData = {
-            userID: $('#id').val(),
-            userEmail: $('#email').val(),
-            userPhone: $('#phone').val(),
-            userPW: $('#password').val()
-        };
+        // 비밀번호 불일치 시 메세지 띄우기
+        const password = $('#password').val();
         const confirmPW = $('#confirmuserPW').val();
-
-        // 비밀번호 일치 확인
-        if (userData.userPW !== confirmPW) {
+        if (password !== confirmPW) {
             alert('비밀번호가 일치하지 않습니다.');
             return;
         }
 
+        const userData = {
+            userId: $('#id').val(),
+            password: $('#password').val(),
+            userName: $('#nickname').val(),
+            email: $('#email').val(),
+            phone: $('#phone').val(),
+            confirmuserPW: $('#confirmuserPW').val()
+        };
+
         // 데이터 전송
-        fetch('/api/auth/register', {
+        fetch(`/api/auth/register`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'  // JSON 형식으로 보내기
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify(userData)  // 데이터를 JSON으로 변환
+            body: JSON.stringify(userData)
         })
-            .then(response => response.json())
+            .then(response => response.text())  // 응답을 text로 받음
             .then(data => {
-                if (data.success) {
-                    alert('회원가입 성공!');
-                    window.location.href = '/login';
+                if (data === "회원가입 성공! 로그인 화면으로 이동합니다.") {
+                    // 회원가입 성공 메시지를 받으면 로그인 페이지로 리다이렉트
+                    window.location.href = '/pages/login';
                 } else {
-                    alert('회원가입 실패: ' + data.message);
+                    throw new Error('회원가입 실패');
                 }
             })
             .catch(error => {
-                console.error('회원가입 오류:', error);
+                console.error('회원가입 실패:', error);
+                alert('회원가입 실패');
             });
+
     });
 
 });
