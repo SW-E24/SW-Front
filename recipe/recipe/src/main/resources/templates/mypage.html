@@ -87,6 +87,14 @@
         .mypage-buttons a:hover {
             background-color: #bacd92;
         }
+
+        .mypage-buttons .signup-button {   /* 회원정보수정 버튼*/
+            width: 95%;
+            background-color: #bacd92; /* 버튼 색상 */
+            margin-left: auto; /* 가운데 정렬 */
+            margin-right: auto; /* 가운데 정렬 */
+        }
+
     </style>
 </head>
 <body>
@@ -114,12 +122,22 @@
             <p>등급: 일반 회원</p>
         </div>
 
+<!--        <div class="mypage-buttons">--> <!--원래 코드-->
+<!--            <a href="profile.html" class="signup-button">회원 정보 수정</a> &lt;!&ndash; 버튼 새로 만듦 얘만 &ndash;&gt;-->
+<!--            <a href="saved.html">북마크</a>-->
+<!--            <a href="mypost.html">작성한 글</a>-->
+<!--            <a href="liked.html">좋아요</a>-->
+<!--            <a href="mycomment.html">작성한 댓글</a>-->
+<!--        </div>-->
+
         <div class="mypage-buttons">
-            <a href="profile.html">회원 정보 수정</a>
-            <a href="saved.html">북마크</a>
-            <a href="mypost.html">작성한 글</a>
-            <a href="liked.html">좋아요</a>
-        </div>
+            <a href="profile.html" class="signup-button">회원 정보 수정</a>
+            <!--11/16 각 Controller에 맞게 주소 수정(MypagePageController참고)-->
+            <a th:href="'/mypage/' + ${userId}">북마크</a>
+            <a th:href="'/mypage/' + ${userId} + '/recipes'">작성한 글</a>
+            <a th:href="'/mypage/' + ${userId} + '/likes'">좋아요</a>
+            <a th:href="'/mypage/' + ${userId} + '/comments'">작성한 댓글</a>
+        </div-->
     </div>
 
     <!-- JavaScript 코드 -->
