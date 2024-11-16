@@ -53,7 +53,7 @@ public class MypagePageController {
         return "mypost";
     }
 
-    @GetMapping("/{userId}/likes")
+    @GetMapping("/{userId}/liked")
     public String showUserLikes(@PathVariable String userId, Model model) {
         // 사용자의 좋아요 데이터를 가져오기
         List<Like> likes = likeService.getLikesByUserId(userId);
