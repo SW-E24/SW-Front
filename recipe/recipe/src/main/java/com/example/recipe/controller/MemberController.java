@@ -4,6 +4,7 @@ import com.example.recipe.entity.Grade;
 import com.example.recipe.entity.Member;
 import com.example.recipe.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -61,5 +62,16 @@ public class MemberController {
     public ResponseEntity<Grade> getUserLevel(@PathVariable String userId) {
         Grade grade = memberService.getUserLevel(userId);  // 현재 등급 확인 메소드 추가
         return ResponseEntity.ok(grade);
+    }
+
+    @PostMapping("/updateProfile")
+    public ResponseEntity<Member> updateProfile(@RequestBody Member updatedMember, @RequestParam String userId) {
+        try {
+            // 업데이트된 정보를 저장
+            Member updatedUser = memberService.updateUser(userId, updatedMember);
+            return ResponseEntity.ok(updatedUser); // 업데이트된 정보를 반환
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // 실패 시 오류 반환
+        }
     }
 }

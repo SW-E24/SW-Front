@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
     // 아이디 중복 체크
     $('#checkIdBtn').on('click', function () {
         const id = $('#id').val();
@@ -92,19 +91,144 @@ $(document).ready(function () {
             });
     });
 
-    // 로그인 상태 체크
-    const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
-    const loginMenu = $('.login_menu');
+    // 수정한 회원 정보 폼 제출 처리
+    $('#updateForm').on('submit', function (event) {
+        event.preventDefault();  // 폼 제출을 막음
 
-    // 로그인 상태에 따른 메뉴 업데이트
-    if (isLoggedIn) {
-        loginMenu.html(`
+        // 비밀번호 불일치 시 메세지 띄우기
+        const password = $('#new-password').val();
+        const confirmPassword = $('#confirm-password').val();
+        if (password !== confirmPassword) {
+            alert('비밀번호가 일치하지 않습니다.');
+            return;
+        }
+
+        // 현재 로그인된 사용자 아이디 가져오기
+        fetch('/api/auth/currentUser', {
+            method: 'GET',
+            credentials: 'same-origin'
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data) { // 로그인 된 상태
+                    // 디버깅용
+                    console.log("현재 로그인된 사용쟈:", data)
+
+                    // 현재 사용자 아이디
+                    const userId = data.userId;
+
+                    // 수정된 회원 데이터 준비
+                    const userData = {
+                        password: $('#new-password').val(),
+                        userName: $('#nickame').val(),
+                        email: $('#email').val(),
+                        phone: $('#phone').val(),
+                    };
+
+                    // 데이터 전송
+                    fetch('/api/users/updateProfile', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(userData)
+                    })
+                        .then(response => response.text())  // 응답을 text로 받음
+                        .then(data => {
+                            if (data === "회원 정보 수정 성공!") {
+                                // 성공하면 마이페이지로 리다이렉트
+                                window.location.href = '/pages/mypage';
+                            } else {
+                                throw new Error('회원 정보 수정 실패');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('회원 정보 수정 실패:', error);
+                            alert('회원 정보 수정 실패');
+                        });
+                } else {
+                    alert("로그인된 사용자가 없습니다.");
+                }
+            })
+            .catch(error => {
+                console.error("사용자 정보 가져오기 실패", error);
+                alert("사용자 정보 가져오기 실패");
+            });
+    });
+
+    // 로그인 상태 체크 (서버에서 현재 로그인된 사용자 정보 가져오기)
+    fetch('/api/auth/currentUser', {
+        method: 'GET',
+        credentials: 'same-origin' // 동일한 출처로 쿠키를 포함한 요청
+    })
+        .then(response => {
+            if (response.status === 200) {
+                // 로그인된 경우
+                return response.json();
+            } else {
+                throw new Error('로그인된 사용자가 없습니다.');
+            }
+        })
+        .then(data => {
+            console.log('현재 로그인된 사용자:', data);
+            // 로그인 상태에 따른 메뉴 업데이트
+            $('.login_menu').html(`
             <li><a href="#" onclick="logout()">로그아웃</a></li>
-            <li><a href="mypage.html">마이페이지</a></li>`);
-    } else {
-        loginMenu.html(`
+            <li><a href="mypage.html">마이페이지</a></li>
+        `);
+        })
+        .catch(error => {
+            console.log(error);
+            // 로그인되지 않은 경우
+            $('.login_menu').html(`
             <li><a href="login.html">로그인</a></li>
-            <li><a href="register.html">회원가입</a></li>`);
-    }
+            <li><a href="register.html">회원가입</a></li>
+        `);
+        });
+
+    // 로그인 후 로컬 스토리지에 정보 저장 (클라이언트측에서 사용)
+    fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+            'userId': document.getElementById('id').value,
+            'password': document.getElementById('password').value
+        })
+    })
+        .then(response => {
+            if (response.ok) {
+                return response.json(); // 로그인 성공 후 사용자 정보를 받음
+            } else {
+                throw new Error('로그인 실패');
+            }
+        })
+        .then(data => {
+            localStorage.setItem('loggedIn', 'true'); // 로그인 상태를 로컬 스토리지에 저장
+            localStorage.setItem('userId', data.userId); // 사용자 아이디 저장
+            window.location.href = '/pages/mypage'; // 마이페이지로 리다이렉트
+        })
+        .catch(error => {
+            console.error(error);
+            document.getElementById('error-message').innerText = '아이디 또는 비밀번호가 틀립니다.';
+        });
+
+
+    // 로그아웃 처리 (세션 제거)
+    window.logout = function () {
+        fetch('/api/auth/logout', {
+            method: 'POST',
+            credentials: 'same-origin' // 쿠키를 포함하여 요청
+        })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data); // 로그아웃 성공 메시지 확인
+                window.location.href = '/pages/login'; // 로그아웃 후 로그인 페이지로 이동
+            })
+            .catch(error => {
+                console.error('로그아웃 실패:', error);
+            });
+    };
 
 });

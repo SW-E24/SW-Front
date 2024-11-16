@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원 정보 수정</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         /* 배너 스타일 */
         .banner {
@@ -127,20 +128,20 @@
 
         <!-- scripts.js 의 중복 체크 메소드 이용하도록 수정 -->
         <!-- Form 을 제출해서 테이블에 반영하도록 (register 과정과 비슷하게 수정) -->
-        <form>
+        <form id="updateForm" method="post" action="/api/users/updateProfile">
             <div class="form-group">
-                <label for="edit-userName">닉네임</label>
-                <input type="text" class="form-control" id="edit-userName">
+                <label for="nickname">닉네임</label>
+                <input type="text" class="form-control" id="nickname">
             </div>
             <div class="form-group">
-                <label for="edit-email">이메일</label>
-                <input type="email" class="form-control" id="edit-email">
+                <label for="email">이메일</label>
+                <input type="email" class="form-control" id="email">
                 <button type="button" class="btn btn-secondary mt-2" id="checkEmailBtn">중복 확인</button>
                 <div id="emailCheckMessage" style="color:red;"></div>
             </div>
             <div class="form-group">
-                <label for="edit-phone">전화번호</label>
-                <input type="text" class="form-control" id="edit-phone" placeholder="전화번호" required>
+                <label for="phone">전화번호</label>
+                <input type="text" class="form-control" id="phone" required>
                 <button type="button" class="btn btn-secondary mt-2" id="checkPhoneBtn">중복 확인</button>
                 <div id="phoneCheckMessage"></div>
             </div>
@@ -157,54 +158,9 @@
                 <input type="password" class="form-control" id="confirm-password">
                 <div id="password-error" style="color:red;"></div>
             </div>
-            <button type="button" class="btn btn-primary">수정</button>
+            <button type="submit" class="btn btn-primary">수정</button>
         </form>
     </div>
-
-    <script>
-        // 회원 정보 수정 폼 제출 처리
-        $('#updateForm').on('submit', function (event) {
-            event.preventDefault();  // 폼 제출을 막음
-
-            // 비밀번호 불일치 시 메세지 띄우기
-            const password = $('#new-password').val();
-            const confirmPassword = $('#confirm-password').val();
-            if (password !== confirmPassword) {
-                alert('비밀번호가 일치하지 않습니다.');
-                return;
-            }
-
-            // 수정된 회원 데이터 준비
-            const userData = {
-                userId: $('#id').val(),  // 사용자의 ID (수정할 정보)
-                password: $('#new-password').val(),
-                userName: $('#edit-userName').val(),
-                email: $('#edit-email').val(),
-                phone: $('#edit-phone').val(),
-            };
-
-            // 데이터 전송
-            fetch('/api/auth/update', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(userData)
-            })
-                .then(response => response.text())  // 응답을 text로 받음
-                .then(data => {
-                    if (data === "회원 정보 수정 성공!") {
-                        // 성공하면 마이페이지로 리다이렉트
-                        window.location.href = 'mypage.html';
-                    } else {
-                        throw new Error('회원 정보 수정 실패');
-                    }
-                })
-                .catch(error => {
-                    console.error('회원 정보 수정 실패:', error);
-                    alert('회원 정보 수정 실패');
-                });
-        });
-    </script>
+    <script src="/scripts.js"></script>
 </body>
 </html>

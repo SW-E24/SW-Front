@@ -10,18 +10,11 @@ import com.example.recipe.service.GradeService;
 import com.example.recipe.service.MemberService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-/*
- * 회원 관리 요청을 처리하기 위한 컨트롤러
- * - 회원가입
- * - 로그인
- * - 로그아웃
- * */
-
 
 @Controller
 @RequestMapping("/api/auth")
@@ -130,6 +123,20 @@ public class AuthController {
 
         redirectAttributes.addFlashAttribute("logoutMessage", "로그아웃 되었습니다");
         return "redirect:/pages/login";
+    }
+
+    /************************
+    * 현재 로그인된 사용자 가져오기
+    * ***********************/
+    @GetMapping("/currentUser")
+    public ResponseEntity<Member> getCurrentUser(HttpSession session) {
+        String userId = (String) session.getAttribute("userId");
+        if (userId == null) {   // 로그인 되지 않은 경우
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        Member member = memberService.getMemberById(userId);
+        return ResponseEntity.ok(member);
     }
 
 }
