@@ -90,7 +90,21 @@ $(document).ready(function () {
                 console.error('회원가입 실패:', error);
                 alert('회원가입 실패');
             });
-
     });
+
+    // 로그인 상태 체크
+    const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
+    const loginMenu = $('.login_menu');
+
+    // 로그인 상태에 따른 메뉴 업데이트
+    if (isLoggedIn) {
+        loginMenu.html(`
+            <li><a href="#" onclick="logout()">로그아웃</a></li>
+            <li><a href="mypage.html">마이페이지</a></li>`);
+    } else {
+        loginMenu.html(`
+            <li><a href="login.html">로그인</a></li>
+            <li><a href="register.html">회원가입</a></li>`);
+    }
 
 });

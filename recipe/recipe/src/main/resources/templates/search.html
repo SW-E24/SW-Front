@@ -70,6 +70,22 @@
             padding: 10px 0;
             border-bottom: 1px solid #ccc;
         }
+        .list-group-item {
+            border-bottom: 1px solid #ccc;
+            border-left: none;
+            border-right: none;
+            border-top: none;
+            padding: 10px 15px;
+        }
+
+        .list-group-item a {
+            text-decoration: none;
+            color: #000;
+        }
+
+        .list-group-item a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -81,86 +97,56 @@
             <li><a href="board.html">게시판</a></li>
         </ul>
         <ul class="login_menu">
-            <li><a href="login.html">로그인</a></li>
-            <li><a href="register.html">회원가입</a></li>
+            <li><a href="/pages/login">로그인</a></li>
+            <li><a href="/pages/register">회원가입</a></li>
         </ul>
     </div>
 
     <div class="container search-section">
-        <select id="category-select" class="custom-select">
-            <option value="cooking">요리</option>
-            <option value="ingredients">재료</option>
-        </select>
-        <input type="text" id="search-input" class="form-control" placeholder="검색어를 입력하세요">
-        <button type="button" class="btn btn-outline-secondary" onclick="searchPosts()">검색</button>
+        <form action="/search" method="get" style="display: flex; align-items: center; gap: 20px; width: 100%; flex-wrap: wrap;">
+            <select name="searchType" class="custom-select">
+                <option value="title">요리</option>
+                <option value="ingredient">재료</option>
+            </select>
+            <input type="text" name="keyword" class="form-control" placeholder="검색어를 입력하세요">
+            <button type="submit" class="btn btn-outline-secondary">검색</button>
+        </form>
     </div>
 
-    <div class="container search-results">
-        <ul id="search-results-list"></ul>
+    <div class="container board-section">
+        <h3>검색 결과</h3>
+
+        <div th:if="${#lists.isEmpty(recipes)}">
+            <p>검색 결과가 없습니다.</p>
+        </div>
+
+        <div th:if="${!#lists.isEmpty(recipes)}">
+            <ul class="list-group">
+                <li class="list-group-item" th:each="recipe : ${recipes}">
+                    <a th:href="'/post view?recipeId=' + ${recipe.recipeId}" th:text="${recipe.title}"></a>
+                </li>
+            </ul>
+        </div>
+
+        <nav aria-label="Page navigation" th:if="${totalPages > 0}">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${currentPage <= 1} ? 'disabled'">
+                    <a class="page-link" th:href="@{/search(searchType=${searchType}, keyword=${keyword}, page=${currentPage - 1}, size=5)}" aria-label="Previous">&laquo;</a>
+                </li>
+                <li class="page-item" th:each="page : ${#numbers.sequence(1, totalPages)}" th:classappend="${page == currentPage} ? 'active'">
+                    <a class="page-link" th:href="@{/search(searchType=${searchType}, keyword=${keyword}, page=${page}, size=5)}" th:text="${page}"></a>
+                </li>
+                <li class="page-item" th:classappend="${currentPage >= totalPages} ? 'disabled'">
+                    <a class="page-link" th:href="@{/search(searchType=${searchType}, keyword=${keyword}, page=${currentPage + 1}, size=5)}" aria-label="Next">&raquo;</a>
+                </li>
+            </ul>
+        </nav>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
-    <script>
-        window.onload = function() {
-            const params = new URLSearchParams(window.location.search);
-            const query = params.get('query') || '';
-            const category = params.get('category') || 'cooking';
-
-            document.getElementById('search-input').value = query;
-            document.getElementById('category-select').value = category;
-
-            if (query) {
-                searchPosts(); // 검색어가 있을 경우 검색 결과 표시
-            } else {
-                displayAllPosts(); // 검색어가 없을 경우 모든 게시글 표시
-            }
-        };
-
-        function logout() {
-            localStorage.removeItem('loggedIn');
-            window.location.href = 'index.html';
-        }
-
-        // 예시 게시물
-        const posts = [
-            { title: "김치볶음밥", content: "간단하게 만드는 김치볶음밥! 재료 : 김치, 설탕, 간장, 밥 등" },
-            { title: "빼빼로", content: "과자와 초콜릿으로 간단하게 만드는 수제 빼빼로" },
-            { title: "초밥", content: "재료 : 광어, 연어, 계란, 밥, 설탕, 소금 등" }
-        ];
-
-        // 모든 게시글을 표시하는 함수
-        function displayAllPosts() {
-            const resultsList = document.getElementById('search-results-list');
-            resultsList.innerHTML = '';
-            posts.forEach(post => {
-                const listItem = document.createElement('li');
-                listItem.innerHTML = `<strong>${post.title}</strong><br>${post.content}`;
-                resultsList.appendChild(listItem);
-            });
-        }
-
-        // 검색어에 맞는 게시글을 표시하는 함수
-        function searchPosts() {
-            const query = document.getElementById('search-input').value.toLowerCase();
-            const results = posts.filter(post => 
-                post.content.toLowerCase().includes(query) || post.title.toLowerCase().includes(query)
-            );
-
-            const resultsList = document.getElementById('search-results-list');
-            resultsList.innerHTML = '';
-            if (results.length > 0) {
-                results.forEach(post => {
-                    const listItem = document.createElement('li');
-                    listItem.innerHTML = `<strong>${post.title}</strong><br>${post.content}`;
-                    resultsList.appendChild(listItem);
-                });
-            } else {
-                resultsList.innerHTML = '<li>검색 결과가 없습니다.</li>';
-            }
-        }
-    </script>
 </body>
+
 </html>
+

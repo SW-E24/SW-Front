@@ -12,8 +12,7 @@ public class MenuRecommendService {
     public MenuRecommendService(RecipeRepository recipeRepository) {
         this.recipeRepository = recipeRepository;
     }
-
-    public Recipe recommendRecipe() {
-        return recipeRepository.findRandomRecipe(); // 랜덤 레시피 반환
-    }
+//프론트로 구현된 부분, 코드 삭제
+//    public Recipe recommendRecipe() {return recipeRepository.findRandomRecipe(); // 랜덤 레시피 반환
+//    }
 }

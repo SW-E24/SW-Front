@@ -244,20 +244,22 @@
 </div>
 
 <div class="container search-section">
-   <select id="category-select" class="custom-select">
-      <option value="cooking">요리</option>
-      <option value="ingredients">재료</option>
-   </select>
-   <input type="text" id="search-input" class="form-control" placeholder="검색어를 입력하세요">
-   <button type="button" class="btn btn-outline-secondary" onclick="redirectToSearch()">검색</button>
+   <form action="/search" method="get" style="display: flex; align-items: center; gap: 20px; width: 100%; flex-wrap: wrap;">
+      <select name="searchType" class="custom-select">
+         <option value="title">요리</option>
+         <option value="ingredient">재료</option>
+      </select>
+      <input type="text" name="keyword" class="form-control" placeholder="검색어를 입력하세요">
+      <button type="submit" class="btn btn-outline-secondary">검색</button>
+   </form>
 </div>
 
 <div class="container category-section">
    <div class="category-button"><a href="korean.html"><img src="/images/korean.jpg" alt="한식"><h4>한식</h4></a></div>
-   <div class="category-button"><a href="chinese.html"><img src="/images/chinese.jpg" alt="중식"><h4>중식</h4></a></div>
-   <div class="category-button"><a href="japanese.html"><img src="/images/japanese.jpg" alt="일식"><h4>일식</h4></a></div>
-   <div class="category-button"><a href="western.html"><img src="/images/western.png" alt="양식"><h4>양식</h4></a></div>
-   <div class="category-button"><a href="dessert.html"><img src="/images/dessert.jpg" alt="디저트"><h4>디저트</h4></a></div>
+   <div class="category-button"><a href="chinese.html"><img src="images/chinese.jpg" alt="중식"><h4>중식</h4></a></div>
+   <div class="category-button"><a href="japanese.html"><img src="images/japanese.jpg" alt="일식"><h4>일식</h4></a></div>
+   <div class="category-button"><a href="western.html"><img src="images/western.png" alt="양식"><h4>양식</h4></a></div>
+   <div class="category-button"><a href="dessert.html"><img src="images/dessert.jpg" alt="디저트"><h4>디저트</h4></a></div>
 </div>
 
 <div class="container board-section">

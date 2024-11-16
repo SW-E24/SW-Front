@@ -164,7 +164,7 @@
         .back-btn {
             margin-top: 20px;
             padding: 6px 12px;
-            background-color: #fef9ee;
+            background-color: #f2f1ee;
             border: none;
             font-size: 14px;
             cursor: pointer;
@@ -172,7 +172,7 @@
         }
 
         .back-btn:hover {
-            background-color: #b0b0b0;
+            background-color: #f2f1ee;
         }
     </style>
 </head>
@@ -285,7 +285,7 @@
         const description = "레시피 설명"; // 필요한 경우 수정
 
         try {
-            const response = await fetch('http://localhost:8080/api/recipes/create', { // 절대 경로로 수정
+            const response = await fetch('/api/recipes/create', { // 절대 경로로 수정 -> 백 프론트를 합쳤을 땐 상대결로로 설정해줘야함
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ title, category, ingredients, steps, description })
