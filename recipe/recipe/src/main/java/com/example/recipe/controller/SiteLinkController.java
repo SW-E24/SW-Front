@@ -13,11 +13,11 @@ public class SiteLinkController {
     public SiteLinkController(RecipeRepository recipeRepository) {
         this.recipeRepository = recipeRepository;
     }
-
-    @GetMapping("/site-link")
-    public String siteLink(Model model) {
-        // 레시피 게시글 내 사이트 연결
-        model.addAttribute("recipe", recipeRepository.findRandomRecipe());
-        return "/site-link";
-    }
+    //프론트로 구현된 부분, 코드 삭제
+//    @GetMapping("/site-link")
+//    public String siteLink(Model model) {
+//        // 레시피 게시글 내 사이트 연결
+//        model.addAttribute("recipe", recipeRepository.findRandomRecipe());
+//        return "/site-link";
+//    }
 }

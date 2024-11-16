@@ -13,14 +13,15 @@ public class MenuRecommendController {
     @Autowired
     private MenuRecommendService menuRecommendService;
 
-    @GetMapping("/board")
-    public String menuRecommend(Model model) {
-        Recipe recipe = menuRecommendService.recommendRecipe();
-        if (recipe != null) {
-            model.addAttribute("recipe", recipe);
-        } else {
-            System.out.println("추천할 메뉴가 없습니다.");
-        }
-        return "board";
-    }
+//프론트로 구현된 부분, 코드 삭제
+//    @GetMapping("/board")
+//    public String menuRecommend(Model model) {
+//        Recipe recipe = menuRecommendService.recommendRecipe();
+//        if (recipe != null) {
+//            model.addAttribute("recipe", recipe);
+//        } else {
+//            System.out.println("추천할 메뉴가 없습니다.");
+//        }
+//        return "board";
+//    }
 }
