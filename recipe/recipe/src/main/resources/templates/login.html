@@ -102,7 +102,8 @@
 
 <div class="login-container">
     <h2>로그인</h2>
-    <form action="/api/auth/login" method="POST">
+    <!-- scripts.js 에서 자동 fetch 방지를 위해 id="loginForm" 추가 -->
+    <form id="loginForm" action="/api/auth/login" method="POST">
         <div class="form-group">
             <label for="id">아이디</label>
             <input type="text" class="form-control" id="id" name="userId" placeholder="아이디" required>
@@ -120,5 +121,7 @@
         <p>계정이 없으신가요? <a href="/pages/register">회원가입</a></p>
     </div>
 </div>
+<!--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+<script src="/scripts.js"></script>
 </body>
 </html>

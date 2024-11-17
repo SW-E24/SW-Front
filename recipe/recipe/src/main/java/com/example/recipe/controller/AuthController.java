@@ -99,18 +99,32 @@ public class AuthController {
     /********************
      * 로그인 로직 처리
      * ******************/
+//    @PostMapping("/login")
+//    public String login(@RequestParam String userId, @RequestParam String password, HttpSession session, RedirectAttributes redirectAttributes) {
+//        Member member = memberRepository.findById(userId).orElseThrow(() -> new RuntimeException("아이디가 존재하지 않습니다."));
+//
+//        if (member.getPassword().equals(password)) {
+//            session.setAttribute("currentUser", member); // 세션에 사용자 정보 저장
+//            return "redirect:/pages/mypage"; // 로그인 성공 시 mypage 페이지로 이동
+//        } else {
+//            redirectAttributes.addFlashAttribute("errorMessage", "아이디 또는 비밀번호가 틀립니다."); // 로그인 실패 시 메시지 출력
+//            return "redirect:/pages/login"; // 로그인 실패 시 다시 로그인 페이지로 이동
+//        }
+//    }
     @PostMapping("/login")
     public String login(@RequestParam String userId, @RequestParam String password, HttpSession session, RedirectAttributes redirectAttributes) {
         Member member = memberRepository.findById(userId).orElseThrow(() -> new RuntimeException("아이디가 존재하지 않습니다."));
 
         if (member.getPassword().equals(password)) {
             session.setAttribute("currentUser", member); // 세션에 사용자 정보 저장
+            System.out.println("로그인된 사용자: " + member.getUserId()); // 로그 출력 (확인용->잘나옴!)
             return "redirect:/pages/mypage"; // 로그인 성공 시 mypage 페이지로 이동
         } else {
-            redirectAttributes.addFlashAttribute("errorMessage", "아이디 또는 비밀번호가 틀립니다."); // 로그인 실패 시 메시지 출력
+            redirectAttributes.addFlashAttribute("errorMessage", "아이디 또는 비밀번호가 틀립니다.");
             return "redirect:/pages/login"; // 로그인 실패 시 다시 로그인 페이지로 이동
         }
     }
+
 
 
     /********************
@@ -130,13 +144,12 @@ public class AuthController {
     * ***********************/
     @GetMapping("/currentUser")
     public ResponseEntity<Member> getCurrentUser(HttpSession session) {
-        String userId = (String) session.getAttribute("userId");
-        if (userId == null) {   // 로그인 되지 않은 경우
+        Member currentUser = (Member) session.getAttribute("currentUser");
+        if (currentUser == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
-
-        Member member = memberService.getMemberById(userId);
-        return ResponseEntity.ok(member);
+        return ResponseEntity.ok(currentUser);
     }
+
 
 }
