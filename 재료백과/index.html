@@ -153,79 +153,96 @@
       }
 
       .roulette-container {
-         position: relative;
-         display: flex;
-         flex-direction: column;
-         align-items: center;
-      }
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+   }
 
-      .arrow {
-         width: 0;
-         height: 0;
-         border-left: 15px solid transparent;
-         border-right: 15px solid transparent;
-         border-top: 20px solid black;
-         position: absolute;
-         top: -10px;
-         left: 50%;
-         transform: translateX(-50%);
-         z-index: 1000;
-      }
+   .arrow {
+      width: 0;
+      height: 0;
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-top: 20px solid #bacd92; /* 화살표 색상 변경 */
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+   }
 
-      #roulette {
-         width: 300px;
-         height: 300px;
-         border-radius: 50%;
-         border: 5px solid #666;
-         position: relative;
-         background: conic-gradient(#FFB3B3 0% 12.5%, #FFEC99 12.5% 25%, #B2FF99 25% 37.5%, #99DFFF 37.5% 50%, #D1B3FF 50% 62.5%, #FFC0CB 62.5% 75%, #ADD8E6 75% 87.5%, #FFE4B5 87.5% 100%);
-         margin-bottom: 20px;
-         transition: transform 3s cubic-bezier(0.25, 0.1, 0.25, 1);
-      }
+   #roulette {
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      position: relative;
+      background: conic-gradient(
+         #fef9ee 0% 12.5%,
+         #ffdf82 12.5% 25%,
+         #fef9ee 25% 37.5%,
+         #ffdf82 37.5% 50%,
+         #fef9ee 50% 62.5%,
+         #ffdf82 62.5% 75%,
+         #fef9ee 75% 87.5%,
+         #ffdf82 87.5% 100%
+      ); /* 번갈아 색상 채우기 */
+      margin-bottom: 20px;
+      transition: transform 3s cubic-bezier(0.25, 0.1, 0.25, 1);
+   }
 
-      .roulette-text {
-         position: absolute;
-         width: 50%;
-         height: 50%;
-         top: 50%;
-         left: 50%;
-         transform-origin: 0% 0%;
-         font-size: 14px;
-         font-weight: bold;
-         text-align: center;
-      }
+   .roulette-text {
+      position: absolute;
+      width: 65%;
+      height: 10%;
+      top: 50%;
+      left: 50%;
+      transform-origin: 0% 0%;
+      font-size: 20px;
+      font-weight: bold;
+      font-family: '굴림', sans-serif; /* 글씨체 굴림 */
+      text-align: center;
+      color: black; /* 글씨 색상 */
+   }
 
-      .roulette-text:nth-child(1) { transform: rotate(0deg) translate(0, -50%) rotate(22.5deg); }
-      .roulette-text:nth-child(2) { transform: rotate(45deg) translate(0, -50%) rotate(22.5deg); }
-      .roulette-text:nth-child(3) { transform: rotate(90deg) translate(0, -50%) rotate(22.5deg); }
-      .roulette-text:nth-child(4) { transform: rotate(135deg) translate(0, -50%) rotate(22.5deg); }
-      .roulette-text:nth-child(5) { transform: rotate(180deg) translate(0, -50%) rotate(22.5deg); }
-      .roulette-text:nth-child(6) { transform: rotate(225deg) translate(0, -50%) rotate(22.5deg); }
-      .roulette-text:nth-child(7) { transform: rotate(270deg) translate(0, -50%) rotate(22.5deg); }
-      .roulette-text:nth-child(8) { transform: rotate(315deg) translate(0, -50%) rotate(22.5deg); }
+   .roulette-text:nth-child(1) { transform: rotate(0deg) translate(0, -50%) rotate(22.5deg); }
+   .roulette-text:nth-child(2) { transform: rotate(45deg) translate(0, -50%) rotate(22.5deg); }
+   .roulette-text:nth-child(3) { transform: rotate(90deg) translate(0, -50%) rotate(22.5deg); }
+   .roulette-text:nth-child(4) { transform: rotate(135deg) translate(0, -50%) rotate(22.5deg); }
+   .roulette-text:nth-child(5) { transform: rotate(180deg) translate(0, -50%) rotate(22.5deg); }
+   .roulette-text:nth-child(6) { transform: rotate(225deg) translate(0, -50%) rotate(22.5deg); }
+   .roulette-text:nth-child(7) { transform: rotate(270deg) translate(0, -50%) rotate(22.5deg); }
+   .roulette-text:nth-child(8) { transform: rotate(315deg) translate(0, -50%) rotate(22.5deg); }
 
-      #spinButton {
-         padding: 10px 20px;
-         background-color: #a0d8a0;
-         color: white;
-         font-size: 16px;
-         border: none;
-         border-radius: 5px;
-         cursor: pointer;
-      }
+   #spinButton {
+      padding: 10px 20px;
+      background-color: #fef9ee; /* 버튼 배경색 */
+      color: black; /* 버튼 텍스트 색상 */
+      font-size: 16px;
+      border: none; /* 테두리 제거 */
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease; /* 배경색 변경 애니메이션 */
+   }
 
-      #spinButton:hover {
-         background-color: #88c588;
-      }
+   #spinButton:hover {
+      background-color: #bacd92; /* 버튼 호버 시 색상 변경 */
+      color: white; /* 버튼 호버 시 텍스트 색상 */
+   }
 
-      .close {
-         position: absolute;
-         top: 10px;
-         right: 10px;
-         font-size: 24px;
-         font-weight: bold;
-         cursor: pointer;
-      }
+   #spinButton:active {
+      background-color: #bacd92; /* 버튼 클릭 시 색상 변경 */
+      color: white; /* 버튼 클릭 시 텍스트 색상 */
+   }
+
+   .close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+   }
    </style>
 </head>
 
@@ -238,22 +255,24 @@
       <li><a href="board.html">게시판</a></li>
    </ul>
    <ul class="login_menu">
-      <li><a href="login.html">로그인</a></li>
-      <li><a href="register.html">회원가입</a></li>
+      <li><a href="/pages/login">로그인</a></li>
+      <li><a href="/pages/register">회원가입</a></li>
    </ul>
 </div>
 
 <div class="container search-section">
-   <select id="category-select" class="custom-select">
-      <option value="cooking">요리</option>
-      <option value="ingredients">재료</option>
-   </select>
-   <input type="text" id="search-input" class="form-control" placeholder="검색어를 입력하세요">
-   <button type="button" class="btn btn-outline-secondary" onclick="redirectToSearch()">검색</button>
+   <form action="/search" method="get" style="display: flex; align-items: center; gap: 20px; width: 100%; flex-wrap: wrap;">
+      <select name="searchType" class="custom-select">
+         <option value="title">요리</option>
+         <option value="ingredient">재료</option>
+      </select>
+      <input type="text" name="keyword" class="form-control" placeholder="검색어를 입력하세요">
+      <button type="submit" class="btn btn-outline-secondary">검색</button>
+   </form>
 </div>
 
 <div class="container category-section">
-   <div class="category-button"><a href="korean.html"><img src="images/korean.jpg" alt="한식"><h4>한식</h4></a></div>
+   <div class="category-button"><a href="korean.html"><img src="/images/korean.jpg" alt="한식"><h4>한식</h4></a></div>
    <div class="category-button"><a href="chinese.html"><img src="images/chinese.jpg" alt="중식"><h4>중식</h4></a></div>
    <div class="category-button"><a href="japanese.html"><img src="images/japanese.jpg" alt="일식"><h4>일식</h4></a></div>
    <div class="category-button"><a href="western.html"><img src="images/western.png" alt="양식"><h4>양식</h4></a></div>
@@ -295,20 +314,6 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 <script>
-   window.onload = function () {
-      const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
-      if (isLoggedIn) {
-         document.querySelector('.login_menu').innerHTML = `
-                    <li><a href="#" onclick="logout()">로그아웃</a></li>
-                    <li><a href="mypage.html">마이페이지</a></li>`;
-      }
-   };
-
-   function logout() {
-      localStorage.setItem('loggedIn', 'false');
-      window.location.reload();
-   }
-
    function redirectToSearch() {
       const searchInput = document.getElementById('search-input').value;
       const category = document.getElementById('category-select').value;
