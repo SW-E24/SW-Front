@@ -24,8 +24,8 @@ public class RecipeViewController {
         if (recipe.getSteps() != null) {
             recipe.getSteps().forEach(step -> {
                 if (step.getPhoto() != null) {
-                    String base64Image = Base64.getEncoder().encodeToString(step.getPhoto());
-                    step.setDescription(step.getDescription() + "|data:image/jpeg;base64," + base64Image);
+                    String base64Image = "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(step.getPhoto());
+                    step.setImageUrl(base64Image); // 새로운 필드에 Base64 이미지 저장
                 }
             });
         }

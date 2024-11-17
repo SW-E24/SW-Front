@@ -123,6 +123,9 @@ public class Recipe {
         @Column(columnDefinition = "BLOB")
         private byte[] photo; // LOB 방식으로 이미지 저장
 
+        @Transient
+        private String imageUrl; // 동적 URL 관리
+
         public Step() {}
 
         public Step(String description, byte[] photo) {
