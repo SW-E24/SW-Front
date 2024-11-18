@@ -40,4 +40,10 @@ public class PageController {
     public String profilePage(Model model) {
         return "profile";
     }
+
+    // 게시판 페이지로 이동
+    @GetMapping("/board")
+    public String boardPage(Model model) {
+        return "board";
+    }
 }

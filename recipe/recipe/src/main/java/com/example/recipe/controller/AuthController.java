@@ -118,7 +118,7 @@ public class AuthController {
         if (member.getPassword().equals(password)) {
             session.setAttribute("currentUser", member); // 세션에 사용자 정보 저장
             System.out.println("로그인된 사용자: " + member.getUserId()); // 로그 출력 (확인용->잘나옴!)
-            return "redirect:/pages/mypage"; // 로그인 성공 시 mypage 페이지로 이동
+            return "redirect:/"; // 로그인 성공 시 index 로 이동 (수정)
         } else {
             redirectAttributes.addFlashAttribute("errorMessage", "아이디 또는 비밀번호가 틀립니다.");
             return "redirect:/pages/login"; // 로그인 실패 시 다시 로그인 페이지로 이동

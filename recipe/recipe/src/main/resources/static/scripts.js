@@ -126,6 +126,24 @@ $(document).ready(function () {
     };
 
 
+    // 사용자 로그인 유무에 따라 로그인/로그아웃 버튼 화면 상태 변경
+    window.onload = function() {
+        const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
+        const loginMenu = document.querySelector('.login_menu');
+
+        // 로그인 상태 확인
+        if (isLoggedIn) {
+            loginMenu.innerHTML = `
+                    <li><a href="#" onclick="logout()">로그아웃</a></li>
+                    <li><a href="mypage.html">마이페이지</a></li>`;
+        } else {
+            loginMenu.innerHTML = `
+                    <li><a href="login.html">로그인</a></li>
+                    <li><a href="register.html">회원가입</a></li>`;
+        }
+    };
+
+
     /************************
     * 여기서부터 회원정보 수정 로직
     * ***********************/

@@ -1,22 +1,4 @@
 $(document).ready(function () {
-    fetch('/api/auth/currentUser', {
-        method: 'GET',
-        credentials: 'same-origin' // 동일한 출처로 쿠키를 포함한 요청
-    })
-        .then(response => {
-            if (response.status === 200) {
-                return response.json();  // 로그인된 사용자 정보 반환
-            } else {
-                throw new Error('로그인된 사용자가 없습니다.');
-            }
-        })
-        .then(data => {
-            console.log('현재 로그인된 사용자:', data);  // 사용자 정보 출력
-        })
-        .catch(error => {
-            console.log(error);  // 에러 출력
-        });
-
     // 아이디 중복 체크
     $('#checkIdBtn').on('click', function () {
         const id = $('#id').val();
@@ -109,7 +91,23 @@ $(document).ready(function () {
             });
     });
 
-
+    fetch('/api/auth/currentUser', {
+        method: 'GET',
+        credentials: 'same-origin' // 동일한 출처로 쿠키를 포함한 요청
+    })
+        .then(response => {
+            if (response.status === 200) {
+                return response.json();  // 로그인된 사용자 정보 반환
+            } else {
+                throw new Error('로그인된 사용자가 없습니다.');
+            }
+        })
+        .then(data => {
+            console.log('현재 로그인된 사용자:', data);  // 사용자 정보 출력
+        })
+        .catch(error => {
+            console.log(error);  // 에러 출력
+        });
 
     // 로그아웃 처리 (세션 제거)
     window.logout = function () {
@@ -125,6 +123,24 @@ $(document).ready(function () {
             .catch(error => {
                 console.error('로그아웃 실패:', error);
             });
+    };
+
+
+    // 사용자 로그인 유무에 따라 로그인/로그아웃 버튼 화면 상태 변경
+    window.onload = function() {
+        const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
+        const loginMenu = document.querySelector('.login_menu');
+
+        // 로그인 상태 확인
+        if (isLoggedIn) {
+            loginMenu.innerHTML = `
+                    <li><a href="#" onclick="logout()">로그아웃</a></li>
+                    <li><a href="mypage.html">마이페이지</a></li>`;
+        } else {
+            loginMenu.innerHTML = `
+                    <li><a href="login.html">로그인</a></li>
+                    <li><a href="register.html">회원가입</a></li>`;
+        }
     };
 
 
