@@ -21,11 +21,6 @@ public class PageController {
         return "login";
     }
 
-    // 마이페이지로 이동
-//    @GetMapping("/mypage")
-//    public String myPage(Model model) {
-//        return "mypage";
-//    }
     // 로그인 상태가 아니라면 로그인 페이지로 이동하는걸로 수정
     @GetMapping("/mypage")
     public String myPage(HttpSession session) {
