@@ -111,21 +111,27 @@ public class AuthController {
 //            return "redirect:/pages/login"; // 로그인 실패 시 다시 로그인 페이지로 이동
 //        }
 //    }
+
+
     @PostMapping("/login")
     public String login(@RequestParam String userId, @RequestParam String password, HttpSession session, RedirectAttributes redirectAttributes) {
-        Member member = memberRepository.findById(userId).orElseThrow(() -> new RuntimeException("아이디가 존재하지 않습니다."));
+        try {
+            Member member = memberRepository.findById(userId).orElseThrow(() -> new RuntimeException("아이디가 존재하지 않습니다."));
 
-        if (member.getPassword().equals(password)) {
-            session.setAttribute("currentUser", member); // 세션에 사용자 정보 저장
-            System.out.println("로그인된 사용자: " + member.getUserId()); // 로그 출력 (확인용->잘나옴!)
-            return "redirect:/"; // 로그인 성공 시 index 로 이동 (수정)
-        } else {
-            redirectAttributes.addFlashAttribute("errorMessage", "아이디 또는 비밀번호가 틀립니다.");
-            return "redirect:/pages/login"; // 로그인 실패 시 다시 로그인 페이지로 이동
+            if (member.getPassword().equals(password)) {
+                session.setAttribute("currentUser", member); // 세션에 사용자 정보 저장
+                System.out.println("로그인된 사용자: " + member.getUserId()); // 로그 출력 (확인용->잘나옴!)
+                return "redirect:/"; // 로그인 성공 시 index 로 이동 (수정)
+            } else {
+                redirectAttributes.addFlashAttribute("errorMessage", "아이디 또는 비밀번호가 틀립니다.");
+                return "redirect:/pages/login"; // 로그인 실패 시 다시 로그인 페이지로 이동
+            }
+        } catch (RuntimeException e) {
+            // 비정상적인 예외 처리를 위해... 필요없으면 제거해도 될 듯?
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/pages/login";
         }
     }
-
-
 
     /********************
      * 로그아웃 로직 처리

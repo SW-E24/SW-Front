@@ -91,6 +91,7 @@ $(document).ready(function () {
             });
     });
 
+    // 현재 로그인된 사용자 정보 가져오기
     fetch('/api/auth/currentUser', {
         method: 'GET',
         credentials: 'same-origin' // 동일한 출처로 쿠키를 포함한 요청
@@ -108,6 +109,7 @@ $(document).ready(function () {
         .catch(error => {
             console.log(error);  // 에러 출력
         });
+
 
     // 로그아웃 처리 (세션 제거)
     window.logout = function () {

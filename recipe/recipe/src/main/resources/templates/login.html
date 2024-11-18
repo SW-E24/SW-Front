@@ -112,7 +112,9 @@
             <label for="password">비밀번호</label>
             <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호" required>
         </div>
-        <div id="error-message"></div>
+        <div th:if="${errorMessage}" style="color: red; ">
+            <p th:text="${errorMessage}"></p>
+        </div>
         <button type="submit" class="btn btn-primary">로그인</button>
     </form>
 
