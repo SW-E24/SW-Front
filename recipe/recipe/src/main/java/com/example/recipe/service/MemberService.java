@@ -23,6 +23,10 @@ public class MemberService {
         this.gradeService = gradeService;
     }
 
+    public Member findUserByUserID(String userId) {
+        return memberRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다"));
+    }
+
     public void saveMember(Member member) {
         memberRepository.save(member);
     }
@@ -50,6 +54,7 @@ public class MemberService {
         user.setUserName(updatedUser.getUserName());
         user.setEmail(updatedUser.getEmail());
         user.setPhone(updatedUser.getPhone());
+        user.setPassword(updatedUser.getPassword());
         return memberRepository.save(user);
     }
 

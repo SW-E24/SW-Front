@@ -46,10 +46,32 @@ public class MemberController {
         return ResponseEntity.ok(user);
     }
 
-    @PutMapping("/{userId}")
-    public ResponseEntity<Member> updateUser(@PathVariable String userId, @RequestBody Member updatedUser) {
-        Member user = memberService.updateUser(userId, updatedUser);
-        return ResponseEntity.ok(user);
+    @PostMapping("/updateUser")
+    public ResponseEntity<?> updateUser(@RequestBody Member updatedUser) {
+        try {
+            // 기존 유저인지 확인
+            String userId = updatedUser.getUserId();
+            Member existingUser =memberService.findUserByUserID(userId);
+
+            // 정보 업데이트
+            existingUser.setUserId(userId);
+            existingUser.setUserName(updatedUser.getUserName());
+            existingUser.setEmail(updatedUser.getEmail());
+            existingUser.setPhone(updatedUser.getPhone());
+            existingUser.setPassword(updatedUser.getPassword());
+
+            // 기존 이미지 값 보존
+            if (updatedUser.getProfileImage() == null) {
+                updatedUser.setProfileImage(existingUser.getProfileImage()); // 이미지 수정되지 않으면 기존 이미지 유지
+            }
+
+            memberService.updateUser(userId, existingUser);
+
+            return ResponseEntity.ok(updatedUser);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("회원 정보 수정 중 오류 발생(controller): " + e.getMessage());
+        }
+
     }
 
     @GetMapping("/{userId}/mypage")

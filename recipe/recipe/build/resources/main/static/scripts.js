@@ -105,6 +105,8 @@ $(document).ready(function () {
         })
         .then(data => {
             console.log('현재 로그인된 사용자:', data);  // 사용자 정보 출력
+            const userId = data.userId;
+            document.getElementById('userIdDisplay').innerText = userId;
         })
         .catch(error => {
             console.log(error);  // 에러 출력
@@ -180,12 +182,11 @@ $(document).ready(function () {
         }
     });
 
-// 프로필 수정 폼 제출 시 처리
     document.getElementById('updateForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
         // 사용자 입력 값 가져오기
-        const userId = document.getElementById('userIdDisplay').innerText;  // 예시로 사용자 ID를 표시
+        const userId = document.getElementById('userIdDisplay').value;
         const nickname = document.getElementById('nickname').value;
         const email = document.getElementById('email').value;
         const phone = document.getElementById('phone').value;
@@ -208,21 +209,19 @@ $(document).ready(function () {
             nickname: nickname,
             email: email,
             phone: phone,
-            currentPassword: currentPassword,
-            newPassword: newPassword,
-            confirmPassword: confirmPassword,
-            profileImage: profileImage
+            password: newPassword,
+            profileImage: profileImage || null // profileImage가 없다면 null로 전송
         };
 
         // 사용자 정보 서버로 전송
-        fetch(`/api/users/${userId}/updateProfile`, {
+        fetch(`/api/users/updateUser`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(userData)
         })
-            .then(response => response.json())
+            .then(response => response.text())
             .then(data => {
                 if (data.success) {
                     alert('회원 정보가 성공적으로 수정되었습니다.');
