@@ -216,7 +216,7 @@ $(document).ready(function () {
         // 사용자 정보 객체 생성
         const userData = {
             userId: userId,
-            nickname: nickname,
+            userName: nickname,
             email: email,
             phone: phone,
             password: newPassword,
