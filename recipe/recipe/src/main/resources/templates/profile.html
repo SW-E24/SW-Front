@@ -130,7 +130,8 @@
 
         <!-- scripts.js 의 중복 체크 메소드 이용하도록 수정 -->
         <!-- Form 을 제출해서 테이블에 반영하도록 (register 과정과 비슷하게 수정) -->
-        <form id="updateForm" method="post" action="/api/users/updateProfile">
+        <form id="updateForm" method="post" action="/api/users/{userId}/updateUser">
+<!--        <form id="updateForm">-->
             <!-- 현재 사용자 아이디 접근 및 확인을 위해 사용자 아이디는 화면에 출력만 되도록 추가 -->
             <div class="form-group">
                 <p>아이디</br></p>

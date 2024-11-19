@@ -113,6 +113,7 @@ $(document).ready(function () {
         });
 
 
+    /*
     // 로그아웃 요청 처리 (로그아웃 버튼 클릭 시)
     document.getElementById('loginLink').addEventListener('click', function(event) {
         if (event.target.textContent === '로그아웃') {
@@ -126,6 +127,7 @@ $(document).ready(function () {
                 .catch(error => console.log('로그아웃 실패:', error));
         }
     });
+     */
 
     // 로그인 상태를 확인하는 fetch 요청
     fetch('/api/auth/currentUser', {
@@ -158,6 +160,7 @@ $(document).ready(function () {
     * ***********************/
 
     // 프로필 사진 변경 처리
+    /*
     document.getElementById('profile-pic-input').addEventListener('change', function(event) {
         const file = event.target.files[0];
 
@@ -187,58 +190,57 @@ $(document).ready(function () {
         }
     });
 
-    document.getElementById('updateForm').addEventListener('submit', function(event) {
-        event.preventDefault();
+     */
+
+    // 폼 제출 이벤트 핸들러 등록
+    $('#updateForm').on('submit', function (event) {
+        event.preventDefault(); // 기본 폼 제출 동작 막기
 
         // 사용자 입력 값 가져오기
-        const userId = document.getElementById('userIdDisplay').value;
-        const nickname = document.getElementById('nickname').value;
-        const email = document.getElementById('email').value;
-        const phone = document.getElementById('phone').value;
-        const currentPassword = document.getElementById('current-password').value;
-        const newPassword = document.getElementById('new-password').value;
-        const confirmPassword = document.getElementById('confirm-password').value;
+        const userId = $('#userIdDisplay').text(); // <p> 태그 값 가져오기
+        const nickname = $('#nickname').val();
+        const email = $('#email').val();
+        const phone = $('#phone').val();
+        const currentPassword = $('#current-password').val();
+        const newPassword = $('#new-password').val();
+        const confirmPassword = $('#confirm-password').val();
 
-        // 비밀번호 불일치 확인
+        // 비밀번호 확인 로직
         if (newPassword !== confirmPassword) {
-            alert('새 비밀번호와 확인 비밀번호가 일치하지 않습니다.');
+            $('#password-error').text('새 비밀번호와 확인 비밀번호가 일치하지 않습니다.');
             return;
+        } else {
+            $('#password-error').text(''); // 에러 메시지 초기화
         }
 
-        // 프로필 이미지 URL (변경된 경우 또는 기존 URL)
-        const profileImage = document.querySelector('.profile-pic img').src;
-
-        // 수정된 사용자 정보 객체
+        // 사용자 정보 객체 생성
         const userData = {
             userId: userId,
             nickname: nickname,
             email: email,
             phone: phone,
             password: newPassword,
-            profileImage: profileImage || null // profileImage가 없다면 null로 전송
         };
 
-        // 사용자 정보 서버로 전송
-        fetch(`/api/users/updateUser`, {
+        // 서버로 요청 보내기
+        fetch('/api/users/'+userId+'/updateUser', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(userData)
+            body: JSON.stringify(userData),
         })
-            .then(response => response.text())
+            .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    alert('회원 정보가 성공적으로 수정되었습니다.');
-                    window.location.href = '/mypage';  // 수정 후 마이페이지로 이동
+                    alert('회원 정보 수정 성공!');
+                    window.location.href = '/pages/mypage';
                 } else {
-                    alert('회원 정보 수정 실패');
+                    alert('수정 실패');
                 }
             })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('회원 정보 수정 중 오류가 발생했습니다.');
-            });
+            .catch(error => console.error('Error:', error));
     });
+
 
 });
