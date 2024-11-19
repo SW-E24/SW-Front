@@ -1,5 +1,6 @@
 package com.example.recipe.controller;
 
+import ch.qos.logback.core.model.Model;
 import com.example.recipe.dto.RecipeRequest;
 import com.example.recipe.entity.Grade;
 import com.example.recipe.entity.Member;
@@ -7,6 +8,9 @@ import com.example.recipe.entity.Recipe;
 import com.example.recipe.service.GradeService;
 import com.example.recipe.service.RecipeService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;

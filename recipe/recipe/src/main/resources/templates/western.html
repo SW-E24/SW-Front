@@ -60,22 +60,26 @@
       .board-section ul li {
          padding: 10px 0;
          border-bottom: 1px solid #ccc;
+         font-size: 16px;
       }
 
       .board-section ul li a {
-         color: #191919;
          text-decoration: none;
+         color: #191919;
       }
 
       .board-section ul li a:hover {
          text-decoration: underline;
       }
 
-      /* 페이지네이션 스타일 */
       .pagination {
          display: flex;
          justify-content: center;
          padding-top: 20px;
+      }
+
+      .pagination li {
+         margin: 0;
       }
 
       .pagination li a {
@@ -83,8 +87,7 @@
          text-decoration: none;
          padding: 5px 10px;
          border: 1px solid #dee2e6;
-         margin: 0 5px;
-         border-radius: 3px;
+         border-radius: 0;
       }
 
       .pagination li a:hover {
@@ -100,19 +103,19 @@
 
       .btn-create-post {
          margin-top: 20px;
-         background-color: #FEF9EE; /* 배경색 */
-         color: black; /* 글씨 색 검은색 */
-         border: 1px solid white; /* 테두리 추가 */
-         padding: 6px 11px; /* 버튼 크기 약간 줄임 */
-         font-size: 13px; /* 글씨 크기 약간 줄임 */
+         background-color: #FEF9EE;
+         color: black;
+         border: 1px solid white;
+         padding: 6px 11px;
+         font-size: 13px;
          cursor: pointer;
          display: block;
-         margin-left: auto; /* 오른쪽 정렬 */
+         margin-left: auto;
          border-radius: 5px;
       }
 
       .btn-create-post:hover {
-         background-color: #bacd92; /* 버튼에 마우스를 올렸을 때 배경색 변경 */
+         background-color: #bacd92;
       }
    </style>
 </head>
@@ -127,8 +130,8 @@
    <div class="menu-bar">
       <!-- 왼쪽 메뉴 (홈, 게시판) -->
       <ul>
-          <li><a href="index.html">홈</a></li>
-          <li><a href="board.html">게시판</a></li>
+         <li><a href="/pages/index">홈</a></li>
+         <li><a href="/pages/board">게시판</a></li>
       </ul>
 
       <!-- 오른쪽 메뉴 (로그인, 회원가입) -->
@@ -138,50 +141,41 @@
       </ul>
   </div>
 
-   <!-- 게시판 글 목록 -->
+   <!---양식 게시판 글 목록---->
    <div class="container board-section">
-      <h3>양식 게시판</h3>
+      <h3 th:text="${selectedCategory} + ' 게시판'">게시판</h3>
 
       <!-- 글 작성하기 버튼 -->
-      <button class="btn-create-post" onclick="window.location.href='/recipes/create'">글 작성하기</button>
+      <button class="btn-create-post" onclick="window.location.href='post register.html'">글 작성하기</button>
 
-      <ul>
-         <li><a href="#">양식 게시물 1</a></li>
-         <li><a href="#">양식 게시물 2</a></li>
-         <li><a href="#">양식 게시물 3</a></li>
-         <li><a href="#">양식 게시물 4</a></li>
-         <li><a href="#">양식 게시물 5</a></li>
+      <!-- 게시글이 없을 경우 메시지 표시 -->
+      <div th:if="${#lists.isEmpty(recipes)}">
+         <p>현재 등록된 게시글이 없습니다.</p>
+      </div>
+
+      <!-- 게시글 리스트 -->
+      <ul th:if="${!#lists.isEmpty(recipes)}">
+         <li th:each="recipe : ${recipes}">
+            <a th:href="'/post view?recipeId=' + ${recipe.recipeId}" th:text="${recipe.title}"></a>
+         </li>
       </ul>
    </div>
 
+
    <!-- 페이지네이션 -->
-   <nav aria-label="Page navigation example">
-      <ul class="pagination">
-         <li class="page-item">
-            <a class="page-link" href="#" aria-label="Previous">
-               << <span aria-hidden="true"></span>
-            </a>
-         </li>
-         <li class="page-item">
-            <a class="page-link" href="#">
-               < </a> </li> <li class="page-item"><a class="page-link" href="#">1</a></li>
-         <li class="page-item"><a class="page-link" href="#">2</a></li>
-         <li class="page-item"><a class="page-link" href="#">3</a></li>
-         <li class="page-item"><a class="page-link" href="#">4</a></li>
-         <li class="page-item"><a class="page-link" href="#">5</a></li>
-         <li class="page-item"><a class="page-link" href="#">6</a></li>
-         <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next">
-               > <span aria-hidden="true"></span>
-            </a>
-         </li>
-         <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next">
-               >> <span aria-hidden="true"></span>
-            </a>
-         </li>
-      </ul>
-   </nav>
+      <nav aria-label="Page navigation" th:if="${totalPages > 0}">
+         <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${currentPage <= 1} ? 'disabled'">
+               <a class="page-link" th:href="@{/category/western(category=${selectedCategory}, page=${currentPage - 1}, size=5)}" aria-label="Previous">&laquo;</a>
+            </li>
+            <li class="page-item" th:each="page : ${#numbers.sequence(1, totalPages)}" th:classappend="${page == currentPage} ? 'active'">
+               <a class="page-link" th:href="@{/category/western(category=${selectedCategory}, page=${page}, size=5)}" th:text="${page}"></a>
+            </li>
+            <li class="page-item" th:classappend="${currentPage >= totalPages} ? 'disabled'">
+               <a class="page-link" th:href="@{/category/western(category=${selectedCategory}, page=${currentPage + 1}, size=5)}" aria-label="Next">&raquo;</a>
+            </li>
+         </ul>
+      </nav>
 
    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>

@@ -18,8 +18,15 @@
       justify-content: center; /* 수평 중앙 정렬 */
       align-items: center; /* 수직 중앙 정렬 */
       flex-direction: column;
-      height: 80vh; /* 전체 화면 높이에 맞게 설정 */
+      height: 80h; /* 전체 화면 높이에 맞게 설정 */
       padding: 0;
+    }
+
+    img {
+      position: relative;
+      max-width: 100%; /* 부모 요소 너비를 초과하지 않음 */
+      max-height: 300px; /* 최대 높이를 제한 */
+      margin: 0 auto; /* 이미지를 중앙에 배치 (선택 사항) */
     }
 
     .banner {
@@ -89,7 +96,9 @@
     }
 
     .content-section {
-      margin-bottom: 20px;
+      max-width: 800px; /* 콘텐츠 최대 너비 */
+      overflow: hidden; /* 부모 요소를 벗어나지 않도록 숨김 */
+      margin: 0 auto; /* 콘텐츠 중앙 정렬 */
     }
 
     .content-section h3 {
@@ -198,132 +207,167 @@
     }
 
     .back-btn:hover {
-<<<<<<< HEAD
-      background-color: #b0b0b0;
-=======
       background-color: #f2f1ee;
->>>>>>> 882aa7c93a1a5d013138a4f2ccd172496094a705
+    }
+
+    #ingredients div {
+      margin-bottom: 10px;
+      padding-left: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    #ingredients span {
+      margin-right: 10px;
+    }
+
+    .step-image{
+      max-width: 100%;
+      max-height: 300px;
+      object-fit: contain;
     }
   </style>
 </head>
 <body>
-  <!-- 배너 -->
-  <div class="banner">
-    재료백과
-    <div class="menu-bar">
-      <!-- 왼쪽 메뉴 (홈, 게시판) -->
-      <ul>
-        <li><a href="index.html">홈</a></li>
-        <li><a href="board.html">게시판</a></li>
-      </ul>
+<!-- 배너 -->
+<div class="banner">
+  재료백과
+  <div class="menu-bar">
+    <!-- 왼쪽 메뉴 (홈, 게시판) -->
+    <ul>
+      <li><a href="/pages/index">홈</a></li>
+      <li><a href="/pages/board">게시판</a></li>
+    </ul>
 
-      <!-- 오른쪽 메뉴 (로그인, 회원가입) -->
-      <ul>
-        <li><a href="/pages/login">로그인</a></li>
-        <li><a href="/pages/register">회원가입</a></li>
-      </ul>
-    </div>
+    <!-- 오른쪽 메뉴 (로그인, 회원가입) -->
+    <ul>
+      <li><a href="/pages/login">로그인</a></li>
+      <li><a href="/pages/register">회원가입</a></li>
+    </ul>
   </div>
+</div>
 
-  <!-- 게시물 내용 -->
-  <div class="container">
-    <div class="title">레시피 제목</div>
-    <div class="nickname">작성자 닉네임</div>
+<!-- 게시물 내용 -->
+<div class="container">
+  <div class="title" th:text="${recipe.title}"></div>
+    <div class="nickname" th:text="'작성자: ' + ${recipe.user}"></div>
 
-    <div class="content-section">
-      <h3>재료</h3>
-      <div id="ingredients"></div>
-    </div>
-
-    <div class="content-section">
-      <h3>조리 방법</h3>
-      <div id="instructions"></div>
-    </div>
-
-    <div class="interaction-buttons">
-      <div>👁️ 조회수 <span id="viewCount">0</span></div>
-      <div>💬 댓글 <span id="commentCount">0</span></div>
-      <div id="likeButton" onclick="toggleLike()">❤️ 좋아요</div>
-      <div id="bookmarkButton" onclick="toggleBookmark()">📌 북마크</div>
-    </div>
-
-    <div class="comment-section">
-      <h4>댓글</h4>
-      <div class="comment-box">
-        <input type="text" id="commentInput" placeholder="댓글을 입력하세요">
-        <button onclick="addComment()">등록</button>
+  <div class="content-section">
+    <h3>재료</h3>
+    <div id="ingredients">
+      <div th:each="ingredient, iterStat : ${recipe.ingredients}">
+        <span th:text="'재료 ' + ${iterStat.index + 1} + ': ' + ${ingredient.name} + ' - ' + ${ingredient.quantity}"></span>
+        <button type="button"
+                th:attr="data-ingredient-name=${ingredient.name}"
+                onclick="goToPurchase(this)">구매하러 가기</button>
       </div>
-      <div class="comments-list" id="commentsList"></div>
     </div>
-
-    <!-- 이전 버튼 -->
-    <button class="back-btn" onclick="window.history.back()">이전</button>
   </div>
 
-  <script>
-    window.onload = function() {
-      const viewCountElement = document.getElementById("viewCount");
-      let viewCount = parseInt(localStorage.getItem("viewCount")) || 0;
-      viewCount++;
-      localStorage.setItem("viewCount", viewCount);
-      viewCountElement.textContent = viewCount;
+  <div class="content-section">
+    <h3>조리 방법</h3>
+    <ul>
+      <li th:each="step, indexStat : ${recipe.steps}">
+        <p th:text="${step.description}"></p>
+        <img th:if="${step.photo != null}"
+             th:src="'/image/' + ${recipe.recipeId} + '/' + ${indexStat.index}"
+             alt="Step Image"
+             class="step-image" />
+      </li>
+    </ul>
+  </div>
 
-      const ingredients = JSON.parse(localStorage.getItem("ingredients")) || ["재료 1", "재료 2", "재료 3"];
-      const instructions = JSON.parse(localStorage.getItem("instructions")) || ["조리 방법 단계 1", "조리 방법 단계 2", "조리 방법 단계 3"];
+  <div class="interaction-buttons">
+    <div>👁️ 조회수 <span id="viewCount">0</span></div>
+    <div>💬 댓글 <span id="commentCount">0</span></div>
+    <div id="likeButton" onclick="toggleLike()">❤️ 좋아요</div>
+    <div id="bookmarkButton" onclick="toggleBookmark()">📌 북마크</div>
+  </div>
 
-      const ingredientsDiv = document.getElementById("ingredients");
-      const instructionsDiv = document.getElementById("instructions");
+  <div class="comment-section">
+    <h4>댓글</h4>
+    <div class="comment-box">
+      <input type="text" id="commentInput" placeholder="댓글을 입력하세요">
+      <button onclick="addComment()">등록</button>
+    </div>
+    <div class="comments-list" id="commentsList"></div>
+  </div>
 
-      ingredients.forEach(ingredient => {
-        const p = document.createElement("p");
-        p.textContent = ingredient;
-        ingredientsDiv.appendChild(p);
-      });
+  <!-- 이전 버튼 -->
+  <button class="back-btn" onclick="window.history.back()">이전</button>
+</div>
 
-      instructions.forEach((instruction, index) => {
-        const p = document.createElement("p");
-        p.textContent = `${index + 1}. ${instruction}`;
-        instructionsDiv.appendChild(p);
-      });
-    };
+<script>
+  window.onload = function() {
+    const viewCountElement = document.getElementById("viewCount");
+    let viewCount = parseInt(localStorage.getItem("viewCount")) || 0;
+    viewCount++;
+    localStorage.setItem("viewCount", viewCount);
+    viewCountElement.textContent = viewCount;
 
-    function toggleBookmark() {
-      const bookmarkButton = document.getElementById("bookmarkButton");
-      bookmarkButton.classList.toggle("active");
+    // const ingredients = JSON.parse(localStorage.getItem("ingredients")) || ["재료 1", "재료 2", "재료 3"];
+    // const ingredientsDiv = document.getElementById("ingredients");
+
+    // const instructions = JSON.parse(localStorage.getItem("instructions")) || ["조리 방법 단계 1", "조리 방법 단계 2", "조리 방법 단계 3"];
+    // const instructionsDiv = document.getElementById("instructions");
+    //
+    // ingredients.forEach(ingredient => {
+    //   const p = document.createElement("p");
+    //   p.textContent = ingredient;
+    //   ingredientsDiv.appendChild(p);
+    // });
+    //
+    // instructions.forEach((instruction, index) => {
+    //   const p = document.createElement("p");
+    //   p.textContent = `${index + 1}. ${instruction}`;
+    //   instructionsDiv.appendChild(p);
+    // });
+  };
+
+  // 네이버 쇼핑 구매하러 가기 링크
+  function goToPurchase(button) {
+    const ingredient = button.getAttribute('data-ingredient-name');
+    const url = 'https://search.shopping.naver.com/search/all?query=' + encodeURIComponent(ingredient.trim());
+    window.open(url, '_blank');
+  }
+
+  function toggleBookmark() {
+    const bookmarkButton = document.getElementById("bookmarkButton");
+    bookmarkButton.classList.toggle("active");
+  }
+
+  function toggleLike() {
+    const likeButton = document.getElementById("likeButton");
+    likeButton.classList.toggle("active");
+  }
+
+  function addComment() {
+    const commentInput = document.getElementById("commentInput");
+    const commentsList = document.getElementById("commentsList");
+    const commentCountElement = document.getElementById("commentCount");
+
+    if (commentInput.value.trim() !== "") {
+      const commentItem = document.createElement("div");
+      commentItem.className = "comment-item";
+
+      const nickname = document.createElement("div");
+      nickname.className = "comment-nickname";
+      nickname.textContent = "작성자 닉네임";
+
+      const commentText = document.createElement("div");
+      commentText.className = "comment-text";
+      commentText.textContent = commentInput.value;
+
+      commentItem.appendChild(nickname);
+      commentItem.appendChild(commentText);
+      commentsList.appendChild(commentItem);
+
+      let commentCount = parseInt(commentCountElement.textContent);
+      commentCountElement.textContent = commentCount + 1;
+
+      commentInput.value = "";
     }
-
-    function toggleLike() {
-      const likeButton = document.getElementById("likeButton");
-      likeButton.classList.toggle("active");
-    }
-
-    function addComment() {
-      const commentInput = document.getElementById("commentInput");
-      const commentsList = document.getElementById("commentsList");
-      const commentCountElement = document.getElementById("commentCount");
-
-      if (commentInput.value.trim() !== "") {
-        const commentItem = document.createElement("div");
-        commentItem.className = "comment-item";
-
-        const nickname = document.createElement("div");
-        nickname.className = "comment-nickname";
-        nickname.textContent = "작성자 닉네임";
-
-        const commentText = document.createElement("div");
-        commentText.className = "comment-text";
-        commentText.textContent = commentInput.value;
-
-        commentItem.appendChild(nickname);
-        commentItem.appendChild(commentText);
-        commentsList.appendChild(commentItem);
-
-        let commentCount = parseInt(commentCountElement.textContent);
-        commentCountElement.textContent = commentCount + 1;
-
-        commentInput.value = "";
-      }
-    }
-  </script>
+  }
+</script>
 </body>
 </html>
