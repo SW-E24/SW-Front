@@ -113,39 +113,44 @@ $(document).ready(function () {
         });
 
 
-    // 로그아웃 처리 (세션 제거)
-    window.logout = function () {
-        fetch('/api/auth/logout', {
-            method: 'POST',
-            credentials: 'same-origin' // 쿠키를 포함하여 요청
-        })
-            .then(response => response.text())
-            .then(data => {
-                console.log(data); // 로그아웃 성공 메시지 확인
-                window.location.href = '/pages/login'; // 로그아웃 후 로그인 페이지로 이동
+    // 로그아웃 요청 처리 (로그아웃 버튼 클릭 시)
+    document.getElementById('loginLink').addEventListener('click', function(event) {
+        if (event.target.textContent === '로그아웃') {
+            fetch('/api/auth/logout', {
+                method: 'POST',
+                credentials: 'same-origin' // 동일한 출처로 쿠키를 포함한 요청
             })
-            .catch(error => {
-                console.error('로그아웃 실패:', error);
-            });
-    };
-
-
-    // 사용자 로그인 유무에 따라 로그인/로그아웃 버튼 화면 상태 변경
-    window.onload = function() {
-        const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
-        const loginMenu = document.querySelector('.login_menu');
-
-        // 로그인 상태 확인
-        if (isLoggedIn) {
-            loginMenu.innerHTML = `
-                    <li><a href="#" onclick="logout()">로그아웃</a></li>
-                    <li><a href="mypage.html">마이페이지</a></li>`;
-        } else {
-            loginMenu.innerHTML = `
-                    <li><a href="login.html">로그인</a></li>
-                    <li><a href="register.html">회원가입</a></li>`;
+                .then(() => {
+                    location.reload(); // 로그아웃 후 페이지 새로고침
+                })
+                .catch(error => console.log('로그아웃 실패:', error));
         }
-    };
+    });
+
+    // 로그인 상태를 확인하는 fetch 요청
+    fetch('/api/auth/currentUser', {
+        method: 'GET',
+        credentials: 'same-origin' // 동일한 출처로 쿠키를 포함한 요청
+    })
+        .then(response => {
+            if (response.status === 200) {
+                return response.json(); // 로그인된 사용자 정보 반환
+            } else {
+                throw new Error('로그인된 사용자가 없습니다.');
+            }
+        })
+        .then(data => {
+            // console.log('현재 로그인된 사용자:', data); // 사용자 정보 출력 - 위에 있어서 두 번 출력됨
+            // 로그인된 경우 메뉴를 업데이트
+            document.getElementById('loginLink').textContent = '로그아웃';
+            document.getElementById('loginLink').setAttribute('href', '/api/auth/logout');
+            document.getElementById('registerLink').textContent = '마이페이지';
+            document.getElementById('registerLink').setAttribute('href', '/pages/mypage');
+        })
+        .catch(error => {
+            console.log(error); // 에러 출력
+        });
+
 
 
     /************************
