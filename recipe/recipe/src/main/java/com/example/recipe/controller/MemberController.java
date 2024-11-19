@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RestController
 @RequestMapping("/api/users")
@@ -47,7 +48,7 @@ public class MemberController {
     }
 
     @PostMapping("/updateUser")
-    public ResponseEntity<?> updateUser(@RequestBody Member updatedUser) {
+    public ResponseEntity<?> updateUser(@RequestBody Member updatedUser, RedirectAttributes attributes) {
         try {
             // 기존 유저인지 확인
             String userId = updatedUser.getUserId();
@@ -68,6 +69,7 @@ public class MemberController {
             memberService.updateUser(userId, existingUser);
 
             return ResponseEntity.ok(updatedUser);
+
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("회원 정보 수정 중 오류 발생(controller): " + e.getMessage());
         }
