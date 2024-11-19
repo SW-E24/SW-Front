@@ -41,4 +41,46 @@ public class PageController {
     public String boardPage(Model model) {
         return "board";
     }
+
+    //홈 페이지로 이동
+    @GetMapping("/index")
+    public String indexPage(Model model) {
+        return "index";
+    }
+
+    //게시글 작성 페이지로 이동
+    @GetMapping("/post-register")
+    public String postRegisterPage(Model model) {return "post-register";}
+
+    //한식 카테고리 페이지로 이동
+    @GetMapping("/korean")
+    public String koreanPage(Model model) {
+        return "korean";
+    }
+
+    //중식 카테고리 페이지로 이동
+    @GetMapping("/chinese")
+    public String chinesePage(Model model) {
+        return "chinese";
+    }
+
+    //일식 카테고리 페이지로 이동
+    @GetMapping("/japanese")
+    public String japanesePage(Model model) {
+        return "japanese";
+    }
+
+    //양식 카테고리 페이지로 이동
+    @GetMapping("/western")
+    public String westernPage(Model model) {
+        return "western";
+    }
+
+    //디저트 카테고리 페이지로 이동
+    @GetMapping("/dessert")
+    public String dessertPage(Model model) {
+        return "dessert";
+    }
+
+
 }

@@ -109,14 +109,20 @@
 <div class="menu-bar">
   <!-- 왼쪽 메뉴 (홈, 게시판) -->
   <ul>
-    <li><a href="index.html">홈</a></li>
-    <li><a href="board.html">게시판</a></li>
+    <li><a href="/pages/index">홈</a></li>
+    <li><a href="/pages/board">게시판</a></li>
   </ul>
 
   <!-- 오른쪽 메뉴 -->
   <ul>
-    <li><a href="/pages/login">로그인</a></li>
-    <li><a href="/pages/register">회원가입</a></li>
+    <li>
+      <form id="logoutForm" action="/api/auth/logout" method="post">
+        <button type="submit" style="background: none; border: none; color: black; font-size: 18px; font-family: Arial, sans-serif; padding: 0; cursor: pointer; text-decoration: none;">
+          로그아웃
+        </button>
+      </form>
+    </li>
+    <li><a href="/pages/mypage">마이페이지</a></li>
   </ul>
 </div>
 
