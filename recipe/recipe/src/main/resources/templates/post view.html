@@ -198,132 +198,173 @@
     }
 
     .back-btn:hover {
-<<<<<<< HEAD
-      background-color: #b0b0b0;
-=======
-      background-color: #f2f1ee;
->>>>>>> 882aa7c93a1a5d013138a4f2ccd172496094a705
+    <<<<<<< HEAD
+    background-color: #b0b0b0;
+    =======
+    background-color: #f2f1ee;
+    >>>>>>> 882aa7c93a1a5d013138a4f2ccd172496094a705
     }
   </style>
 </head>
 <body>
-  <!-- 배너 -->
-  <div class="banner">
-    재료백과
-    <div class="menu-bar">
-      <!-- 왼쪽 메뉴 (홈, 게시판) -->
-      <ul>
-        <li><a href="index.html">홈</a></li>
-        <li><a href="board.html">게시판</a></li>
-      </ul>
+<!-- 배너 -->
+<div class="banner">
+  재료백과
+  <div class="menu-bar">
+    <!-- 왼쪽 메뉴 (홈, 게시판) -->
+    <ul>
+      <li><a href="index.html">홈</a></li>
+      <li><a href="/pages/board">게시판</a></li>
+    </ul>
 
-      <!-- 오른쪽 메뉴 (로그인, 회원가입) -->
-      <ul>
-        <li><a href="/pages/login">로그인</a></li>
-        <li><a href="/pages/register">회원가입</a></li>
-      </ul>
-    </div>
+    <!-- 오른쪽 메뉴 (로그인, 회원가입) -->
+    <ul id="loginMenu">
+      <li><a href="/pages/login" id="loginLink">로그인</a></li>
+      <li><a href="/pages/register" id="registerLink">회원가입</a></li>
+    </ul>
+  </div>
+</div>
+
+<!-- 게시물 내용 -->
+<div class="container">
+  <div class="title">레시피 제목</div>
+  <div class="nickname">작성자 닉네임</div>
+
+  <div class="content-section">
+    <h3>재료</h3>
+    <div id="ingredients"></div>
   </div>
 
-  <!-- 게시물 내용 -->
-  <div class="container">
-    <div class="title">레시피 제목</div>
-    <div class="nickname">작성자 닉네임</div>
-
-    <div class="content-section">
-      <h3>재료</h3>
-      <div id="ingredients"></div>
-    </div>
-
-    <div class="content-section">
-      <h3>조리 방법</h3>
-      <div id="instructions"></div>
-    </div>
-
-    <div class="interaction-buttons">
-      <div>👁️ 조회수 <span id="viewCount">0</span></div>
-      <div>💬 댓글 <span id="commentCount">0</span></div>
-      <div id="likeButton" onclick="toggleLike()">❤️ 좋아요</div>
-      <div id="bookmarkButton" onclick="toggleBookmark()">📌 북마크</div>
-    </div>
-
-    <div class="comment-section">
-      <h4>댓글</h4>
-      <div class="comment-box">
-        <input type="text" id="commentInput" placeholder="댓글을 입력하세요">
-        <button onclick="addComment()">등록</button>
-      </div>
-      <div class="comments-list" id="commentsList"></div>
-    </div>
-
-    <!-- 이전 버튼 -->
-    <button class="back-btn" onclick="window.history.back()">이전</button>
+  <div class="content-section">
+    <h3>조리 방법</h3>
+    <div id="instructions"></div>
   </div>
 
-  <script>
-    window.onload = function() {
-      const viewCountElement = document.getElementById("viewCount");
-      let viewCount = parseInt(localStorage.getItem("viewCount")) || 0;
-      viewCount++;
-      localStorage.setItem("viewCount", viewCount);
-      viewCountElement.textContent = viewCount;
+  <div class="interaction-buttons">
+    <div>👁️ 조회수 <span id="viewCount">0</span></div>
+    <div>💬 댓글 <span id="commentCount">0</span></div>
+    <div id="likeButton" onclick="toggleLike()">❤️ 좋아요</div>
+    <div id="bookmarkButton" onclick="toggleBookmark()">📌 북마크</div>
+  </div>
 
-      const ingredients = JSON.parse(localStorage.getItem("ingredients")) || ["재료 1", "재료 2", "재료 3"];
-      const instructions = JSON.parse(localStorage.getItem("instructions")) || ["조리 방법 단계 1", "조리 방법 단계 2", "조리 방법 단계 3"];
+  <div class="comment-section">
+    <h4>댓글</h4>
+    <div class="comment-box">
+      <input type="text" id="commentInput" placeholder="댓글을 입력하세요">
+      <button onclick="addComment()">등록</button>
+    </div>
+    <div class="comments-list" id="commentsList"></div>
+  </div>
 
-      const ingredientsDiv = document.getElementById("ingredients");
-      const instructionsDiv = document.getElementById("instructions");
+  <!-- 이전 버튼 -->
+  <button class="back-btn" onclick="window.history.back()">이전</button>
+</div>
 
-      ingredients.forEach(ingredient => {
-        const p = document.createElement("p");
-        p.textContent = ingredient;
-        ingredientsDiv.appendChild(p);
-      });
+<script>
+  window.onload = function() {
+    const viewCountElement = document.getElementById("viewCount");
+    let viewCount = parseInt(localStorage.getItem("viewCount")) || 0;
+    viewCount++;
+    localStorage.setItem("viewCount", viewCount);
+    viewCountElement.textContent = viewCount;
 
-      instructions.forEach((instruction, index) => {
-        const p = document.createElement("p");
-        p.textContent = `${index + 1}. ${instruction}`;
-        instructionsDiv.appendChild(p);
-      });
-    };
+    const ingredients = JSON.parse(localStorage.getItem("ingredients")) || ["재료 1", "재료 2", "재료 3"];
+    const instructions = JSON.parse(localStorage.getItem("instructions")) || ["조리 방법 단계 1", "조리 방법 단계 2", "조리 방법 단계 3"];
 
-    function toggleBookmark() {
-      const bookmarkButton = document.getElementById("bookmarkButton");
-      bookmarkButton.classList.toggle("active");
+    const ingredientsDiv = document.getElementById("ingredients");
+    const instructionsDiv = document.getElementById("instructions");
+
+    ingredients.forEach(ingredient => {
+      const p = document.createElement("p");
+      p.textContent = ingredient;
+      ingredientsDiv.appendChild(p);
+    });
+
+    instructions.forEach((instruction, index) => {
+      const p = document.createElement("p");
+      p.textContent = `${index + 1}. ${instruction}`;
+      instructionsDiv.appendChild(p);
+    });
+  };
+
+  function toggleBookmark() {
+    const bookmarkButton = document.getElementById("bookmarkButton");
+    bookmarkButton.classList.toggle("active");
+  }
+
+  function toggleLike() {
+    const likeButton = document.getElementById("likeButton");
+    likeButton.classList.toggle("active");
+  }
+
+  function addComment() {
+    const commentInput = document.getElementById("commentInput");
+    const commentsList = document.getElementById("commentsList");
+    const commentCountElement = document.getElementById("commentCount");
+
+    if (commentInput.value.trim() !== "") {
+      const commentItem = document.createElement("div");
+      commentItem.className = "comment-item";
+
+      const nickname = document.createElement("div");
+      nickname.className = "comment-nickname";
+      nickname.textContent = "작성자 닉네임";
+
+      const commentText = document.createElement("div");
+      commentText.className = "comment-text";
+      commentText.textContent = commentInput.value;
+
+      commentItem.appendChild(nickname);
+      commentItem.appendChild(commentText);
+      commentsList.appendChild(commentItem);
+
+      let commentCount = parseInt(commentCountElement.textContent);
+      commentCountElement.textContent = commentCount + 1;
+
+      commentInput.value = "";
     }
+  }
+</script>
 
-    function toggleLike() {
-      const likeButton = document.getElementById("likeButton");
-      likeButton.classList.toggle("active");
+<script>
+  // 로그인 상태를 확인하는 fetch 요청
+  fetch('/api/auth/currentUser', {
+    method: 'GET',
+    credentials: 'same-origin' // 동일한 출처로 쿠키를 포함한 요청
+  })
+          .then(response => {
+            if (response.status === 200) {
+              return response.json(); // 로그인된 사용자 정보 반환
+            } else {
+              throw new Error('로그인된 사용자가 없습니다.');
+            }
+          })
+          .then(data => {
+            console.log('현재 로그인된 사용자:', data); // 사용자 정보 출력
+            // 로그인된 경우 메뉴를 업데이트
+            document.getElementById('loginLink').textContent = '로그아웃';
+            document.getElementById('loginLink').setAttribute('href', '/api/auth/logout');
+            document.getElementById('registerLink').textContent = '마이페이지';
+            document.getElementById('registerLink').setAttribute('href', '/pages/mypage');
+          })
+          .catch(error => {
+            console.log(error); // 에러 출력
+          });
+
+  // 로그아웃 요청 처리 (로그아웃 버튼 클릭 시)
+  document.getElementById('loginLink').addEventListener('click', function(event) {
+    if (event.target.textContent === '로그아웃') {
+      fetch('/api/auth/logout', {
+        method: 'POST',
+        credentials: 'same-origin' // 동일한 출처로 쿠키를 포함한 요청
+      })
+              .then(() => {
+                location.reload(); // 로그아웃 후 페이지 새로고침
+              })
+              .catch(error => console.log('로그아웃 실패:', error));
     }
+  });
+</script>
 
-    function addComment() {
-      const commentInput = document.getElementById("commentInput");
-      const commentsList = document.getElementById("commentsList");
-      const commentCountElement = document.getElementById("commentCount");
-
-      if (commentInput.value.trim() !== "") {
-        const commentItem = document.createElement("div");
-        commentItem.className = "comment-item";
-
-        const nickname = document.createElement("div");
-        nickname.className = "comment-nickname";
-        nickname.textContent = "작성자 닉네임";
-
-        const commentText = document.createElement("div");
-        commentText.className = "comment-text";
-        commentText.textContent = commentInput.value;
-
-        commentItem.appendChild(nickname);
-        commentItem.appendChild(commentText);
-        commentsList.appendChild(commentItem);
-
-        let commentCount = parseInt(commentCountElement.textContent);
-        commentCountElement.textContent = commentCount + 1;
-
-        commentInput.value = "";
-      }
-    }
-  </script>
 </body>
 </html>
