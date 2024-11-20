@@ -4,7 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a7dca7e8-056d-44ea-b144-cab72912dd81" name="변경" comment="">
+    <list default="true" id="a7dca7e8-056d-44ea-b144-cab72912dd81" name="변경" comment="페이지이동">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recipe/recipe/.gradle/8.5/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/.gradle/8.5/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recipe/recipe/.gradle/8.5/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/.gradle/8.5/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recipe/recipe/.gradle/8.5/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/.gradle/8.5/fileHashes/fileHashes.bin" afterDir="false" />
@@ -23,8 +24,15 @@
       <change beforePath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/korean.html" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/korean.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/liked.html" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/liked.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/mycomment.html" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/mycomment.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/mypage.html" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/mypage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/mypost.html" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/mypost.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/post register.html" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/post register.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/post view.html" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/post view.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/post-register.html" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/post-register.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/profile.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/register.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/saved.html" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/saved.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/search.html" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/search.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/western.html" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/western.html" afterDir="false" />
     </list>
@@ -93,7 +101,7 @@
     "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "Spring Boot.RecipeApplication.executor": "Run",
-    "git-widget-placeholder": "ahhyunDev",
+    "git-widget-placeholder": "jiyeonDev",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -150,5 +158,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="페이지이동" />
+    <option name="LAST_COMMIT_MESSAGE" value="페이지이동" />
   </component>
 </project>

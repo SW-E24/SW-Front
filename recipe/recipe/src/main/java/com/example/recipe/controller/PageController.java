@@ -41,4 +41,12 @@ public class PageController {
     public String boardPage(Model model) {
         return "board";
     }
+
+    //홈 페이지로 이동
+    @GetMapping("/index")
+    public String indexPage(Model model) {
+        return "index";
+    }
 }
+
+
