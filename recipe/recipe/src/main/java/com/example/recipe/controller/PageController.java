@@ -20,6 +20,12 @@ public class PageController {
     @Autowired
     private RecipeService recipeService;
 
+    // 홈화면으로 이동 (index -> index)
+    @GetMapping("/index")
+    public String indexPage(Model model) {
+        return "index";
+    }
+
     // 회원가입 페이지로 이동 (index -> register)
     @GetMapping("/register")
     public String registerPage(Model model) {
