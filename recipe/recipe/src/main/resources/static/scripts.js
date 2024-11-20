@@ -226,7 +226,7 @@ $(document).ready(function () {
             },
             body: JSON.stringify(userData)
         })
-            .then(response => response.text())
+            .then(response => response.json())
             .then(data => {
                 if (data.success) {
                     alert('회원 정보가 성공적으로 수정되었습니다.');

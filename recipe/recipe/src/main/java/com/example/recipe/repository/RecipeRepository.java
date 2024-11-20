@@ -56,6 +56,6 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     Page<Recipe> findByIngredientContaining(@Param("ingredient") String ingredient, Pageable pageable);
 
     // 카테고리별 레시피 찾기
-    List<Recipe> findByCategory(String category);
+    Page<Recipe> findByCategory(String category, Pageable pageable);
 
 }
