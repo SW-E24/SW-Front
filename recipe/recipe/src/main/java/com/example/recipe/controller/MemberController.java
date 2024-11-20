@@ -83,14 +83,4 @@ public class MemberController {
         return ResponseEntity.ok(grade);
     }
 
-//    @PostMapping("/{userId}/updateProfile")
-//    public ResponseEntity<Member> updateProfile(@RequestBody Member updatedMember, @RequestParam String userId) {
-//        try {
-//            // 업데이트된 정보를 저장
-//            Member updatedUser = memberService.updateUser(userId, updatedMember);
-//            return ResponseEntity.ok(updatedUser); // 업데이트된 정보를 반환
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // 실패 시 오류 반환
-//        }
-//    }
 }

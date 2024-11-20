@@ -91,6 +91,9 @@ $(document).ready(function () {
             });
     });
 
+    // 회원정보 수정때 필요한 현재 사용자의 기존 비밀번호를 전역변수로 생성
+    let userPW = '';
+
     // 현재 로그인된 사용자 정보 가져오기
     fetch('/api/auth/currentUser', {
         method: 'GET',
@@ -106,6 +109,8 @@ $(document).ready(function () {
         .then(data => {
             console.log('현재 로그인된 사용자:', data);  // 사용자 정보 출력
             const userId = data.userId;
+            // const userPW = data.password;
+            userPW = data.password;
             document.getElementById('userIdDisplay').innerText = userId;
         })
         .catch(error => {
@@ -205,12 +210,28 @@ $(document).ready(function () {
         const newPassword = $('#new-password').val();
         const confirmPassword = $('#confirm-password').val();
 
-        // 비밀번호 확인 로직
-        if (newPassword !== confirmPassword) {
-            $('#password-error').text('새 비밀번호와 확인 비밀번호가 일치하지 않습니다.');
+        // 기존 비밀번호 입력이 틀렸을 때
+        if (currentPassword !== userPW) {
+            $('#password-error1').text('현재 비밀번호가 일치하지 않습니다.');
             return;
         } else {
-            $('#password-error').text(''); // 에러 메시지 초기화
+            $('#password-error1').text(''); // 에러 메시지 초기화
+        }
+
+        // 기존 비밀번호가 새로운 비밀번호와 동일할 때 사용 금지
+        if (newPassword === userPW) {
+            $('#password-error2').text('기존 비밀번호는 사용할 수 없습니다.');
+            return;
+        } else {
+            $('#password-error2').text(''); // 에러 메시지 초기화
+        }
+
+        // 비밀번호 확인 로직
+        if (newPassword !== confirmPassword) {
+            $('#password-error3').text('새 비밀번호와 확인 비밀번호가 일치하지 않습니다.');
+            return;
+        } else {
+            $('#password-error3').text(''); // 에러 메시지 초기화
         }
 
         // 사용자 정보 객체 생성
