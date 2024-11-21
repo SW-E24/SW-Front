@@ -18,21 +18,13 @@
       justify-content: center; /* 수평 중앙 정렬 */
       align-items: center; /* 수직 중앙 정렬 */
       flex-direction: column;
-      height: 80h; /* 전체 화면 높이에 맞게 설정 */
       padding: 0;
-    }
-
-    img {
-      position: relative;
-      max-width: 100%; /* 부모 요소 너비를 초과하지 않음 */
-      max-height: 300px; /* 최대 높이를 제한 */
-      margin: 0 auto; /* 이미지를 중앙에 배치 (선택 사항) */
     }
 
     .banner {
       background-color: #ffe69b;
       text-align: center;
-      padding: 80px 0;
+      padding: 100px 0;
       font-size: 36px;
       font-weight: bold;
       color: white;
@@ -65,7 +57,8 @@
       background-color: #ffe69b;
       color: black;
       text-decoration: none;
-      font-size: 15px;
+      font-size: 18px;
+      font_weight: normal;
     }
 
     .menu-bar ul li a:hover {
@@ -96,9 +89,7 @@
     }
 
     .content-section {
-      max-width: 800px; /* 콘텐츠 최대 너비 */
-      overflow: hidden; /* 부모 요소를 벗어나지 않도록 숨김 */
-      margin: 0 auto; /* 콘텐츠 중앙 정렬 */
+      margin-bottom: 20px;
     }
 
     .content-section h3 {
@@ -207,8 +198,11 @@
     }
 
     .back-btn:hover {
-      background-color: #f2f1ee;
->>>>>>> 882aa7c93a1a5d013138a4f2ccd172496094a705
+    <<<<<<< HEAD
+    background-color: #b0b0b0;
+    =======
+    background-color: #f2f1ee;
+    >>>>>>> 882aa7c93a1a5d013138a4f2ccd172496094a705
     }
   </style>
 </head>
@@ -223,18 +217,18 @@
       <li><a href="/pages/board">게시판</a></li>
     </ul>
 
-      <!-- 오른쪽 메뉴 (로그인, 회원가입) -->
-      <ul>
-        <li><a href="/pages/login">로그인</a></li>
-        <li><a href="/pages/register">회원가입</a></li>
-      </ul>
-    </div>
+    <!-- 오른쪽 메뉴 (로그인, 회원가입) -->
+    <ul id="loginMenu">
+      <li><a href="/pages/login" id="loginLink">로그인</a></li>
+      <li><a href="/pages/register" id="registerLink">회원가입</a></li>
+    </ul>
   </div>
+</div>
 
 <!-- 게시물 내용 -->
 <div class="container">
   <div class="title" th:text="${recipe.title}"></div>
-    <div class="nickname" th:text="'작성자: ' + ${recipe.user}"></div>
+  <div class="nickname" th:text="'작성자: ' + ${recipe.user}"></div>
 
   <div class="content-section">
     <h3>재료</h3>
@@ -289,69 +283,112 @@
     localStorage.setItem("viewCount", viewCount);
     viewCountElement.textContent = viewCount;
 
-    // const ingredients = JSON.parse(localStorage.getItem("ingredients")) || ["재료 1", "재료 2", "재료 3"];
-    // const ingredientsDiv = document.getElementById("ingredients");
+    /*
+    const ingredients = JSON.parse(localStorage.getItem("ingredients")) || ["재료 1", "재료 2", "재료 3"];
+    const instructions = JSON.parse(localStorage.getItem("instructions")) || ["조리 방법 단계 1", "조리 방법 단계 2", "조리 방법 단계 3"];
 
-    // const instructions = JSON.parse(localStorage.getItem("instructions")) || ["조리 방법 단계 1", "조리 방법 단계 2", "조리 방법 단계 3"];
-    // const instructionsDiv = document.getElementById("instructions");
-    //
-    // ingredients.forEach(ingredient => {
-    //   const p = document.createElement("p");
-    //   p.textContent = ingredient;
-    //   ingredientsDiv.appendChild(p);
-    // });
-    //
-    // instructions.forEach((instruction, index) => {
-    //   const p = document.createElement("p");
-    //   p.textContent = `${index + 1}. ${instruction}`;
-    //   instructionsDiv.appendChild(p);
-    // });
+    const ingredientsDiv = document.getElementById("ingredients");
+    const instructionsDiv = document.getElementById("instructions");
+
+    ingredients.forEach(ingredient => {
+      const p = document.createElement("p");
+      p.textContent = ingredient;
+      ingredientsDiv.appendChild(p);
+    });
+
+    instructions.forEach((instruction, index) => {
+      const p = document.createElement("p");
+      p.textContent = `${index + 1}. ${instruction}`;
+      instructionsDiv.appendChild(p);
+    });
   };
+  */
 
-  // 네이버 쇼핑 구매하러 가기 링크
-  function goToPurchase(button) {
-    const ingredient = button.getAttribute('data-ingredient-name');
-    const url = 'https://search.shopping.naver.com/search/all?query=' + encodeURIComponent(ingredient.trim());
-    window.open(url, '_blank');
-  }
-
-  function toggleBookmark() {
-    const bookmarkButton = document.getElementById("bookmarkButton");
-    bookmarkButton.classList.toggle("active");
-  }
-
-  function toggleLike() {
-    const likeButton = document.getElementById("likeButton");
-    likeButton.classList.toggle("active");
-  }
-
-  function addComment() {
-    const commentInput = document.getElementById("commentInput");
-    const commentsList = document.getElementById("commentsList");
-    const commentCountElement = document.getElementById("commentCount");
-
-    if (commentInput.value.trim() !== "") {
-      const commentItem = document.createElement("div");
-      commentItem.className = "comment-item";
-
-      const nickname = document.createElement("div");
-      nickname.className = "comment-nickname";
-      nickname.textContent = "작성자 닉네임";
-
-      const commentText = document.createElement("div");
-      commentText.className = "comment-text";
-      commentText.textContent = commentInput.value;
-
-      commentItem.appendChild(nickname);
-      commentItem.appendChild(commentText);
-      commentsList.appendChild(commentItem);
-
-      let commentCount = parseInt(commentCountElement.textContent);
-      commentCountElement.textContent = commentCount + 1;
-
-      commentInput.value = "";
+    // 네이버 쇼핑 구매하러 가기 링크
+    function goToPurchase(button) {
+      const ingredient = button.getAttribute('data-ingredient-name');
+      const url = 'https://search.shopping.naver.com/search/all?query=' + encodeURIComponent(ingredient.trim());
+      window.open(url, '_blank');
     }
-  }
+
+    function toggleBookmark() {
+      const bookmarkButton = document.getElementById("bookmarkButton");
+      bookmarkButton.classList.toggle("active");
+    }
+
+    function toggleLike() {
+      const likeButton = document.getElementById("likeButton");
+      likeButton.classList.toggle("active");
+    }
+
+    function addComment() {
+      const commentInput = document.getElementById("commentInput");
+      const commentsList = document.getElementById("commentsList");
+      const commentCountElement = document.getElementById("commentCount");
+
+      if (commentInput.value.trim() !== "") {
+        const commentItem = document.createElement("div");
+        commentItem.className = "comment-item";
+
+        const nickname = document.createElement("div");
+        nickname.className = "comment-nickname";
+        nickname.textContent = "작성자 닉네임";
+
+        const commentText = document.createElement("div");
+        commentText.className = "comment-text";
+        commentText.textContent = commentInput.value;
+
+        commentItem.appendChild(nickname);
+        commentItem.appendChild(commentText);
+        commentsList.appendChild(commentItem);
+
+        let commentCount = parseInt(commentCountElement.textContent);
+        commentCountElement.textContent = commentCount + 1;
+
+        commentInput.value = "";
+      }
+    }
 </script>
+
+<script>
+  // 로그인 상태를 확인하는 fetch 요청
+  fetch('/api/auth/currentUser', {
+    method: 'GET',
+    credentials: 'same-origin' // 동일한 출처로 쿠키를 포함한 요청
+  })
+          .then(response => {
+            if (response.status === 200) {
+              return response.json(); // 로그인된 사용자 정보 반환
+            } else {
+              throw new Error('로그인된 사용자가 없습니다.');
+            }
+          })
+          .then(data => {
+            console.log('현재 로그인된 사용자:', data); // 사용자 정보 출력
+            // 로그인된 경우 메뉴를 업데이트
+            document.getElementById('loginLink').textContent = '로그아웃';
+            document.getElementById('loginLink').setAttribute('href', '/api/auth/logout');
+            document.getElementById('registerLink').textContent = '마이페이지';
+            document.getElementById('registerLink').setAttribute('href', '/pages/mypage');
+          })
+          .catch(error => {
+            console.log(error); // 에러 출력
+          });
+
+  // 로그아웃 요청 처리 (로그아웃 버튼 클릭 시)
+  document.getElementById('loginLink').addEventListener('click', function(event) {
+    if (event.target.textContent === '로그아웃') {
+      fetch('/api/auth/logout', {
+        method: 'POST',
+        credentials: 'same-origin' // 동일한 출처로 쿠키를 포함한 요청
+      })
+              .then(() => {
+                location.reload(); // 로그아웃 후 페이지 새로고침
+              })
+              .catch(error => console.log('로그아웃 실패:', error));
+    }
+  });
+</script>
+
 </body>
 </html>
