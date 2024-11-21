@@ -24,14 +24,17 @@ public class CommentController {
     @PostMapping("/create")
     public Comment addComment(@RequestBody CommentRequest commentRequest, HttpSession session) {
         // 댓글 작성한 사용자 저장
+        Long recipeId = commentRequest.getRecipeId();
+        if (recipeId == null) {
+            throw new IllegalArgumentException("recipeId는 필수 값입니다.");
+        }
         Member currentUser = (Member) session.getAttribute("currentUser");
         if (currentUser == null) {
             throw new RuntimeException("로그인 상태가 아닙니다.");
         }
-
         Comment createdComment = commentService.addComment(
                 commentRequest.getRecipeId(),
-                commentRequest.getUserId(),
+                currentUser.getUserId(),
                 commentRequest.getContent()
         );
 
