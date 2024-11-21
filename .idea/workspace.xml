@@ -4,18 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a7dca7e8-056d-44ea-b144-cab72912dd81" name="변경" comment="페이지이동">
+    <list default="true" id="a7dca7e8-056d-44ea-b144-cab72912dd81" name="변경" comment="수정">
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recipe/recipe/.gradle/8.5/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/.gradle/8.5/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recipe/recipe/.gradle/8.5/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/.gradle/8.5/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recipe/recipe/.gradle/8.5/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/.gradle/8.5/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recipe/recipe/.gradle/8.5/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/.gradle/8.5/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recipe/recipe/.gradle/8.5/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/.gradle/8.5/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recipe/recipe/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recipe/recipe/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recipe/recipe/build/classes/java/main/com/example/recipe/controller/PageController.class" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/build/classes/java/main/com/example/recipe/controller/PageController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recipe/recipe/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recipe/recipe/src/main/java/com/example/recipe/controller/PageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/src/main/java/com/example/recipe/controller/PageController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recipe/recipe/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/board.html" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/board.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/chinese.html" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/chinese.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/dessert.html" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/dessert.html" afterDir="false" />
@@ -23,15 +20,13 @@
       <change beforePath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/japanese.html" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/japanese.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/korean.html" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/korean.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/liked.html" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/liked.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/login.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/mycomment.html" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/mycomment.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/mypage.html" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/mypage.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/mypost.html" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/mypost.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/post register.html" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/post register.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/post register.html" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/post view.html" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/post view.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/post-register.html" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/post-register.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/profile.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/register.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/saved.html" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/saved.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/search.html" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/search.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/western.html" beforeDir="false" afterPath="$PROJECT_DIR$/recipe/recipe/src/main/resources/templates/western.html" afterDir="false" />
@@ -92,26 +87,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.recipe 빌드.executor": "Run",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "Spring Boot.RecipeApplication.executor": "Run",
-    "git-widget-placeholder": "jiyeonDev",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.recipe 빌드.executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;Spring Boot.RecipeApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;jiyeon&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;org.jetbrains.plugins.github.ui.GithubSettingsConfigurable&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="RecipeApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="recipe.main" />
@@ -142,6 +137,7 @@
       <workItem from="1731997674562" duration="9274000" />
       <workItem from="1732029995461" duration="2942000" />
       <workItem from="1732032949213" duration="6884000" />
+      <workItem from="1732178526431" duration="1716000" />
     </task>
     <servers />
   </component>
@@ -161,6 +157,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="페이지이동" />
-    <option name="LAST_COMMIT_MESSAGE" value="페이지이동" />
+    <MESSAGE value="수정" />
+    <option name="LAST_COMMIT_MESSAGE" value="수정" />
   </component>
 </project>

@@ -132,9 +132,9 @@
       </ul>
 
       <!-- 오른쪽 메뉴 (로그인, 회원가입) -->
-      <ul>
-         <li><a href="/pages/index">홈</a></li>
-         <li><a href="/pages/board">게시판</a></li>
+      <ul id="loginMenu">
+         <li><a href="/pages/login" id="loginLink">로그인</a></li>
+         <li><a href="/pages/register" id="registerLink">회원가입</a></li>
       </ul>
   </div>
 
@@ -177,6 +177,45 @@
    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+   <script>
+      // 로그인 상태를 확인하는 fetch 요청
+      fetch('/api/auth/currentUser', {
+         method: 'GET',
+         credentials: 'same-origin' // 동일한 출처로 쿠키를 포함한 요청
+      })
+              .then(response => {
+                 if (response.status === 200) {
+                    return response.json(); // 로그인된 사용자 정보 반환
+                 } else {
+                    throw new Error('로그인된 사용자가 없습니다.');
+                 }
+              })
+              .then(data => {
+                 console.log('현재 로그인된 사용자:', data); // 사용자 정보 출력
+                 // 로그인된 경우 메뉴를 업데이트
+                 document.getElementById('loginLink').textContent = '로그아웃';
+                 document.getElementById('loginLink').setAttribute('href', '/api/auth/logout');
+                 document.getElementById('registerLink').textContent = '마이페이지';
+                 document.getElementById('registerLink').setAttribute('href', '/pages/mypage');
+              })
+              .catch(error => {
+                 console.log(error); // 에러 출력
+              });
+
+      // 로그아웃 요청 처리 (로그아웃 버튼 클릭 시)
+      document.getElementById('loginLink').addEventListener('click', function(event) {
+         if (event.target.textContent === '로그아웃') {
+            fetch('/api/auth/logout', {
+               method: 'POST',
+               credentials: 'same-origin' // 동일한 출처로 쿠키를 포함한 요청
+            })
+                    .then(() => {
+                       location.reload(); // 로그아웃 후 페이지 새로고침
+                    })
+                    .catch(error => console.log('로그아웃 실패:', error));
+         }
+      });
+   </script>
 </body>
 
 </html>
