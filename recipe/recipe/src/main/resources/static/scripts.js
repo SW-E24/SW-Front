@@ -263,5 +263,9 @@ $(document).ready(function () {
             .catch(error => console.error('Error:', error));
     });
 
+    /**************************
+    * 좋아요, 댓글, 북마크 관련 로직
+    * *************************/
+
 
 });
