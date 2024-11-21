@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>레시피 등록</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center; /* 수평 중앙 정렬 */
+            align-items: center; /* 수직 중앙 정렬 */
+            flex-direction: column;
+            padding: 0;
+        }
+
+        .banner {
+            background-color: #ffe69b;
+            text-align: center;
+            padding: 100px 0;
+            font-size: 36px;
+            font-weight: bold;
+            color: white;
+            width: 100%;
+            position: relative;
+        }
+
+        /* 메뉴바 스타일 */
+        .menu-bar {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .menu-bar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .menu-bar ul li {
+            padding: 0 15px;
+        }
+
+        .menu-bar ul li a {
+            background-color: #ffe69b;
+            color: black;
+            text-decoration: none;
+            font-size: 18px;
+            font-weigth: normal;
+        }
+
+        .menu-bar ul li a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            width: 700px;
+            padding: 40px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .category-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .category-group label {
+            font-weight: normal;
+            font-size: 16px;
+        }
+
+        .addable-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .addable-group input[type="text"] {
+            flex: 1;
+            font-size: 16px;
+        }
+
+        .add-btn {
+            padding: 10px;
+            background-color: #bacd92;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .add-btn:hover {
+            background-color: #bacd92;
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 14px;
+            font-size: 18px;
+            background-color: #bacd92;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .register-btn:hover {
+            background-color: #bacd92;
+        }
+
+        .item-list {
+            margin-top: 10px;
+        }
+
+        .item-list div {
+            margin-bottom: 10px;
+            padding: 8px;
+            background-color: #f1f1f1;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        /* 이전 버튼 스타일 */
+        .back-btn {
+            margin-top: 20px;
+            padding: 6px 12px;
+            background-color: #f2f1ee;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .back-btn:hover {
+            background-color: #f2f1ee;
+        }
+    </style>
+</head>
+<body>
+<!-- 배너 -->
+<div class="banner">
+    재료백과
+    <div class="menu-bar">
+        <!-- 왼쪽 메뉴 (홈, 게시판) -->
+        <ul>
+            <li><a href="/pages/index">홈</a></li>
+            <li><a href="/pages/board">게시판</a></li>
+        </ul>
+
+        <!-- 오른쪽 메뉴 (로그인, 회원가입) -->
+        <ul id="loginMenu">
+            <li><a href="/pages/login" id="loginLink">로그인</a></li>
+            <li><a href="/pages/register" id="registerLink">회원가입</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="container">
+    <div class="form-group">
+        <label for="title">제목:</label>
+        <input type="text" id="title" name="title" placeholder="레시피 제목 입력">
+    </div>
+    <div class="form-group">
+        <label>카테고리:</label>
+        <div class="category-group">
+            <label><input type="radio" name="category" value="한식"> 한식</label>
+            <label><input type="radio" name="category" value="중식"> 중식</label>
+            <label><input type="radio" name="category" value="일식"> 일식</label>
+            <label><input type="radio" name="category" value="양식"> 양식</label>
+            <label><input type="radio" name="category" value="디저트"> 디저트</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>재료:</label>
+        <div id="ingredient-container">
+            <div class="addable-group">
+                <input type="text" placeholder="재료 이름" class="ingredient-name">
+                <input type="text" placeholder="용량 (예: 100g, 한 컵)" class="ingredient-quantity">
+                <button type="button" class="add-btn" onclick="addIngredient()">+</button>
+            </div>
+        </div>
+    </div>
+    <!-- 조리 방법 입력 -->
+    <div class="form-group">
+        <label>조리 방법:</label>
+        <div id="step-container">
+            <div class="addable-group">
+                <input type="text" placeholder="조리 방법 입력" class="step-description">
+                <input type="file" accept="image/*" class="step-photo">
+                <button type="button" class="add-btn" onclick="addStep()">+</button>
+            </div>
+        </div>
+    </div>
+    <button class="register-btn" onclick="registerRecipe()">레시피 등록</button>
+
+    <!-- 이전 버튼 -->
+    <button class="back-btn" onclick="window.history.back()">이전</button>
+
+
+    <script>
+
+        // 재료 추가 함수
+    function addIngredient() {
+        const ingredientContainer = document.getElementById('ingredient-container');
+        const newIngredient = document.createElement('div');
+        newIngredient.className = 'addable-group';
+        newIngredient.innerHTML = `
+            <input type="text" placeholder="재료 이름" class="ingredient-name">
+            <input type="text" placeholder="용량 (예: 100g, 한 컵)" class="ingredient-quantity">
+            <button type="button" class="remove-btn" onclick="removeElement(this)">-</button>
+        `;
+        ingredientContainer.appendChild(newIngredient);
+    }
+
+    // 조리 방법 추가 함수
+    function addStep() {
+        const stepContainer = document.getElementById('step-container');
+        const newStep = document.createElement('div');
+        newStep.className = 'addable-group';
+        newStep.innerHTML = `
+            <input type="text" placeholder="조리 방법 입력" class="step-description">
+            <input type="file" accept="image/*" class="step-photo">
+            <button type="button" class="remove-btn" onclick="removeElement(this)">-</button>
+        `;
+        stepContainer.appendChild(newStep);
+    }
+
+    // 요소 제거 함수
+    function removeElement(button) {
+        button.parentElement.remove();
+    }
+
+    // Base64 변환 함수
+    async function convertToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result.split(',')[1]); // Base64 데이터 추출
+            reader.onerror = error => reject(error);
+            reader.readAsDataURL(file);
+        });
+    }
+
+    // 레시피 등록 함수
+    async function registerRecipe() {
+        const title = document.getElementById('title').value.trim();
+        const category = document.querySelector('input[name="category"]:checked')?.value;
+
+        // 재료 수집
+        const ingredients = Array.from(document.querySelectorAll('.ingredient-name')).map((ingredient, index) => ({
+            name: ingredient.value.trim(),
+            quantity: document.querySelectorAll('.ingredient-quantity')[index]?.value.trim()
+        }));
+
+        // 조리 단계 수집 (설명과 사진 포함)
+        const steps = await Promise.all(
+            Array.from(document.querySelectorAll('.addable-group')).map(async group => {
+                const description = group.querySelector('.step-description')?.value.trim(); // 조리 방법 설명
+                const photoInput = group.querySelector('.step-photo'); // 사진 업로드 input
+                const photoFile = photoInput?.files[0]; // 업로드된 파일
+                const base64Photo = photoFile ? await convertToBase64(photoFile) : null; // Base64로 변환
+                return { description, photo: base64Photo };
+            })
+        );
+
+
+
+        // 서버로 전송할 데이터 생성
+        const requestBody = {
+            title,
+            category,
+            ingredients,
+            steps,
+            description: "레시피 설명" // 필요시 수정 가능
+        };
+
+        // 서버 요청
+        try {
+            const response = await fetch('/api/recipes/create', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(requestBody)
+            });
+
+            if (response.ok) {
+                alert('레시피가 등록되었습니다!');
+            } else {
+                const errorData = await response.json();
+                alert(`레시피 등록에 실패했습니다: ${errorData.message || '알 수 없는 오류'}`);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('오류가 발생했습니다.');
+        }
+    }
+    </script>
+
+    <script>
+        // 로그인 상태를 확인하는 fetch 요청
+        fetch('/api/auth/currentUser', {
+           method: 'GET',
+           credentials: 'same-origin' // 동일한 출처로 쿠키를 포함한 요청
+        })
+        .then(response => {
+           if (response.status === 200) {
+              return response.json(); // 로그인된 사용자 정보 반환
+           } else {
+              throw new Error('로그인된 사용자가 없습니다.');
+           }
+        })
+        .then(data => {
+           console.log('현재 로그인된 사용자:', data); // 사용자 정보 출력
+           // 로그인된 경우 메뉴를 업데이트
+           document.getElementById('loginLink').textContent = '로그아웃';
+           document.getElementById('loginLink').setAttribute('href', '/api/auth/logout');
+           document.getElementById('registerLink').textContent = '마이페이지';
+           document.getElementById('registerLink').setAttribute('href', '/pages/mypage');
+        })
+        .catch(error => {
+           console.log(error); // 에러 출력
+        });
+
+        // 로그아웃 요청 처리 (로그아웃 버튼 클릭 시)
+        document.getElementById('loginLink').addEventListener('click', function(event) {
+           if (event.target.textContent === '로그아웃') {
+              fetch('/api/auth/logout', {
+                 method: 'POST',
+                 credentials: 'same-origin' // 동일한 출처로 쿠키를 포함한 요청
+              })
+              .then(() => {
+                 location.reload(); // 로그아웃 후 페이지 새로고침
+              })
+              .catch(error => console.log('로그아웃 실패:', error));
+           }
+        });
+    </script>
+  </body>
+</html>
