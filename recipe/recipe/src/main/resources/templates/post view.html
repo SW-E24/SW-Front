@@ -272,7 +272,6 @@
   <!-- 이전 버튼 -->
   <button class="back-btn" onclick="window.history.back()">이전</button>
 
-
 <script>
   // 로그인 상태에 따라 상단 버튼이 바뀌도록 하는 로직
   fetch('/api/auth/currentUser', {
@@ -304,25 +303,66 @@
     window.open(url, '_blank');
   }
 
-  window.onload = function() {
-    const viewCountElement = document.getElementById("viewCount");
-    let viewCount = parseInt(localStorage.getItem("viewCount")) || 0;
-    viewCount++;
-    localStorage.setItem("viewCount", viewCount);
-    viewCountElement.textContent = viewCount;
-
   function toggleBookmark() {
     const bookmarkButton = document.getElementById("bookmarkButton");
-    bookmarkButton.classList.toggle("active");
+    const recipeContainer = document.getElementById('recipeContainer');
+    const recipeId = recipeContainer.getAttribute('data-recipe-id');
+
+    // 북마크 버튼을 누른 사용자 정보 가져오기
+    fetch('/api/auth/currentUser', {
+      method: 'GET',
+      credentials: 'same-origin' // 동일한 출처로 쿠키 포함
+    })
+            .then(response => {
+              if (response.status === 200) {
+                return response.json(); // JSON 형태의 사용자 정보 반환
+              } else {
+                throw new Error('로그인된 사용자가 없습니다.');
+              }
+            })
+            .then(data => {
+              const userId = data.userId;
+
+              // 북마크 상태 확인
+              const isBookmarked = likeButton.classList.contains("active");
+              const method = isBookmarked ? 'DELETE' : 'POST';
+
+              // 서버로 북마크 데이터 (Bookmark 객체 형태 - json) 전송
+              const bookmark = {
+                user: { userId: userId },
+                recipe: { recipeId: recipeId },
+                date: new Date().toISOString()
+              }
+              fetch(`/api/bookmarks`, {
+                method: method,
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(bookmark)
+              })
+                      .then(response => {
+                        if (response.ok) {
+                          bookmarkButton.classList.toggle("active"); // UI 업데이트
+                        } else {
+                          alert('좋아요 처리 중 오류가 발생했습니다.');
+                        }
+                      })
+                      .catch(error => {
+                        console.error('좋아요 요청 에러:', error);
+                      });
+            })
+            .catch(error => {
+              console.error('사용자 정보 가져오기 실패:', error);
+            });
   }
+
 
   function toggleLike() {
     const likeButton = document.getElementById("likeButton");
     const recipeContainer = document.getElementById('recipeContainer');
     const recipeId = recipeContainer.getAttribute('data-recipe-id');
-    console.log('레시피 ID:', recipeId);
 
-    // 사용자 정보 가져오기
+    // 좋아요 버튼을 누른 사용자 정보 가져오기
     fetch('/api/auth/currentUser', {
       method: 'GET',
       credentials: 'same-origin' // 동일한 출처로 쿠키 포함
@@ -390,7 +430,6 @@
       commentInput.value = "";
     }
   }
-}
 </script>
 
 <script src="/scripts.js"></script>

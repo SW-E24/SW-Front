@@ -40,10 +40,6 @@ public class BookmarkService {
         return bookmarkRepository.save(bookmark);
     }
 
-//    public Bookmark addBookmark(Bookmark bookmark) { //북마크 추가 메소드
-//        bookmark.setDate(LocalDateTime.now());
-//        return bookmarkRepository.save(bookmark);
-//    }
 
     public List<Bookmark> getBookmarksByUserID(String userID) { //모든 북마크를 가져오는 메소드
         return bookmarkRepository.findAllByUserUserId(userID);
