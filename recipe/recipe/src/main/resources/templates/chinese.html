@@ -79,23 +79,21 @@
       }
 
       .pagination li a {
-         background-color: #fef9ee; /* 배경색 */
-         color: black; /* 글씨 색상 */
+         color: #007bff;
          text-decoration: none;
-         padding: 10px 15px; /* 패딩 조정 */
-         margin: 0 5px; /* 각 항목 간격 */
-         border: none; /* 테두리 제거 */
-         border-radius: 5px; /* 부드러운 모서리 */
-         font-size: 16px; /* 글씨 크기 */
+         padding: 5px 10px;
+         margin: 0 5px;
+         border: 1px solid #dee2e6;
+         border-radius: 3px; /* 부드러운 모서리 */
       }
 
       .pagination li a:hover {
-         background-color: #bacd92; /* 호버 시 배경색 */
+         background-color: #007bff; /* 호버 시 배경색 */
          color: white; /* 호버 시 글씨 색상 */
       }
 
       .pagination .active a {
-         background-color: #bacd92; /* 활성화된 페이지 배경색 */
+         background-color: #007bff; /* 활성화된 페이지 배경색 */
          color: white; /* 활성화된 페이지 글씨 색상 */
       }
 
@@ -134,12 +132,13 @@
       <li><a href="/pages/board">게시판</a></li>
    </ul>
 
-      <!-- 오른쪽 메뉴 (로그인, 회원가입) -->
-      <ul>
-         <li><a href="/pages/login" id="loginLink">로그인</a></li>
-         <li><a href="/pages/register" id="registerLink">회원가입</a></li>
-      </ul>
+   <!-- 오른쪽 메뉴 (로그인, 회원가입) -->
+   <ul>
+      <li><a href="/pages/login" id="loginLink">로그인</a></li>
+      <li><a href="/pages/register" id="registerLink">회원가입</a></li>
+   </ul>
   </div>
+
    <!---중식 게시판 글 목록---->
    <div class="container board-section">
       <h3 th:text="${selectedCategory} + ' 게시판'">게시판</h3>
@@ -149,7 +148,7 @@
 
       <!-- 게시글이 없을 경우 메시지 표시 -->
       <div th:if="${#lists.isEmpty(recipes)}">
-         <p>현재 등록된 게시글이 없습니다.</p>
+         <p>현재 게시판에 등록된 글이 없습니다.</p>
       </div>
 
       <!-- 게시글 리스트 -->

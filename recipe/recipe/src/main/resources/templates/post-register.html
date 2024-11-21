@@ -58,7 +58,7 @@
             color: black;
             text-decoration: none;
             font-size: 18px;
-            font-weigth: normal;
+            font-weight: normal;
         }
 
         .menu-bar ul li a:hover {
@@ -236,7 +236,9 @@
     <!-- 이전 버튼 -->
     <button class="back-btn" onclick="window.history.back()">이전</button>
 
+
     <script>
+
         // 재료 추가 함수
         function addIngredient() {
             const ingredientContainer = document.getElementById('ingredient-container');
@@ -299,6 +301,8 @@
                     return { description, photo: base64Photo };
                 })
             );
+
+
 
             // 서버로 전송할 데이터 생성
             const requestBody = {
@@ -369,5 +373,6 @@
             }
         });
     </script>
+
 </body>
 </html>
