@@ -144,41 +144,30 @@
 
     <!-- 글 작성하기 버튼 -->
     <button class="btn-create-post" onclick="window.location.href='/recipes/create'">글 작성하기</button>
-    <ul>
-        <li><a href="#">게시물 1</a></li>
-        <li><a href="#">게시물 2</a></li>
-        <li><a href="#">게시물 3</a></li>
-        <li><a href="#">게시물 4</a></li>
-        <li><a href="#">게시물 5</a></li>
+    <!-- 게시글이 없을 경우 메시지 표시 -->
+    <div th:if="${#lists.isEmpty(recipes)}">
+        <p>현재 등록된 게시글이 없습니다.</p>
+    </div>
+
+    <!-- 게시글 리스트 -->
+    <ul th:if="${!#lists.isEmpty(recipes)}">
+        <li th:each="recipe : ${recipes}">
+            <a th:href="'/post view?recipeId=' + ${recipe.recipeId}" th:text="${recipe.title}"></a>
+        </li>
     </ul>
 </div>
 
 <!-- 페이지네이션 -->
-<nav aria-label="Page navigation example">
-    <ul class="pagination">
-        <li class="page-item">
-            <a class="page-link" href="#" aria-label="Previous">
-                << <span aria-hidden="true"></span>
-            </a>
+<nav aria-label="Page navigation" th:if="${totalPages > 0}">
+    <ul class="pagination justify-content-center">
+        <li class="page-item" th:classappend="${currentPage <= 1} ? 'disabled'">
+            <a class="page-link" th:href="@{/pages/board(page=${currentPage - 1}, size=5)}" aria-label="Previous">&laquo;</a>
         </li>
-        <li class="page-item">
-            <a class="page-link" href="#">&lt;</a>
+        <li class="page-item" th:each="page : ${#numbers.sequence(1, totalPages)}" th:classappend="${page == currentPage} ? 'active'">
+            <a class="page-link" th:href="@{/pages/board(page=${page}, size=5)}" th:text="${page}"></a>
         </li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item"><a class="page-link" href="#">4</a></li>
-        <li class="page-item"><a class="page-link" href="#">5</a></li>
-        <li class="page-item"><a class="page-link" href="#">6</a></li>
-        <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next">
-                &gt;<span aria-hidden="true"></span>
-            </a>
-        </li>
-        <li class="page-item">
-            <a class="page-link" href="#" aria-label="Next">
-                >> <span aria-hidden="true"></span>
-            </a>
+        <li class="page-item" th:classappend="${currentPage >= totalPages} ? 'disabled'">
+            <a class="page-link" th:href="@{/pages/board(page=${currentPage + 1}, size=5)}" aria-label="Next">&raquo;</a>
         </li>
     </ul>
 </nav>
