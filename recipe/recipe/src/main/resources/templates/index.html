@@ -348,11 +348,14 @@
                  }
 
                  // 게시글 데이터를 리스트로 렌더링
-                 const recipeList = recipes.map(recipe =>
-                         `<li><a href="/pages/post/${recipe.id}">${recipe.title}</a></li>`
-                 ).join('');
+                 const recipeList = recipes.map(recipe => `
+      <li>
+         <a href="/post view?recipeId=${recipe.recipeId}">${recipe.title}</a>
+      </li>
+   `).join('');
                  boardContainer.innerHTML = recipeList;
               })
+
               .catch(error => {
                  console.error('API 요청 오류:', error);
                  boardContainer.innerHTML = '<p>게시판 데이터를 불러오는 데 실패했습니다.</p>';

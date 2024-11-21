@@ -1,6 +1,7 @@
 package com.example.recipe.controller;
 
 import com.example.recipe.entity.Bookmark;
+import com.example.recipe.entity.Member;
 import com.example.recipe.repository.BookmarkRepository;
 import com.example.recipe.service.BookmarkService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,16 +25,22 @@ public class BookmarkController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newBookmark);
     }
 
-    // 파라미터로 사용자아이디, 게시글 아이디 주어서 저장하는 방법
-//    @PostMapping
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public void addBookmark(@RequestParam String userId, @RequestParam Long recipeId) {
-//        // 이미 북마크가 눌러져있는지 확인
-//        boolean existsBookmark = bookmarkRepository.existsByUserUserIdAndRecipeRecipeId(userId, recipeId);
-//        if(!existsBookmark) {
-//            bookmarkService.addBookmark(userId, recipeId);
-//        }
-//    }
+    /*
+    // 토글 형식이기 때문에 (해당사용자아이디, 해당게시글아이디) 로 등록된 북마크가 있는지 조회 후 -> 상태에 따라 로직 실행하는 방법
+    @PostMapping
+    public ResponseEntity<Bookmark> toggleBookmark(@RequestParam String userId, @RequestParam Long recipeId) {
+        // 현재사용자아이디, 현재보고있는게시글아이디 로 등록된 북마크가 있는지 조회
+        boolean existingBookmark = bookmarkRepository.existsByUserUserIdAndRecipeRecipeId(userId, recipeId);
+
+        if (!existingBookmark) {    // 기존 북마크 한 거 존재
+            bookmarkService.removeBookmark(userId, recipeId);
+            return ResponseEntity.noContent().build();  // 삭제 성공 응답
+        } else {    // 북마크가 없으면 추가
+            Bookmark newBookmark = new Bookmark();
+            newBookmark.setUser(get);
+        }
+    }
+     */
 
     @GetMapping("/{userId}")
     public ResponseEntity<List<Bookmark>> getBookmarks(@PathVariable String userId) {
