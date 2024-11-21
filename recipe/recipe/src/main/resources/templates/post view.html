@@ -253,7 +253,7 @@
   </div>
 
   <div class="interaction-buttons">
-    <div>👁️ 조회수 <span id="viewCount">0</span></div>
+    <div>👁️ 조회수 <span id="viewCount" th:text="${viewCount}">0</span></div>
     <div>💬 댓글 <span id="commentCount">0</span></div>
     <div id="likeButton" onclick="toggleLike()">❤️ 좋아요</div>
     <div id="bookmarkButton" onclick="toggleBookmark()">📌 북마크</div>
@@ -303,6 +303,27 @@
     window.open(url, '_blank');
   }
 
+  // 페이지 로드 시 조회수 증가
+  document.addEventListener("DOMContentLoaded", () => {
+    const recipeContainer = document.getElementById('recipeContainer');
+    const recipeId = recipeContainer.getAttribute('data-recipe-id');
+
+    if (recipeId) {
+      fetch(`/api/views/${recipeId}`, {
+        method: 'POST',
+      })
+              .then(response => {
+                if (!response.ok) {
+                  console.error('조회수 증가 요청 실패:', response.statusText);
+                }
+              })
+              .catch(error => {
+                console.error('조회수 증가 요청 중 오류:', error);
+              });
+    }
+  });
+
+  // 북마크 버튼 누를 시 로직
   function toggleBookmark() {
     const bookmarkButton = document.getElementById("bookmarkButton");
     const recipeContainer = document.getElementById('recipeContainer');
