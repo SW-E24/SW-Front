@@ -109,7 +109,7 @@
 <div class="menu-bar">
     <!-- 왼쪽 메뉴 (홈, 게시판) -->
     <ul>
-        <li><a href="index.html">홈</a></li>
+        <li><a href="/pages/index">홈</a></li>
         <li><a href="/pages/board">게시판</a></li>
     </ul>
 
@@ -118,6 +118,7 @@
         <li><a href="/pages/login" id="loginLink">로그인</a></li>
         <li><a href="/pages/register" id="registerLink">회원가입</a></li>
     </ul>
+
 </div>
 
 <!-- 북마크 목록 -->
@@ -133,7 +134,6 @@
     <button class="back-btn" onclick="window.history.back()">이전</button>
 
 </div>
-
 <script>
     // 로그인 상태를 확인하는 fetch 요청
     fetch('/api/auth/currentUser', {

@@ -22,6 +22,13 @@
       padding: 0;
     }
 
+    img {
+      position: relative;
+      max-width: 100%; /* 부모 요소 너비를 초과하지 않음 */
+      max-height: 300px; /* 최대 높이를 제한 */
+      margin: 0 auto; /* 이미지를 중앙에 배치 (선택 사항) */
+    }
+
     .banner {
       background-color: #ffe69b;
       text-align: center;
@@ -89,7 +96,9 @@
     }
 
     .content-section {
-      margin-bottom: 20px;
+      max-width: 800px; /* 콘텐츠 최대 너비 */
+      overflow: hidden; /* 부모 요소를 벗어나지 않도록 숨김 */
+      margin: 0 auto; /* 콘텐츠 중앙 정렬 */
     }
 
     .content-section h3 {
@@ -198,10 +207,11 @@
     }
 
     .back-btn:hover {
-    background-color: #f2f1ee;
+      background-color: #f2f1ee;
     }
   </style>
 </head>
+
 <body>
 <!-- 배너 -->
 <div class="banner">
@@ -209,7 +219,7 @@
   <div class="menu-bar">
     <!-- 왼쪽 메뉴 (홈, 게시판) -->
     <ul>
-      <li><a href="index.html">홈</a></li>
+      <li><a href="/pages/index">홈</a></li>
       <li><a href="/pages/board">게시판</a></li>
     </ul>
 
@@ -222,18 +232,33 @@
 </div>
 
 <!-- 게시물 내용 -->
-<div class="container">
-  <div class="title">레시피 제목</div>
-  <div class="nickname">작성자 닉네임</div>
+<div class="container" id="recipeContainer" th:attr="data-recipe-id=${recipe.recipeId}">
+  <div class="title" th:text="${recipe.title}"></div>
+  <div class="nickname" th:text="'작성자: ' + ${recipe.user.userName}"></div>
 
   <div class="content-section">
     <h3>재료</h3>
-    <div id="ingredients"></div>
+    <div id="ingredients">
+      <div th:each="ingredient, iterStat : ${recipe.ingredients}">
+        <span th:text="'재료 ' + ${iterStat.index + 1} + ': ' + ${ingredient.name} + ' - ' + ${ingredient.quantity}"></span>
+        <button type="button"
+                th:attr="data-ingredient-name=${ingredient.name}"
+                onclick="goToPurchase(this)">구매하러 가기</button>
+      </div>
+    </div>
   </div>
 
   <div class="content-section">
     <h3>조리 방법</h3>
-    <div id="instructions"></div>
+    <ul>
+      <li th:each="step, indexStat : ${recipe.steps}">
+        <p th:text="${step.description}"></p>
+        <img th:if="${step.photo != null}"
+             th:src="'/image/' + ${recipe.recipeId} + '/' + ${indexStat.index}"
+             alt="Step Image"
+             class="step-image" />
+      </li>
+    </ul>
   </div>
 
   <div class="interaction-buttons">
@@ -251,37 +276,50 @@
     </div>
     <div class="comments-list" id="commentsList"></div>
   </div>
+</div>
 
   <!-- 이전 버튼 -->
   <button class="back-btn" onclick="window.history.back()">이전</button>
 </div>
 
 <script>
+  // 로그인 상태에 따라 상단 버튼이 바뀌도록 하는 로직
+  fetch('/api/auth/currentUser', {
+    method: 'GET',
+    credentials: 'same-origin' // 동일한 출처로 쿠키를 포함한 요청
+  })
+          .then(response => {
+            if (response.status === 200) {
+              return response.json(); // 로그인된 사용자 정보 반환
+            } else {
+              throw new Error('로그인된 사용자가 없습니다.');
+            }
+          })
+          .then(data => {
+            // 로그인된 경우 메뉴를 업데이트
+            document.getElementById('loginLink').textContent = '로그아웃';
+            document.getElementById('loginLink').setAttribute('href', '/api/auth/logout');
+            document.getElementById('registerLink').textContent = '마이페이지';
+            document.getElementById('registerLink').setAttribute('href', '/pages/mypage');
+          })
+          .catch(error => {
+            console.log(error); // 에러 출력
+          });
+
   window.onload = function() {
     const viewCountElement = document.getElementById("viewCount");
     let viewCount = parseInt(localStorage.getItem("viewCount")) || 0;
     viewCount++;
     localStorage.setItem("viewCount", viewCount);
     viewCountElement.textContent = viewCount;
-
-    const ingredients = JSON.parse(localStorage.getItem("ingredients")) || ["재료 1", "재료 2", "재료 3"];
-    const instructions = JSON.parse(localStorage.getItem("instructions")) || ["조리 방법 단계 1", "조리 방법 단계 2", "조리 방법 단계 3"];
-
-    const ingredientsDiv = document.getElementById("ingredients");
-    const instructionsDiv = document.getElementById("instructions");
-
-    ingredients.forEach(ingredient => {
-      const p = document.createElement("p");
-      p.textContent = ingredient;
-      ingredientsDiv.appendChild(p);
-    });
-
-    instructions.forEach((instruction, index) => {
-      const p = document.createElement("p");
-      p.textContent = `${index + 1}. ${instruction}`;
-      instructionsDiv.appendChild(p);
-    });
   };
+
+  // 네이버 쇼핑 구매하러 가기 링크
+  function goToPurchase(button) {
+    const ingredient = button.getAttribute('data-ingredient-name');
+    const url = 'https://search.shopping.naver.com/search/all?query=' + encodeURIComponent(ingredient.trim());
+    window.open(url, '_blank');
+  }
 
   function toggleBookmark() {
     const bookmarkButton = document.getElementById("bookmarkButton");
@@ -290,43 +328,50 @@
 
   function toggleLike() {
     const likeButton = document.getElementById("likeButton");
-    const isLiked = likeButton.classList.contains("active");
+    const recipeContainer = document.getElementById('recipeContainer');
+    const recipeId = recipeContainer.getAttribute('data-recipe-id');
+    console.log('레시피 ID:', recipeId);
 
-    // 게시글 id랑 사용자 id 가져오기
-    const recipeId = 1;   // 게시글 보여주는 html이 완성되어야 수정할 수 있음
+    // 사용자 정보 가져오기
     fetch('/api/auth/currentUser', {
       method: 'GET',
-      credentials: 'same-origin' // 동일한 출처로 쿠키를 포함한 요청
+      credentials: 'same-origin' // 동일한 출처로 쿠키 포함
     })
             .then(response => {
               if (response.status === 200) {
-                return response.json();  // 로그인된 사용자 정보 반환
+                return response.json(); // JSON 형태의 사용자 정보 반환
               } else {
                 throw new Error('로그인된 사용자가 없습니다.');
               }
             })
-            .then(user => {
+            .then(data => {
               const userId = data.userId;
-              const method = isLiked ? 'DELETE' : 'POST'
 
-              // 좋아요 요청 전송
-              fetch ('/api/likes', {
+              // 좋아요 상태 확인
+              const isLiked = likeButton.classList.contains("active");
+              const method = isLiked ? 'DELETE' : 'POST'; // 좋아요 토글 처리
+
+              // 서버로 좋아요 데이터 전송
+              fetch(`/api/likes?userId=${userId}&recipeId=${recipeId}`, {
                 method: method,
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({userId: userId, recipeId: recipeId})
               })
                       .then(response => {
                         if (response.ok) {
-                          likeButton.classList.toggle("active");
+                          likeButton.classList.toggle("active"); // UI 업데이트
                         } else {
-                          alert("좋아요 처리 중 문제 발생");
+                          alert('좋아요 처리 중 오류가 발생했습니다.');
                         }
                       })
+                      .catch(error => {
+                        console.error('좋아요 요청 에러:', error);
+                      });
             })
             .catch(error => {
-              console.log('좋아요 처리 에러: ',error);  // 에러 출력
+              console.error('사용자 정보 가져오기 실패:', error);
             });
   }
+  // 좋아요 버튼 클릭 시에만 toggleLike 호출
+  document.getElementById("likeButton").addEventListener("click", toggleLike);
 
   function addComment() {
     const commentInput = document.getElementById("commentInput");

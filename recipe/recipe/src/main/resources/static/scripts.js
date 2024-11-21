@@ -111,14 +111,13 @@ $(document).ready(function () {
             const userId = data.userId;
             // const userPW = data.password;
             userPW = data.password;
-            document.getElementById('userIdDisplay').innerText = userId;
+            document.getElementById('userIdDisplay').innerText = userName;
         })
         .catch(error => {
             console.log(error);  // 에러 출력
         });
 
 
-    /*
     // 로그아웃 요청 처리 (로그아웃 버튼 클릭 시)
     document.getElementById('loginLink').addEventListener('click', function(event) {
         if (event.target.textContent === '로그아웃') {
@@ -132,9 +131,9 @@ $(document).ready(function () {
                 .catch(error => console.log('로그아웃 실패:', error));
         }
     });
-     */
 
-    // 로그인 상태를 확인하는 fetch 요청
+
+    // 로그인 상태에 따라 상단 버튼이 바뀌도록 하는 로직
     fetch('/api/auth/currentUser', {
         method: 'GET',
         credentials: 'same-origin' // 동일한 출처로 쿠키를 포함한 요청
@@ -147,7 +146,6 @@ $(document).ready(function () {
             }
         })
         .then(data => {
-            // console.log('현재 로그인된 사용자:', data); // 사용자 정보 출력 - 위에 있어서 두 번 출력됨
             // 로그인된 경우 메뉴를 업데이트
             document.getElementById('loginLink').textContent = '로그아웃';
             document.getElementById('loginLink').setAttribute('href', '/api/auth/logout');
@@ -255,7 +253,8 @@ $(document).ready(function () {
             .then(data => {
                 if (data.success) {
                     alert('회원 정보 수정 성공!');
-                    window.location.href = '/pages/mypage';
+                    // window.location.href = '/pages/mypage';
+                    window.location.href = data.redirectUrl; // 서버에서 전달한 URL로 이동
                 } else {
                     alert('수정 실패');
                 }
