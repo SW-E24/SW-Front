@@ -18,21 +18,17 @@
       justify-content: center; /* 수평 중앙 정렬 */
       align-items: center; /* 수직 중앙 정렬 */
       flex-direction: column;
+<<<<<<< HEAD
       height: 80vh; /* 전체 화면 높이에 맞게 설정 */
+=======
+>>>>>>> 1fd810d8590788ad9a0a408f3e0e913412f4dd71
       padding: 0;
-    }
-
-    img {
-      position: relative;
-      max-width: 100%; /* 부모 요소 너비를 초과하지 않음 */
-      max-height: 300px; /* 최대 높이를 제한 */
-      margin: 0 auto; /* 이미지를 중앙에 배치 (선택 사항) */
     }
 
     .banner {
       background-color: #ffe69b;
       text-align: center;
-      padding: 80px 0;
+      padding: 100px 0;
       font-size: 36px;
       font-weight: bold;
       color: white;
@@ -65,7 +61,8 @@
       background-color: #ffe69b;
       color: black;
       text-decoration: none;
-      font-size: 15px;
+      font-size: 18px;
+      font_weight: normal;
     }
 
     .menu-bar ul li a:hover {
@@ -96,9 +93,7 @@
     }
 
     .content-section {
-      max-width: 800px; /* 콘텐츠 최대 너비 */
-      overflow: hidden; /* 부모 요소를 벗어나지 않도록 숨김 */
-      margin: 0 auto; /* 콘텐츠 중앙 정렬 */
+      margin-bottom: 20px;
     }
 
     .content-section h3 {
@@ -312,8 +307,9 @@
     viewCount++;
     localStorage.setItem("viewCount", viewCount);
     viewCountElement.textContent = viewCount;
-  };
 
+
+<<<<<<< HEAD
   // 네이버 쇼핑 구매하러 가기 링크
   function goToPurchase(button) {
     const ingredient = button.getAttribute('data-ingredient-name');
@@ -400,7 +396,9 @@
       commentInput.value = "";
     }
   }
+}
 </script>
+
 <script src="/scripts.js"></script>
 
 </body>

@@ -133,8 +133,9 @@
   <button class="back-btn" onclick="window.history.back()">이전</button>
 
 </div>
+
 <script>
-  // 로그인 상태를 확인하는 fetch 요청
+  // 로그인 상태에 따라 상단 버튼이 바뀌도록 하는 로직
   fetch('/api/auth/currentUser', {
     method: 'GET',
     credentials: 'same-origin' // 동일한 출처로 쿠키를 포함한 요청
@@ -172,5 +173,6 @@
     }
   });
 </script>
+
 </body>
 </html>

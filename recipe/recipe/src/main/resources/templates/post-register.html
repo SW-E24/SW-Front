@@ -18,14 +18,13 @@
             justify-content: center; /* 수평 중앙 정렬 */
             align-items: center; /* 수직 중앙 정렬 */
             flex-direction: column;
-            height: 80vh; /* 전체 화면 높이에 맞게 설정 */
             padding: 0;
         }
 
         .banner {
             background-color: #ffe69b;
             text-align: center;
-            padding: 80px 0;
+            padding: 100px 0;
             font-size: 36px;
             font-weight: bold;
             color: white;
@@ -58,7 +57,8 @@
             background-color: #ffe69b;
             color: black;
             text-decoration: none;
-            font-size: 15px;
+            font-size: 18px;
+            font-weigth: normal;
         }
 
         .menu-bar ul li a:hover {
@@ -181,16 +181,16 @@
 <div class="banner">
     재료백과
     <div class="menu-bar">
-      <!-- 왼쪽 메뉴 (홈, 게시판) -->
-      <ul>
-          <li><a href="/pages/index">홈</a></li>
-          <li><a href="/pages/board">게시판</a></li>
-      </ul>
+        <!-- 왼쪽 메뉴 (홈, 게시판) -->
+        <ul>
+            <li><a href="/pages/index">홈</a></li>
+            <li><a href="/pages/board">게시판</a></li>
+        </ul>
 
         <!-- 오른쪽 메뉴 (로그인, 회원가입) -->
-        <ul>
-            <li><a href="/pages/login">로그인</a></li>
-            <li><a href="/pages/register">회원가입</a></li>
+        <ul id="loginMenu">
+            <li><a href="/pages/login" id="loginLink">로그인</a></li>
+            <li><a href="/pages/register" id="registerLink">회원가입</a></li>
         </ul>
     </div>
 </div>
@@ -236,19 +236,17 @@
     <!-- 이전 버튼 -->
     <button class="back-btn" onclick="window.history.back()">이전</button>
 
-
     <script>
-
         // 재료 추가 함수
         function addIngredient() {
             const ingredientContainer = document.getElementById('ingredient-container');
             const newIngredient = document.createElement('div');
             newIngredient.className = 'addable-group';
             newIngredient.innerHTML = `
-        <input type="text" placeholder="재료 이름" class="ingredient-name">
-        <input type="text" placeholder="용량 (예: 100g, 한 컵)" class="ingredient-quantity">
-        <button type="button" class="remove-btn" onclick="removeElement(this)">-</button>
-    `;
+            <input type="text" placeholder="재료 이름" class="ingredient-name">
+            <input type="text" placeholder="용량 (예: 100g, 한 컵)" class="ingredient-quantity">
+            <button type="button" class="remove-btn" onclick="removeElement(this)">-</button>
+        `;
             ingredientContainer.appendChild(newIngredient);
         }
 
@@ -258,10 +256,10 @@
             const newStep = document.createElement('div');
             newStep.className = 'addable-group';
             newStep.innerHTML = `
-        <input type="text" placeholder="조리 방법 입력" class="step-description">
-        <input type="file" accept="image/*" class="step-photo">
-        <button type="button" class="remove-btn" onclick="removeElement(this)">-</button>
-    `;
+            <input type="text" placeholder="조리 방법 입력" class="step-description">
+            <input type="file" accept="image/*" class="step-photo">
+            <button type="button" class="remove-btn" onclick="removeElement(this)">-</button>
+        `;
             stepContainer.appendChild(newStep);
         }
 
@@ -302,8 +300,6 @@
                 })
             );
 
-
-
             // 서버로 전송할 데이터 생성
             const requestBody = {
                 title,
@@ -333,7 +329,45 @@
             }
         }
     </script>
-    <script src="/scripts.js"></script>
 
+    <script>
+        // 로그인 상태를 확인하는 fetch 요청
+        fetch('/api/auth/currentUser', {
+            method: 'GET',
+            credentials: 'same-origin' // 동일한 출처로 쿠키를 포함한 요청
+        })
+            .then(response => {
+                if (response.status === 200) {
+                    return response.json(); // 로그인된 사용자 정보 반환
+                } else {
+                    throw new Error('로그인된 사용자가 없습니다.');
+                }
+            })
+            .then(data => {
+                console.log('현재 로그인된 사용자:', data); // 사용자 정보 출력
+                // 로그인된 경우 메뉴를 업데이트
+                document.getElementById('loginLink').textContent = '로그아웃';
+                document.getElementById('loginLink').setAttribute('href', '/api/auth/logout');
+                document.getElementById('registerLink').textContent = '마이페이지';
+                document.getElementById('registerLink').setAttribute('href', '/pages/mypage');
+            })
+            .catch(error => {
+                console.log(error); // 에러 출력
+            });
+
+        // 로그아웃 요청 처리 (로그아웃 버튼 클릭 시)
+        document.getElementById('loginLink').addEventListener('click', function(event) {
+            if (event.target.textContent === '로그아웃') {
+                fetch('/api/auth/logout', {
+                    method: 'POST',
+                    credentials: 'same-origin' // 동일한 출처로 쿠키를 포함한 요청
+                })
+                    .then(() => {
+                        location.reload(); // 로그아웃 후 페이지 새로고침
+                    })
+                    .catch(error => console.log('로그아웃 실패:', error));
+            }
+        });
+    </script>
 </body>
 </html>

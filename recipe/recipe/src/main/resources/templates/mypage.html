@@ -103,13 +103,13 @@
 <body>
 <div class="banner">재료백과</div>
 
-    <!-- 메뉴바 영역 -->
-    <div class="menu-bar">
-        <!-- 왼쪽 메뉴 (홈, 게시판) -->
-        <ul>
-            <li><a href="/pages/index">홈</a></li>
-            <li><a href="/pages/board">게시판</a></li>
-        </ul>
+<!-- 메뉴바 영역 -->
+<div class="menu-bar">
+    <!-- 왼쪽 메뉴 (홈, 게시판) -->
+    <ul>
+        <li><a href="/pages/index">홈</a></li>
+        <li><a href="/pages/board">게시판</a></li>
+    </ul>
 
         <!-- 오른쪽 메뉴 (로그인, 회원가입) -->
         <ul id="loginMenu">
@@ -134,6 +134,7 @@
         <a th:href="'/mypage/' + ${userId} + '/comments'">작성한 댓글</a>
     </div>
 </div>
+
 <script src="/scripts.js"></script>
 <script>
     // 로그인 상태에 따라 상단 버튼이 바뀌도록 하는 로직
@@ -158,6 +159,20 @@
         .catch(error => {
             console.log(error); // 에러 출력
         });
+
+    // 로그아웃 요청 처리 (로그아웃 버튼 클릭 시)
+    document.getElementById('loginLink').addEventListener('click', function(event) {
+        if (event.target.textContent === '로그아웃') {
+            fetch('/api/auth/logout', {
+                method: 'POST',
+                credentials: 'same-origin' // 동일한 출처로 쿠키를 포함한 요청
+            })
+                .then(() => {
+                    location.reload(); // 로그아웃 후 페이지 새로고침
+                })
+                .catch(error => console.log('로그아웃 실패:', error));
+        }
+    });
 </script>
 </body>
 </html>
