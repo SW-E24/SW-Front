@@ -164,7 +164,7 @@
          height: 0;
          border-left: 15px solid transparent;
          border-right: 15px solid transparent;
-         border-top: 20px solid black;
+         border-top: 20px solid #bacd92;
          position: absolute;
          top: -10px;
          left: 50%;
@@ -176,9 +176,17 @@
          width: 300px;
          height: 300px;
          border-radius: 50%;
-         border: 5px solid #666;
          position: relative;
-         background: conic-gradient(#FFB3B3 0% 12.5%, #FFEC99 12.5% 25%, #B2FF99 25% 37.5%, #99DFFF 37.5% 50%, #D1B3FF 50% 62.5%, #FFC0CB 62.5% 75%, #ADD8E6 75% 87.5%, #FFE4B5 87.5% 100%);
+         background: conic-gradient(
+                 #fef9ee 0% 12.5%,
+                 #ffdf82 12.5% 25%,
+                 #fef9ee 25% 37.5%,
+                 #ffdf82 37.5% 50%,
+                 #fef9ee 50% 62.5%,
+                 #ffdf82 62.5% 75%,
+                 #fef9ee 75% 87.5%,
+                 #ffdf82 87.5% 100%
+         ); /* 번갈아 색상 채우기 */
          margin-bottom: 20px;
          transition: transform 3s cubic-bezier(0.25, 0.1, 0.25, 1);
       }
@@ -186,13 +194,15 @@
       .roulette-text {
          position: absolute;
          width: 50%;
-         height: 50%;
+         height: 10%;
          top: 50%;
          left: 50%;
          transform-origin: 0% 0%;
          font-size: 14px;
+         font-family: '굴림', sans-serif;
          font-weight: bold;
          text-align: center;
+         color: black
       }
 
       .roulette-text:nth-child(1) { transform: rotate(0deg) translate(0, -50%) rotate(22.5deg); }
@@ -206,16 +216,18 @@
 
       #spinButton {
          padding: 10px 20px;
-         background-color: #a0d8a0;
-         color: white;
+         background-color: #fef9ee;
+         color: black;
          font-size: 16px;
          border: none;
          border-radius: 5px;
          cursor: pointer;
+         transition: background-color 0.3s ease;
       }
 
       #spinButton:hover {
-         background-color: #88c588;
+         background-color: #bacd92;
+         color: white;
       }
 
       .close {
@@ -307,13 +319,7 @@
 
    <div class="board-right">
       <h3>게시판</h3>
-      <ul>
-         <li><a href="#">게시물 1</a></li>
-         <li><a href="#">게시물 2</a></li>
-         <li><a href="#">게시물 3</a></li>
-         <li><a href="#">게시물 4</a></li>
-         <li><a href="#">게시물 5</a></li>
-      </ul>
+      <ul id="boardContainer"></ul>
    </div>
 </div>
 
@@ -323,6 +329,39 @@
 <script src="/scripts.js"></script>
 
 <script>
+   // 전체 게시글 목록
+   document.addEventListener("DOMContentLoaded", function () {
+      const boardContainer = document.getElementById("boardContainer");
+
+      // RecipeController의 /api/recipes API 호출
+      fetch('/api/recipes')
+              .then(response => {
+                 if (!response.ok) {
+                    throw new Error(`API 호출 실패: ${response.status}`);
+                 }
+                 return response.json(); // JSON 데이터로 변환
+              })
+              .then(recipes => {
+                 if (recipes.length === 0) {
+                    boardContainer.innerHTML = '<p>게시글이 없습니다.</p>';
+                    return;
+                 }
+
+                 // 게시글 데이터를 리스트로 렌더링
+                 const recipeList = recipes.map(recipe => `
+      <li>
+         <a href="/post view?recipeId=${recipe.recipeId}">${recipe.title}</a>
+      </li>
+   `).join('');
+                 boardContainer.innerHTML = recipeList;
+              })
+
+              .catch(error => {
+                 console.error('API 요청 오류:', error);
+                 boardContainer.innerHTML = '<p>게시판 데이터를 불러오는 데 실패했습니다.</p>';
+              });
+   });
+
    function redirectToSearch() {
       const searchInput = document.getElementById('search-input').value;
       const category = document.getElementById('category-select').value;
@@ -332,38 +371,37 @@
    let isSpinning = false;
    let currentDegree = 0;
 
-function spinRoulette() {
-   if (isSpinning) return;
-   isSpinning = true;
+   function spinRoulette() {
+      if (isSpinning) return;
+      isSpinning = true;
 
-   const roulette = document.getElementById('roulette');
-   const spinTime = Math.random() * 1000 + 2500;
-   const randomDegree = Math.floor(Math.random() * 360);
-   const totalRotation = 3600 + randomDegree;
-   currentDegree += totalRotation;
-   roulette.style.transition = `transform ${spinTime / 1000}s cubic-bezier(0.25, 0.1, 0.25, 1)`;
-   roulette.style.transform = `rotate(${currentDegree}deg)`;
+      const roulette = document.getElementById('roulette');
+      const spinTime = Math.random() * 1000 + 2500;
+      const randomDegree = Math.floor(Math.random() * 360);
+      const totalRotation = 3600 + randomDegree;
+      currentDegree += totalRotation;
+      roulette.style.transition = `transform ${spinTime / 1000}s cubic-bezier(0.25, 0.1, 0.25, 1)`;
+      roulette.style.transform = `rotate(${currentDegree}deg)`;
 
-   setTimeout(() => {
-      isSpinning = false;
+      setTimeout(() => {
+         isSpinning = false;
 
-      const normalizedDegree = (360 - (currentDegree % 360)) % 360;
-      const sections = document.querySelectorAll('#roulette .roulette-text');
-      const anglePerSection = 360 / sections.length;
-      let sectionIndex = Math.floor(normalizedDegree / anglePerSection);
+         const normalizedDegree = (360 - (currentDegree % 360)) % 360;
+         const sections = document.querySelectorAll('#roulette .roulette-text');
+         const anglePerSection = 360 / sections.length;
+         let sectionIndex = Math.floor(normalizedDegree / anglePerSection);
 
-      sectionIndex -= 1;
-      if (sectionIndex < 0) {
-         sectionIndex += sections.length;
-      }
+         sectionIndex -= 2;
+         if (sectionIndex < 0) {
+            sectionIndex += sections.length;
+         }
 
-      const selectedSection = sections[sectionIndex];
-      const selectedText = selectedSection.textContent.trim();
-      alert(`오늘의 추천 메뉴는 ${selectedText}입니다!!`);
-   }, spinTime);
-}
-</script>
-<script>
+         const selectedSection = sections[sectionIndex];
+         const selectedText = selectedSection.textContent.trim();
+         alert(`오늘의 추천 메뉴는 ${selectedText}입니다!!`);
+      }, spinTime);
+   }
+
    // 로그인 상태를 확인하는 fetch 요청
    fetch('/api/auth/currentUser', {
       method: 'GET',

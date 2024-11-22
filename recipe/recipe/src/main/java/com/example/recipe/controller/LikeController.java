@@ -1,6 +1,7 @@
 package com.example.recipe.controller;
 
 import com.example.recipe.entity.Like;
+import com.example.recipe.repository.LikeRepository;
 import com.example.recipe.service.LikeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,11 +15,17 @@ import java.util.List;
 public class LikeController {
     @Autowired
     private LikeService likeService;
+    @Autowired
+    LikeRepository likeRepository;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void addLike(@RequestParam String userId, @RequestParam Long recipeId) {
-        likeService.addLike(userId, recipeId);
+        // 이미 좋아요가 눌러져있는지 확인
+        boolean existsLike = likeRepository.existsByUserUserIdAndRecipeRecipeId(userId, recipeId);
+        if(!existsLike) {
+            likeService.addLike(userId, recipeId);
+        }
     }
 
     @DeleteMapping

@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 
 @Service
 public class CommentService {
@@ -60,4 +63,10 @@ public class CommentService {
     public List<Comment> getCommentsByUserId(String userId) {
         return commentRepository.findAllByUserId(userId);
     }
+
+    // 로그인한 사용자가 작성한 댓글을 페이지네이션하여 가져오기
+    public Page<Comment> getCommentsByUserIdPaged(String userId, Pageable pageable) {
+        return commentRepository.findAllByUserId(userId, pageable);
+    }
+
 }

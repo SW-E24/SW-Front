@@ -1,5 +1,6 @@
 package com.example.recipe.controller;
 
+import ch.qos.logback.core.model.Model;
 import com.example.recipe.dto.RecipeRequest;
 import com.example.recipe.entity.Grade;
 import com.example.recipe.entity.Member;
@@ -7,10 +8,15 @@ import com.example.recipe.entity.Recipe;
 import com.example.recipe.service.GradeService;
 import com.example.recipe.service.RecipeService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.http.HttpStatus;
+
 
 @RestController
 @RequestMapping("/api/recipes")
@@ -22,6 +28,22 @@ public class RecipeController {
     public RecipeController(RecipeService recipeService, GradeService gradeService) {
         this.recipeService = recipeService;
         this.gradeService = gradeService;
+    }
+
+//현재로그인한 사용자의 세션가져와서 페이지네이션
+    @GetMapping("/myposts")
+    public ResponseEntity<Page<Recipe>> getMyPosts(
+            HttpSession session,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+        Member currentUser = (Member) session.getAttribute("currentUser");
+        if (currentUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Recipe> myPosts = recipeService.getRecipesByUserIdPaged(currentUser.getUserId(), pageable);
+        return ResponseEntity.ok(myPosts);
     }
 
     @PostMapping("/create")
@@ -112,4 +134,7 @@ public class RecipeController {
         List<Recipe> recipes = recipeService.getRecipesByUserId(userId);
         return ResponseEntity.ok(recipes);
         }
+
+
+
 }

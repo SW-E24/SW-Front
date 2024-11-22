@@ -7,10 +7,17 @@ import com.example.recipe.service.CommentService;
 import com.example.recipe.service.GradeService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
+
 
 @RestController
 @RequestMapping("/api/comments")
@@ -24,14 +31,17 @@ public class CommentController {
     @PostMapping("/create")
     public Comment addComment(@RequestBody CommentRequest commentRequest, HttpSession session) {
         // 댓글 작성한 사용자 저장
+        Long recipeId = commentRequest.getRecipeId();
+        if (recipeId == null) {
+            throw new IllegalArgumentException("recipeId는 필수 값입니다.");
+        }
         Member currentUser = (Member) session.getAttribute("currentUser");
         if (currentUser == null) {
             throw new RuntimeException("로그인 상태가 아닙니다.");
         }
-
         Comment createdComment = commentService.addComment(
                 commentRequest.getRecipeId(),
-                commentRequest.getUserId(),
+                currentUser.getUserId(),
                 commentRequest.getContent()
         );
 
@@ -86,4 +96,22 @@ public class CommentController {
         List<Comment> comments = commentService.getCommentsByUserId(userId);
         return ResponseEntity.ok(comments);
     }
+
+    // 로그인한 사용자가 작성한 댓글을 페이지네이션으로 가져오기
+    @GetMapping("/my-comments-paged")
+    public ResponseEntity<Page<Comment>> getUserCommentsPaged(
+            HttpSession session,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+
+        Member currentUser = (Member) session.getAttribute("currentUser");
+        if (currentUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // 로그인되지 않은 경우
+        }
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Comment> comments = commentService.getCommentsByUserIdPaged(currentUser.getUserId(), pageable);
+        return ResponseEntity.ok(comments);
+    }
 }
+

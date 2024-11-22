@@ -8,96 +8,96 @@
   <style>
     /* 배너 스타일 */
     .banner {
-        background-color: #ffe69b;
-        text-align: center;
-        padding: 100px 0;
-        font-size: 36px;
-        font-weight: bold;
-        color: white;
+      background-color: #ffe69b;
+      text-align: center;
+      padding: 100px 0;
+      font-size: 36px;
+      font-weight: bold;
+      color: white;
     }
 
     /* 메뉴바 스타일 */
     .menu-bar {
-        background-color: #ffe69b; /* 배너와 동일한 배경색 */
-        padding: 10px 0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+      background-color: #ffe69b; /* 배너와 동일한 배경색 */
+      padding: 10px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .menu-bar ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        display: flex;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
     }
 
     /* 메뉴 버튼 스타일 */
     .menu-bar ul li {
-        padding: 0 15px;
+      padding: 0 15px;
     }
 
     .menu-bar ul li a {
-        background-color: #ffe69b; /* 배너와 동일한 배경색 */
-        color: black; /* 메뉴 텍스트는 검정색 */
-        text-decoration: none;
-        font-size: 18px;
+      background-color: #ffe69b; /* 배너와 동일한 배경색 */
+      color: black; /* 메뉴 텍스트는 검정색 */
+      text-decoration: none;
+      font-size: 18px;
     }
 
     .menu-bar ul li a:hover {
-        text-decoration: underline;
+      text-decoration: underline;
     }
 
     /* 작성한 글 목록 스타일 */
     .like-list li {
-        padding: 10px;
-        background-color: #f1f1f1; /* 좋아요 목록의 배경 */
-        margin-bottom: 10px;
-        border-radius: 5px;
-        color: black; /* 좋아요 목록의 텍스트 색상 */
+      padding: 10px;
+      background-color: #f1f1f1; /* 좋아요 목록의 배경 */
+      margin-bottom: 10px;
+      border-radius: 5px;
+      color: black; /* 좋아요 목록의 텍스트 색상 */
     }
 
     /* 기본 스타일 */
     body {
-        background-color: #f8f9fa;
-        font-family: 'Arial', sans-serif;
+      background-color: #f8f9fa;
+      font-family: 'Arial', sans-serif;
     }
 
     .container {
-        max-width: 800px;
-        margin: 50px auto;
-        padding: 20px;
-        background-color: white;
-        border-radius: 10px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     }
 
     /* 푸터 스타일 */
     .footer {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 30px;
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
     }
 
     .footer a {
-        font-size: 16px;
-        text-decoration: none;
-        color: black;
+      font-size: 16px;
+      text-decoration: none;
+      color: black;
     }
 
     /* 이전 버튼 스타일 */
     .back-btn {
-        margin-top: 20px;
-        padding: 6px 12px;
-        background-color: #f2f1ee;
-        border: none;
-        font-size: 14px;
-        cursor: pointer;
-        border-radius: 4px;
+      margin-top: 20px;
+      padding: 6px 12px;
+      background-color: #f2f1ee;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 4px;
     }
 
     .back-btn:hover {
-        background-color: #f2f1ee;
+      background-color: #f2f1ee;
     }
 
   </style>
@@ -123,18 +123,19 @@
 <!-- 작성한 글 목록 -->
 <div class="container">
   <h2>✏️ 작성한 댓글</h2>
-  <ul class="like-list"> <!-- 좋아요 목록에 클래스 추가 -->
-    <li>댓글 1</li>
-    <li>댓글 2</li>
-    <li>댓글 3</li>
+  <ul class="like-list" id="commentList">
+    <!-- 댓글이 이곳에 동적으로 삽입됩니다 -->
   </ul>
+
+  <!-- 페이지네이션 버튼 -->
+  <div id="pagination" class="pagination justify-content-center"></div>
 
   <!-- 이전 버튼 -->
   <button class="back-btn" onclick="window.history.back()">이전</button>
-
 </div>
+
 <script>
-  // 로그인 상태를 확인하는 fetch 요청
+  // 로그인 상태에 따라 상단 버튼이 바뀌도록 하는 로직
   fetch('/api/auth/currentUser', {
     method: 'GET',
     credentials: 'same-origin' // 동일한 출처로 쿠키를 포함한 요청
@@ -171,6 +172,44 @@
               .catch(error => console.log('로그아웃 실패:', error));
     }
   });
+
+  // 댓글 불러오기 및 페이지네이션
+  let currentPage = 0;
+  const loadComments = (page = 0) => {
+    fetch(`/api/comments/my-comments-paged?page=${page}&size=5`)
+            .then(response => response.json())
+            .then(data => {
+              console.log('댓글 데이터:', data);
+              renderComments(data.content);
+              updatePagination(data.number, data.totalPages);
+            })
+            .catch(error => console.log('Error:', error));
+  };
+
+  const renderComments = (comments) => {
+    const commentList = document.getElementById('commentList');
+    commentList.innerHTML = '';
+    comments.forEach(comment => {
+      const listItem = document.createElement('li');
+      listItem.textContent = `${comment.content}`;
+      commentList.appendChild(listItem);
+    });
+  }
+
+  const updatePagination = (currentPage, totalPages) => {
+    const pagination = document.getElementById('pagination');
+    pagination.innerHTML = '';
+    for (let i = 0; i < totalPages; i++) {
+      const button = document.createElement('button');
+      button.textContent = i + 1;
+      button.disabled = i === currentPage;
+      button.addEventListener('click', () => loadComments(i));
+      pagination.appendChild(button);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => loadComments(currentPage));
 </script>
+
 </body>
 </html>

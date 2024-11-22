@@ -4,6 +4,8 @@ import com.example.recipe.dto.RecipeRequest;
 import com.example.recipe.entity.Member;
 import com.example.recipe.entity.Recipe;
 import com.example.recipe.repository.RecipeRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -55,7 +57,15 @@ public class RecipeService {
         return recipeRepository.findAll();
     }
 
+    public Page<Recipe> getAllRecipe(Pageable pageable) {
+        return recipeRepository.findAllRecipe(pageable);
+    }
+
     public void deleteRecipe(Long recipeId) {
         recipeRepository.deleteById(recipeId);
+    }
+    //밑에추가,,
+    public Page<Recipe> getRecipesByUserIdPaged(String userId, Pageable pageable) {
+        return recipeRepository.findAllByUserUserId(userId, pageable);
     }
 }

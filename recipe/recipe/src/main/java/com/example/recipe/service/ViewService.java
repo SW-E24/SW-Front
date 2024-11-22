@@ -30,5 +30,11 @@ public class ViewService {
         view.setCountView(view.getCountView() + 1);
         viewRepository.save(view);
     }
+
+    // 현재 보고있는 레시피 게시글의 아이디로 해당 게시글의 조회수 가져오기
+    public int getViewCountByRecipeId(Long recipeId) {
+        return viewRepository.findByRecipeRecipeId(recipeId)
+                .map(View::getCountView).orElse(0); // 조회수가 없으면 0 반환
+    }
 }
 

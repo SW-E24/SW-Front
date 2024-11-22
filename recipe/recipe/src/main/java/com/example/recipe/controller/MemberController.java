@@ -3,6 +3,7 @@ package com.example.recipe.controller;
 import com.example.recipe.entity.Grade;
 import com.example.recipe.entity.Member;
 import com.example.recipe.service.MemberService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -10,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
@@ -47,33 +50,24 @@ public class MemberController {
         return ResponseEntity.ok(user);
     }
 
-    @PostMapping("/updateUser")
-    public ResponseEntity<?> updateUser(@RequestBody Member updatedUser, RedirectAttributes attributes) {
+    @PostMapping("/{userId}/updateUser")
+    public ResponseEntity<Map<String, Object>> updateUser(
+            @PathVariable String userId,
+            @RequestBody Member updatedMember,
+            HttpSession session) {
+        Map<String, Object> response = new HashMap<>();
         try {
-            // 기존 유저인지 확인
-            String userId = updatedUser.getUserId();
-            Member existingUser =memberService.findUserByUserID(userId);
+            memberService.updateUser(userId, updatedMember);
+            session.setAttribute("currentUser", updatedMember);
 
-            // 정보 업데이트
-            existingUser.setUserId(userId);
-            existingUser.setUserName(updatedUser.getUserName());
-            existingUser.setEmail(updatedUser.getEmail());
-            existingUser.setPhone(updatedUser.getPhone());
-            existingUser.setPassword(updatedUser.getPassword());
-
-            // 기존 이미지 값 보존
-            if (updatedUser.getProfileImage() == null) {
-                updatedUser.setProfileImage(existingUser.getProfileImage()); // 이미지 수정되지 않으면 기존 이미지 유지
-            }
-
-            memberService.updateUser(userId, existingUser);
-
-            return ResponseEntity.ok(updatedUser);
-
+            response.put("success", true);
+            response.put("redirectUrl", "/pages/mypage");
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("회원 정보 수정 중 오류 발생(controller): " + e.getMessage());
+            response.put("success", false);
+            response.put("message", "회원 정보 수정 실패");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
-
     }
 
     @GetMapping("/{userId}/mypage")
@@ -88,14 +82,4 @@ public class MemberController {
         return ResponseEntity.ok(grade);
     }
 
-//    @PostMapping("/{userId}/updateProfile")
-//    public ResponseEntity<Member> updateProfile(@RequestBody Member updatedMember, @RequestParam String userId) {
-//        try {
-//            // 업데이트된 정보를 저장
-//            Member updatedUser = memberService.updateUser(userId, updatedMember);
-//            return ResponseEntity.ok(updatedUser); // 업데이트된 정보를 반환
-//        } catch (Exception e) {
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // 실패 시 오류 반환
-//        }
-//    }
 }

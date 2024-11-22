@@ -18,14 +18,13 @@
             justify-content: center; /* 수평 중앙 정렬 */
             align-items: center; /* 수직 중앙 정렬 */
             flex-direction: column;
-            height: 80vh; /* 전체 화면 높이에 맞게 설정 */
             padding: 0;
         }
 
         .banner {
             background-color: #ffe69b;
             text-align: center;
-            padding: 80px 0;
+            padding: 100px 0;
             font-size: 36px;
             font-weight: bold;
             color: white;
@@ -58,7 +57,8 @@
             background-color: #ffe69b;
             color: black;
             text-decoration: none;
-            font-size: 15px;
+            font-size: 18px;
+            font-weight: normal;
         }
 
         .menu-bar ul li a:hover {
@@ -177,23 +177,23 @@
     </style>
 </head>
 <body>
-    <!-- 배너 -->
-  <div class="banner">
+<!-- 배너 -->
+<div class="banner">
     재료백과
     <div class="menu-bar">
-      <!-- 왼쪽 메뉴 (홈, 게시판) -->
-      <ul>
-        <li><a href="/pages/index">홈</a></li>
-        <li><a href="/pages/board">게시판</a></li>
-      </ul>
+        <!-- 왼쪽 메뉴 (홈, 게시판) -->
+        <ul>
+            <li><a href="/pages/index">홈</a></li>
+            <li><a href="/pages/board">게시판</a></li>
+        </ul>
 
-      <!-- 오른쪽 메뉴 (로그인, 회원가입) -->
+        <!-- 오른쪽 메뉴 (로그인, 회원가입) -->
         <ul id="loginMenu">
             <li><a href="/pages/login" id="loginLink">로그인</a></li>
             <li><a href="/pages/register" id="registerLink">회원가입</a></li>
         </ul>
     </div>
-  </div>
+</div>
 
 <div class="container">
     <div class="form-group">
@@ -220,11 +220,13 @@
             </div>
         </div>
     </div>
+    <!-- 조리 방법 입력 -->
     <div class="form-group">
         <label>조리 방법:</label>
         <div id="step-container">
             <div class="addable-group">
                 <input type="text" placeholder="조리 방법 입력" class="step-description">
+                <input type="file" accept="image/*" class="step-photo">
                 <button type="button" class="add-btn" onclick="addStep()">+</button>
             </div>
         </div>
@@ -233,7 +235,7 @@
 
     <!-- 이전 버튼 -->
     <button class="back-btn" onclick="window.history.back()">이전</button>
-</div>
+
 
     <script>
 
@@ -371,5 +373,6 @@
             }
         });
     </script>
+
 </body>
 </html>

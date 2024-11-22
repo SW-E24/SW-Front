@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Service
 public class BookmarkService {
@@ -40,10 +42,6 @@ public class BookmarkService {
         return bookmarkRepository.save(bookmark);
     }
 
-//    public Bookmark addBookmark(Bookmark bookmark) { //북마크 추가 메소드
-//        bookmark.setDate(LocalDateTime.now());
-//        return bookmarkRepository.save(bookmark);
-//    }
 
     public List<Bookmark> getBookmarksByUserID(String userID) { //모든 북마크를 가져오는 메소드
         return bookmarkRepository.findAllByUserUserId(userID);
@@ -55,4 +53,10 @@ public class BookmarkService {
 
         bookmarkRepository.delete(bookmark);
     }
+
+    //페이지네이션
+    public Page<Bookmark> getBookmarksByUserIdWithPaging(String userId, Pageable pageable) {
+        return bookmarkRepository.findAllByUserUserId(userId, pageable);
+    }
+
 }

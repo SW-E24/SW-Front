@@ -47,6 +47,7 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
     //    Object findAllByUserUserID(String userID);
     List<Recipe> findAllByUserUserId(String userId);
+    Page<Recipe> findAllByUserUserId(String userId, Pageable pageable);
 
     // 제목으로 레시피 찾기
     Page<Recipe> findByTitleContaining(String keyword, Pageable pageable);
@@ -58,4 +59,7 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     // 카테고리별 레시피 찾기
     Page<Recipe> findByCategory(String category, Pageable pageable);
 
+    // 모든 레시피 들고오기
+    @Query("SELECT r FROM Recipe r")
+    Page<Recipe> findAllRecipe(Pageable pageable);
 }

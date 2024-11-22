@@ -103,75 +103,155 @@
     </style>
 </head>
 <body>
-    <div class="banner">재료백과</div>
+<div class="banner">재료백과</div>
 
-    <!-- 메뉴바 영역 -->
-    <div class="menu-bar">
-        <!-- 왼쪽 메뉴 (홈, 게시판) -->
-        <ul>
-            <li><a href="/pages/index">홈</a></li>
-            <li><a href="/pages/board">게시판</a></li>
-        </ul>
+<!-- 메뉴바 영역 -->
+<div class="menu-bar">
+    <!-- 왼쪽 메뉴 (홈, 게시판) -->
+    <ul>
+        <li><a href="/pages/index">홈</a></li>
+        <li><a href="/pages/board">게시판</a></li>
+    </ul>
 
-        <!-- 오른쪽 메뉴 -->
-        <ul id="loginMenu">
-            <li><a href="/pages/login" id="loginLink">로그인</a></li>
-            <li><a href="/pages/register" id="registerLink">회원가입</a></li>
-        </ul>
+    <!-- 오른쪽 메뉴 -->
+    <ul id="loginMenu">
+        <li><a href="/pages/login" id="loginLink">로그인</a></li>
+        <li><a href="/pages/register" id="registerLink">회원가입</a></li>
+    </ul>
+</div>
 
-    </div>
+<!-- 북마크 목록 -->
+<<div class="container">
+    <h2>📌 북마크</h2>
+    <ul id="bookmarkList" class="like-list"></ul>
 
-    <!-- 북마크 목록 -->
-    <div class="container">
-        <h2>📌 북마크</h2>
-        <ul class="like-list"> <!-- 북마크 목록에 클래스 추가 -->
-            <li>레시피 1</li>
-            <li>레시피 2</li>
-            <li>레시피 3</li>
-        </ul>
+    <!-- 페이지네이션 -->
+    <nav aria-label="Page navigation">
+        <ul id="pagination" class="pagination justify-content-center"></ul>
+    </nav>
 
-         <!-- 이전 버튼 -->
+    <!-- 이전 버튼 -->
     <button class="back-btn" onclick="window.history.back()">이전</button>
+</div>
 
-    </div>
-    <script>
-        // 로그인 상태를 확인하는 fetch 요청
-        fetch('/api/auth/currentUser', {
+<script>
+    // 로그인 상태를 확인하는 fetch 요청
+    fetch('/api/auth/currentUser', {
+        method: 'GET',
+        credentials: 'same-origin' // 동일한 출처로 쿠키를 포함한 요청
+    })
+        .then(response => {
+            if (response.status === 200) {
+                return response.json(); // 로그인된 사용자 정보 반환
+            } else {
+                throw new Error('로그인된 사용자가 없습니다.');
+            }
+        })
+        .then(data => {
+            console.log('현재 로그인된 사용자:', data); // 사용자 정보 출력
+            // 로그인된 경우 메뉴를 업데이트
+            document.getElementById('loginLink').textContent = '로그아웃';
+            document.getElementById('loginLink').setAttribute('href', '/api/auth/logout');
+            document.getElementById('registerLink').textContent = '마이페이지';
+            document.getElementById('registerLink').setAttribute('href', '/pages/mypage');
+        })
+        .catch(error => {
+            console.log(error); // 에러 출력
+        });
+
+    // 로그아웃 요청 처리 (로그아웃 버튼 클릭 시)
+    document.getElementById('loginLink').addEventListener('click', function(event) {
+        if (event.target.textContent === '로그아웃') {
+            fetch('/api/auth/logout', {
+                method: 'POST',
+                credentials: 'same-origin' // 동일한 출처로 쿠키를 포함한 요청
+            })
+                .then(() => {
+                    location.reload(); // 로그아웃 후 페이지 새로고침
+                })
+                .catch(error => console.log('로그아웃 실패:', error));
+        }
+    });
+    fetch('/api/bookmarks/my-bookmarks', {
+        method: 'GET',
+        credentials: 'same-origin'
+    })
+        .then(response => {
+            if (response.status === 200) {
+                return response.json(); // 북마크 데이터를 JSON 형식으로 반환
+            } else {
+                throw new Error('북마크 데이터를 가져올 수 없습니다.');
+            }
+        })
+        .then(data => {
+            const likeList = document.querySelector('.like-list');
+            likeList.innerHTML = ''; // 기존 목록 초기화
+
+            // 북마크 데이터를 순회하며 필요한 데이터만 HTML에 추가
+            data.forEach(bookmark => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${bookmark.recipe.title} - ${bookmark.recipe.description}`; // Recipe 데이터 사용
+                likeList.appendChild(listItem);
+            });
+        })
+        .catch(error => {
+            console.log(error); // 에러 출력
+        });
+    function loadBookmarkedRecipes(page) {
+        fetch(`/api/bookmarks/my-bookmarks-paged?page=${page}&size=5`, {
             method: 'GET',
-            credentials: 'same-origin' // 동일한 출처로 쿠키를 포함한 요청
+            credentials: 'same-origin'
         })
             .then(response => {
-                if (response.status === 200) {
-                    return response.json(); // 로그인된 사용자 정보 반환
-                } else {
-                    throw new Error('로그인된 사용자가 없습니다.');
-                }
+                if (!response.ok) throw new Error('Failed to fetch bookmarked recipes');
+                return response.json();
             })
             .then(data => {
-                console.log('현재 로그인된 사용자:', data); // 사용자 정보 출력
-                // 로그인된 경우 메뉴를 업데이트
-                document.getElementById('loginLink').textContent = '로그아웃';
-                document.getElementById('loginLink').setAttribute('href', '/api/auth/logout');
-                document.getElementById('registerLink').textContent = '마이페이지';
-                document.getElementById('registerLink').setAttribute('href', '/pages/mypage');
+                renderBookmarks(data.content); // 데이터 렌더링
+                updatePagination(data.number, data.totalPages); // 페이지네이션 업데이트
             })
-            .catch(error => {
-                console.log(error); // 에러 출력
-            });
+            .catch(error => console.error('Error:', error));
+    }
 
-        // 로그아웃 요청 처리 (로그아웃 버튼 클릭 시)
-        document.getElementById('loginLink').addEventListener('click', function(event) {
-            if (event.target.textContent === '로그아웃') {
-                fetch('/api/auth/logout', {
-                    method: 'POST',
-                    credentials: 'same-origin' // 동일한 출처로 쿠키를 포함한 요청
-                })
-                    .then(() => {
-                        location.reload(); // 로그아웃 후 페이지 새로고침
-                    })
-                    .catch(error => console.log('로그아웃 실패:', error));
-            }
+    function renderBookmarks(bookmarks) {
+        const bookmarkList = document.getElementById('bookmarkList');
+        bookmarkList.innerHTML = '';
+        bookmarks.forEach(bookmark => {
+            const listItem = document.createElement('li');
+            listItem.className = 'list-group-item';
+
+            const recipeLink = document.createElement('a');
+            recipeLink.href = `/post view?recipeId=${bookmark.recipe.recipeId}`;  // 레시피 상세 페이지로 이동
+            recipeLink.textContent = `${bookmark.recipe.title} - ${bookmark.recipe.description}`;  // 레시피 제목과 설명
+            listItem.appendChild(recipeLink);
+
+            bookmarkList.appendChild(listItem);
         });
-    </script>
+    }
+
+
+    function updatePagination(currentPage, totalPages) {
+        const pagination = document.getElementById('pagination');
+        pagination.innerHTML = '';
+        for (let i = 0; i < totalPages; i++) {
+            const li = document.createElement('li');
+            li.className = `page-item ${i === currentPage ? 'active' : ''}`;
+            const a = document.createElement('a');
+            a.className = 'page-link';
+            a.textContent = i + 1;
+            a.href = '#';
+            a.addEventListener('click', (e) => {
+                e.preventDefault();
+                loadBookmarkedRecipes(i);
+            });
+            li.appendChild(a);
+            pagination.appendChild(li);
+        }
+    }
+
+    // 초기 로드
+    document.addEventListener('DOMContentLoaded', () => loadBookmarkedRecipes(0));
+
+</script>
 </body>
 </html>
