@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>마이페이지</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* 기본 레이아웃 설정 */
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+        /* 배너 스타일 */
+        .banner {
+            background-color: #ffe69b;
+            text-align: center;
+            padding: 100px 0;
+            font-size: 36px;
+            font-weight: bold;
+            color: white;
+        }
+        /* 메뉴바 스타일 */
+        .menu-bar {
+            background-color: #ffe69b;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .menu-bar ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .menu-bar ul li {
+            padding: 0 15px;
+        }
+        .menu-bar ul li a {
+            color: black;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        .menu-bar ul li a:hover {
+            text-decoration: underline;
+        }
+
+        .mypage-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .profile-header img {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+        }
+        .profile-header h2#user-nickname {
+            font-size: 20px; /* 닉네임 글씨 크기 */
+            font-weight: bold; /* 닉네임 글씨 굵기 */
+            margin-bottom: 5px; /* 등급과 닉네임 간격 좁힘 */
+        }
+
+        .profile-header h2#user-grade {
+            font-size: 16px; /* 등급 글씨 크기 */
+            font-weight: 400; /* 등급 글씨 굵기 */
+            color: gray; /* 등급 글씨 색상 */
+            margin-top: 0;
+        }
+
+        .mypage-buttons {
+            margin-top: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .mypage-buttons a {
+            display: block;
+            width: 45%;
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: #bacd92;
+            color: white;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 16px;
+            text-decoration: none;
+        }
+        .mypage-buttons a:hover {
+            background-color: #bacd92;
+        }
+
+        .mypage-buttons .signup-button {   /* 회원정보수정 버튼*/
+            width: 95%;
+            background-color: #bacd92; /* 버튼 색상 */
+            margin-left: auto; /* 가운데 정렬 */
+            margin-right: auto; /* 가운데 정렬 */
+        }
+
+    </style>
+</head>
+<body>
+<div class="banner">재료백과</div>
+
+<!-- 메뉴바 영역 -->
+<div class="menu-bar">
+    <!-- 왼쪽 메뉴 (홈, 게시판) -->
+    <ul>
+        <li><a href="/pages/index">홈</a></li>
+        <li><a href="/pages/board">게시판</a></li>
+    </ul>
+
+    <!-- 오른쪽 메뉴 (로그인, 회원가입) -->
+    <ul id="loginMenu">
+        <li><a href="/pages/login" id="loginLink">로그인</a></li>
+        <li><a href="/pages/register" id="registerLink">회원가입</a></li>
+    </ul>
+</div>
+
+<div class="mypage-container">
+    <div class="profile-header">
+        <img id="user-profile-pic" src="https://via.placeholder.com/150" alt="프로필 이미지">
+        <h2 id="user-nickname">닉네임</h2>
+        <h2 id="user-grade"></h2>
+    </div>
+
+
+    <div class="mypage-buttons">
+        <a href="/pages/profile" class="signup-button">회원 정보 수정</a>
+        <!--11/16 각 Controller에 맞게 주소 수정(MypagePageController참고)-->
+        <a th:href="'/mypage/' + ${userId}">북마크</a>
+        <a th:href="'/mypage/' + ${userId} + '/recipes'">작성한 글</a>
+        <a th:href="'/mypage/' + ${userId} + '/liked'">좋아요</a>
+        <a th:href="'/mypage/' + ${userId} + '/comments'">작성한 댓글</a>
+    </div>
+</div>
+
+<script src="/scripts.js"></script>
+<script>
+    // 로그인 상태에 따라 상단 버튼이 바뀌도록 하는 로직
+    fetch('/api/auth/currentUser', {
+        method: 'GET',
+        credentials: 'same-origin' // 동일한 출처로 쿠키를 포함한 요청
+    })
+        .then(response => {
+            if (response.status === 200) {
+                return response.json(); // 로그인된 사용자 정보 반환
+            } else {
+                throw new Error('로그인된 사용자가 없습니다.');
+            }
+        })
+        .then(data => {
+            // 로그인된 경우 메뉴를 업데이트
+            document.getElementById('loginLink').textContent = '로그아웃';
+            document.getElementById('loginLink').setAttribute('href', '/api/auth/logout');
+            document.getElementById('registerLink').textContent = '마이페이지';
+            document.getElementById('registerLink').setAttribute('href', '/pages/mypage');
+        })
+        .catch(error => {
+            console.log(error); // 에러 출력
+        });
+
+    // 로그아웃 요청 처리 (로그아웃 버튼 클릭 시)
+    document.getElementById('loginLink').addEventListener('click', function(event) {
+        if (event.target.textContent === '로그아웃') {
+            fetch('/api/auth/logout', {
+                method: 'POST',
+                credentials: 'same-origin' // 동일한 출처로 쿠키를 포함한 요청
+            })
+                .then(() => {
+                    location.reload(); // 로그아웃 후 페이지 새로고침
+                })
+                .catch(error => console.log('로그아웃 실패:', error));
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/api/auth/currentUser', {
+            method: 'GET',
+            credentials: 'same-origin'
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('로그인이 필요합니다.');
+                }
+            })
+            .then(user => {
+                // 닉네임 업데이트
+                document.getElementById('user-nickname').textContent = user.userName;
+
+                // 등급 정보 업데이트
+                fetch(`/api/grades/${user.userId}`, {
+                    method: 'GET',
+                    credentials: 'same-origin'
+                })
+                    .then(gradeResponse => gradeResponse.json())
+                    .then(grade => {
+                        const gradeMapping = {
+                            BASIC: 'basic',
+                            ONE: '1',
+                            ONE_PLUS: '1+',
+                            ONE_PLUS_PLUS: '1++'
+                        };
+                        const userGrade = gradeMapping[grade.grade] || '등급 정보 없음';
+                        document.getElementById('user-grade').textContent = `등급: ${userGrade}`;
+                    });
+
+                // 프로필 이미지 불러오기
+                fetch(`/api/users/${user.userId}/profile-picture`, {
+                    method: 'GET',
+                    credentials: 'same-origin'
+                })
+                    .then(imageResponse => {
+                        if (imageResponse.ok) {
+                            return imageResponse.blob(); // 이미지 데이터를 Blob으로 가져옴
+                        } else {
+                            throw new Error('프로필 이미지를 가져올 수 없습니다.');
+                        }
+                    })
+                    .then(blob => {
+                        const imageUrl = URL.createObjectURL(blob);
+                        document.getElementById('user-profile-pic').src = imageUrl; // 프로필 이미지 업데이트
+                    })
+                    .catch(error => {
+                        console.error('프로필 이미지 로드 실패:', error);
+                    });
+            })
+            .catch(error => {
+                console.error('사용자 정보를 가져오는 데 실패했습니다:', error);
+                alert('로그인이 필요합니다.');
+                window.location.href = '/pages/login';
+            });
+    });
+
+</script>
+</body>
+</html>
